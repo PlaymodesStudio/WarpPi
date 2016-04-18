@@ -1,0 +1,20 @@
+<config>
+    
+    <id> 11 </id>
+    <name> firstOne </name>
+    
+    <hasVideo> yes </hasVideo>
+    <hasDMX> No </hasDMX>
+    
+    <oscReceivePort> 9001 </oscReceivePort>
+    <oscReceivePortStringMode> 9002 </oscReceivePortStringMode>
+    <oscSendAddress> 192.168.1.99 </oscSendAddress>
+    <oscSendPort> 9003 </oscSendPort>
+    
+    <videoFileName> ./videos/test1080.mov </videoFileName>
+    
+    <dmxDevice> 0 </dmxDevice>
+    <dmxNumChannels> 4 </dmxNumChannels>
+    <dmxFirstChannel> 11 </dmxFirstChannel>
+    
+</config>
