@@ -11,7 +11,7 @@ pmWarpPiRendererScreen::pmWarpPiRendererScreen()
     isTesting = false;
     isDebugging= false;
     currentQuadPoint = 0;
-    screenDebugPosition = ofVec2f(0,0);
+    screenDebugPosition = ofVec2f(270,20);
     testingImage = new ofImage();
     homography = new ofMatrix4x4();
     screenFbo = new ofFbo();
@@ -31,7 +31,6 @@ void pmWarpPiRendererScreen::setupScreen(ofVec2f _pos,ofVec2f _size)
     doEditQuadPoints = false;
     isTesting = false;
     currentQuadPoint = 0;
-    screenDebugPosition = ofVec2f(20,160);
 
     testingImage->loadImage("./app/testScreen.jpg");
     

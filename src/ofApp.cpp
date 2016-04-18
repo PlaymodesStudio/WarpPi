@@ -90,7 +90,6 @@ void ofApp::readConfig()
     confOscSendIpAddress = configXML.getValue("oscSendAddress","error");
     confOscReceivePortStringMode = configXML.getValue("oscReceivePortStringMode",-1);
     
-    
     /// VIDEO FILE
     confVideoFileName = configXML.getValue("videoFileName","error");
     
@@ -298,7 +297,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
     ofxOscMessage* myMessage;
     myMessage = new ofxOscMessage();
     
-    // split first argument ... into tokens <string> vector
+    // split the string received ... into tokens <string> vector
     using namespace std;
     string sentence = tcpString;
     istringstream iss(sentence);
@@ -314,7 +313,6 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
     // JUST TAKE CARE OF THE TCP MESSAGE IF IT's FOR THIS PI id
     if( ( (id==tokens[0]) || ("all"==tokens[0]) ) )
     {
-        
         if(numTokens==1)
         {
             cout << "testApp :: process TCP :: OSC MESSAGE WITH NO ARGUMENTS AT ALL ? " << tokens[0] << endl;
@@ -835,7 +833,13 @@ void ofApp::showDebug()
     whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString("LAST OSC MSG : "  + lastOscMessage,debugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
+    ofDrawBitmapString("USE TCP : "  + ofToString(confUsesTCP),debugPosition.x,whichHeight);
+    whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString("TCP CONNECTION : "  + ofToString(tcpAreWeConnected),debugPosition.x,whichHeight);
+    whichHeight=whichHeight + lineHeight;
+    ofDrawBitmapString("TCP IP : "  + ofToString(confTCPSendIpAddress),debugPosition.x,whichHeight);
+    whichHeight=whichHeight + lineHeight;
+    ofDrawBitmapString("TCP PORT : "  + ofToString(confTCPPort),debugPosition.x,whichHeight);
 }
 
 //--------------------------------------------------------------
