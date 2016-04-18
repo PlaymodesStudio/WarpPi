@@ -1,4 +1,3 @@
-ofxOMXPlayer
 ofxXmlSettings
 ofxOsc
 ofxDmx

@@ -1218,8 +1218,9 @@
 					"$(inherited)",
 					/Volumes/pi/openframeworks/addons/ofxOMXPlayer/libs/ffmpeg/lib,
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = WarpPiDebug;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "../../../addons/ofxOsc/libs/oscpack/src/ ../../../addons/ofxOsc/libs/oscpack/src/";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1242,8 +1243,9 @@
 					"$(inherited)",
 					/Volumes/pi/openframeworks/addons/ofxOMXPlayer/libs/ffmpeg/lib,
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = WarpPi;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "../../../addons/ofxOsc/libs/oscpack/src/ ../../../addons/ofxOsc/libs/oscpack/src/";
 				WRAPPER_EXTENSION = app;
 			};
