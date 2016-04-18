@@ -3,8 +3,8 @@
     <id> 11 </id>
     <name> firstOne </name>
     
-    <hasVideo> yes </hasVideo>
-    <hasDMX> No </hasDMX>
+    <hasVideo>yes </hasVideo>
+    <hasDMX>no</hasDMX>
     
     <oscReceivePort> 9001 </oscReceivePort>
     <oscReceivePortStringMode> 9002 </oscReceivePortStringMode>
@@ -17,4 +17,7 @@
     <dmxNumChannels> 4 </dmxNumChannels>
     <dmxFirstChannel> 11 </dmxFirstChannel>
     
+    <useTCP>no</useTCP>
+    <TCPIp>192.168.1.99</TCPIp>
+    <TCPPort> 11999 </TCPPort>
 </config>

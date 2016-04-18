@@ -25,7 +25,7 @@ public:
     ////////////////////
     pmWarpPiRenderer();
     
-    virtual void        setup(string id, string _oscSendAddress, int _oscSendPort);
+    virtual void        setup(string id);
     virtual void        update(ofEventArgs & a);
     virtual void        updateOSC(ofxOscMessage* m);
     virtual void        draw() {};

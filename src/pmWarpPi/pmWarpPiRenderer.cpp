@@ -27,22 +27,13 @@ pmWarpPiRenderer::pmWarpPiRenderer()
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiRenderer::setup(string _id, string _oscSendAddress, int _oscSendPort)
+void pmWarpPiRenderer::setup(string _id)
 {
     ofAddListener(ofEvents().update, this, &pmWarpPiRenderer::update);
-
     id = _id;
-    
     /// DEBUGGING
     isDebugging = false;
-    
-    /// OSC SENDER
-    oscSenderAddress = _oscSendAddress;
-    oscSenderPort = _oscSendPort;
-    oscSender->setup(oscSenderAddress,oscSenderPort);
-    
     ofLog(OF_LOG_NOTICE) << "Rend :: setup :: osc sender " << oscSenderAddress << " :: Port " << oscSenderPort;
-    
 }
 
 

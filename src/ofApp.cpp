@@ -25,14 +25,16 @@ void ofApp::setup()
     /// OSC
     oscReceiverOSC.setup(confOscReceivePort);
     oscReceiverSTRING.setup(confOscReceivePortStringMode);
-    oscSender.setup(confOscSendAddress,confOscSendPort);
+    oscSender.setup(confOscSendIpAddress,confOscSendPort);
     
     /// TCP
-    tcpAreWeConnected = tcpClient.setup(confOscSendAddress, 11999);
-    tcpConnectTime=0;
-    tcpDeltaTime=0;
-    tcpMsgRx = "";
-
+    if(confUsesTCP)
+    {
+        tcpAreWeConnected = tcpClient.setup(confTCPSendIpAddress, confTCPPort);
+        tcpConnectTime=0;
+        tcpDeltaTime=0;
+        tcpMsgRx = "";
+    }
 
     /// RENDERERS
     ///////////////
@@ -47,12 +49,12 @@ void ofApp::setup()
     {
         #ifdef TARGET_RASPBERRY_PI
             pmWarpPiRendererOMXPlayer* _video = new pmWarpPiRendererOMXPlayer();
-            _video->setup(id,confOscSendAddress,confOscSendPort);
+            _video->setup(id,confOscSendIpAddress,confOscSendPort);
             _video->setupScreen(ofVec2f(0,0), ofVec2f(resX,resY));
             _video->setupOMXPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(resX,resY));
         #else
             pmWarpPiRendererVideoPlayer* _video = new pmWarpPiRendererVideoPlayer();
-            _video->setup(id,confOscSendAddress,confOscSendPort);
+            _video->setup(id);
             _video->setupScreen(ofVec2f(0,0), ofVec2f(resX,resY));
             _video->setupVideoPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(resX,resY));
         #endif
@@ -64,7 +66,7 @@ void ofApp::setup()
     if(confHasDmx)
     {
         pmWarpPiRendererDmx* _dmx = new pmWarpPiRendererDmx();
-        _dmx->setup(id,confOscSendAddress,confOscSendPort);
+        _dmx->setup(id);
         _dmx->setupDmx(confDmxDevice,confDmxNumChannels,confDmxFirstChannel);
         renderers.push_back((pmWarpPiRenderer*) _dmx);
     }
@@ -85,7 +87,7 @@ void ofApp::readConfig()
     /// OSC SETUP
     confOscReceivePort = configXML.getValue("oscReceivePort",-1);
     confOscSendPort = configXML.getValue("oscSendPort",-1);
-    confOscSendAddress = configXML.getValue("oscSendAddress","error");
+    confOscSendIpAddress = configXML.getValue("oscSendAddress","error");
     confOscReceivePortStringMode = configXML.getValue("oscReceivePortStringMode",-1);
     
     
@@ -95,15 +97,24 @@ void ofApp::readConfig()
     /// WHAT IT HAS ?
     confHasVideo = confHasDmx = false;
     if(configXML.getValue("hasVideo","error")=="yes") confHasVideo=true;
+    else confHasVideo=false;
+
     if(configXML.getValue("hasDMX","error")=="yes") confHasDmx=true;
+    else confHasDmx=false;
     
     /// DMX
     confDmxDevice = configXML.getValue("dmxDevice",-1);
     confDmxNumChannels = configXML.getValue("dmxNumChannels",-1);
     confDmxFirstChannel = configXML.getValue("dmxFirstChannel",-1);
     
+    /// TCP
+    if(configXML.getValue("useTCP","error")=="yes") confUsesTCP=true;
+    else confUsesTCP = false;
+    confTCPSendIpAddress = configXML.getValue("TCPIp","default");
+    confTCPPort = configXML.getValue("TCPPort",11111);
+    
     /// add to LOG
-    ofLog(OF_LOG_NOTICE) << "ofApp :: readConfig :: id " << id << " :: name " << name << " :: oscIn " << confOscReceivePort << " :: oscOut IP " << confOscSendAddress << " :: oscOut Port " << confOscSendPort << " :: videoFile " << confVideoFileName << " :: hasVideo " << confHasVideo << " :: hasDMX " << confHasDmx;
+    ofLog(OF_LOG_NOTICE) << "ofApp :: readConfig :: id " << id << " :: name " << name << " :: oscIn " << confOscReceivePort << " :: oscOut IP " << confOscSendIpAddress << " :: oscOut Port " << confOscSendPort << " :: videoFile " << confVideoFileName << " :: hasVideo " << confHasVideo << " :: hasDMX " << confHasDmx;
     
 }
 //--------------------------------------------------------------
@@ -233,50 +244,52 @@ void ofApp::update()
     /// TCP
     //////////
     
-    if(tcpAreWeConnected)
+    if(confUsesTCP)
     {
-        string str = tcpClient.receive();
-        if( str.length() > 0 ){
-            tcpMsgRx = str;
-            
-            ofLog(OF_LOG_NOTICE) << "testApp :: Update : tcpMsg = " << tcpMsgRx << " : " << ofGetElapsedTimef() << endl;
-            
-            ofxOscMessage* mTcp = new ofxOscMessage();
-            
-            mTcp = processTCP(tcpMsgRx);
-            
-            /// UPDATE ALL RENDERERS
-            ///---------------------------------
-            for(int i=0;i<renderers.size();i++)
-            {
-                renderers[i]->updateOSC(mTcp);
+        if(tcpAreWeConnected)
+        {
+            string str = tcpClient.receive();
+            if( str.length() > 0 ){
+                tcpMsgRx = str;
+                
+                ofLog(OF_LOG_NOTICE) << "testApp :: Update : tcpMsg = " << tcpMsgRx << " : " << ofGetElapsedTimef() << endl;
+                
+                ofxOscMessage* mTcp = new ofxOscMessage();
+                
+                mTcp = processTCP(tcpMsgRx);
+                
+                /// UPDATE ALL RENDERERS
+                ///---------------------------------
+                for(int i=0;i<renderers.size();i++)
+                {
+                    renderers[i]->updateOSC(mTcp);
+                }
+                
+                
+                
             }
             
-            
-            
+            if(!tcpClient.isConnected())
+            {
+                tcpAreWeConnected = false;
+            }
         }
-        
-        if(!tcpClient.isConnected())
+        else
         {
-            tcpAreWeConnected = false;
+            //if we are not connected lets try and reconnect every 5 seconds
+            tcpDeltaTime = ofGetElapsedTimeMillis() - tcpConnectTime;
+            
+            if( tcpDeltaTime > 5000 )
+            {
+                cout << "We're not connected to TCP ..." << endl;
+                tcpAreWeConnected = tcpClient.setup(confOscSendIpAddress, 11999);
+                tcpConnectTime = ofGetElapsedTimeMillis();
+                ofLog(OF_LOG_NOTICE) << "Trying to reconnect TCP...." << endl;
+                cout << "Trying to reconnect TCP...." << endl;
+            }
+            
         }
     }
-    else
-    {
-        //if we are not connected lets try and reconnect every 5 seconds
-        tcpDeltaTime = ofGetElapsedTimeMillis() - tcpConnectTime;
-        
-        if( tcpDeltaTime > 5000 )
-        {
-            cout << "We're not connected to TCP ..." << endl;
-            tcpAreWeConnected = tcpClient.setup(confOscSendAddress, 11999);
-            tcpConnectTime = ofGetElapsedTimeMillis();
-            ofLog(OF_LOG_NOTICE) << "Trying to reconnect TCP...." << endl;
-            cout << "Trying to reconnect TCP...." << endl;
-        }
-        
-    }
-
 }
 
 //-------------------------------------------------------------------------
@@ -816,7 +829,7 @@ void ofApp::showDebug()
     whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString("OSC RECEIVE PORT: "  + ofToString(confOscReceivePort),debugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString("OSC SEND TO ADDRESS : "  + ofToString(confOscSendAddress),debugPosition.x,whichHeight);
+    ofDrawBitmapString("OSC SEND TO ADDRESS : "  + ofToString(confOscSendIpAddress),debugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString("OSC SEND TO PORT : "  + ofToString(confOscSendPort),debugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;

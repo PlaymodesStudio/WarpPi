@@ -84,7 +84,7 @@ public:
     int                         confOscReceivePort;
     int                         confOscReceivePortStringMode;
     int                         confOscSendPort;
-    string                      confOscSendAddress;
+    string                      confOscSendIpAddress;
     bool                        confHasVideo;
     bool                        confHasDmx;
     string                      confVideoFileName;
@@ -92,6 +92,9 @@ public:
     int                         confDmxDevice;
     int                         confDmxNumChannels;
     int                         confDmxFirstChannel;
+    bool                        confUsesTCP;
+    string                      confTCPSendIpAddress;
+    int                         confTCPPort;
     
     
 };
