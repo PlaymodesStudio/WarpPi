@@ -29,10 +29,17 @@ public:
     
     void keyPressed(ofKeyEventArgs &a);
     void keyReleased(ofKeyEventArgs &a);
-    void mouseMoved(ofMouseEventArgs &a);
-    void mouseDragged(ofMouseEventArgs &a);
-    void mousePressed(ofMouseEventArgs &a);
-    void mouseReleased(ofMouseEventArgs &a);
+//    void mouseMoved(ofMouseEventArgs &a);
+//    void mouseDragged(ofMouseEventArgs &a);
+//    void mousePressed(ofMouseEventArgs &a);
+//    void mouseReleased(ofMouseEventArgs &a);
+    void mouseMoved(ofMouseEventArgs & args);
+    void mouseDragged(ofMouseEventArgs & args);
+    void mousePressed(ofMouseEventArgs & args);
+    void mouseReleased(ofMouseEventArgs & args);
+    void mouseScrolled(ofMouseEventArgs & args){};
+    void mouseEntered(ofMouseEventArgs & args){};
+    void mouseExited(ofMouseEventArgs & args){};
 
     /// CLASS PARAMS
     /////////////////
