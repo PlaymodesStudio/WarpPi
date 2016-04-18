@@ -202,6 +202,7 @@ void pmWarpPiRendererScreen::nextQuadPoint()
     CGSetLocalEventsSuppressionInterval(0);
     CGWarpMouseCursorPosition(point);
     
+    //Que Žs??
      //ofNotifyMouseMoved(distortedCorners[currentQuadPoint].x,distortedCorners[currentQuadPoint].y);
     
     
@@ -230,6 +231,7 @@ void pmWarpPiRendererScreen::previousQuadPoint()
     CGSetLocalEventsSuppressionInterval(0);
     CGWarpMouseCursorPosition(point);
     
+    //Que es??
     //ofNotifyMouseMoved(distortedCorners[currentQuadPoint].x,distortedCorners[currentQuadPoint].y);
 #endif
     
@@ -308,6 +310,7 @@ void pmWarpPiRendererScreen::keyReleased(ofKeyEventArgs &a)
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::mouseMoved(ofMouseEventArgs &a)
 {
+
 }
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::mouseDragged(ofMouseEventArgs &a)
