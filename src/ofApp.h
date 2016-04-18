@@ -9,7 +9,6 @@
 #ifdef TARGET_OS_MAC
     #include "pmWarpPiRendererVideoPlayer.h"
 #endif
-
 #include "pmWarpPiRendererDmx.h"
 
 #include<iterator>
@@ -18,8 +17,12 @@
 //#define TARGET_OS_MAC
 
 
-class ofApp : public ofBaseApp{
+class ofApp : public ofBaseApp
+{
 public:
+
+    // OF APP
+    ///////////
     void setup();
     void update();
     void draw();
@@ -37,6 +40,7 @@ public:
     void gotMessage(ofMessage msg);
     
     /// OSC
+    ////////////
     ofxOscReceiver              oscReceiverSTRING;
     ofxOscReceiver              oscReceiverOSC;
     
@@ -44,7 +48,17 @@ public:
     string                      lastOscMessage;
     ofxOscMessage*              processOSC(ofxOscMessage* m);
 
+    /// TCP
+    ////////////
+    ofxTCPClient                tcpClient;
+    bool                        tcpAreWeConnected;
+    int                         tcpConnectTime;
+    int                         tcpDeltaTime;
+    string                      tcpMsgRx;
+    ofxOscMessage*              processTCP(string s);
+
     /// WARPPI
+    ////////////
     string                      name;
     string                      id;
     void                        showDebug();
@@ -60,9 +74,11 @@ public:
     void                        setTest(bool b);
     
     /// RENDERERS
+    ///////////////
     vector<pmWarpPiRenderer*>    renderers;
     
     /// CONFIG
+    ////////////
     void                        readConfig();
     int                         confId;
     int                         confOscReceivePort;

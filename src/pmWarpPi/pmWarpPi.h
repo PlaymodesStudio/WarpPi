@@ -10,5 +10,6 @@
 #include "ofxOsc.h"
 #include "ofxTweenzor.h"
 #include "ofxXmlSettings.h"
+#include "ofxNetwork.h"
 
 //#include "ofxOMXPlayer.h"

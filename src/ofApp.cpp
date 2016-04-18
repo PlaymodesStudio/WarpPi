@@ -3,11 +3,12 @@
 
 
 //--------------------------------------------------------------
-void ofApp::setup() {
-    
+void ofApp::setup()
+{
     ofSetFrameRate(60);
     ofSetVerticalSync(true);
 
+    // LOG FILE
     ofLogToFile("warpPiLog.txt", true);
     ofSetLogLevel(OF_LOG_NOTICE);
 
@@ -16,6 +17,7 @@ void ofApp::setup() {
     isTesting = false;
     useFbo = true;
     showFPS = true;
+    ofHideCursor();
     
     /// READ CONF
     readConfig();
@@ -25,13 +27,22 @@ void ofApp::setup() {
     oscReceiverSTRING.setup(confOscReceivePortStringMode);
     oscSender.setup(confOscSendAddress,confOscSendPort);
     
+    /// TCP
+    tcpAreWeConnected = tcpClient.setup(confOscSendAddress, 11999);
+    tcpConnectTime=0;
+    tcpDeltaTime=0;
+    tcpMsgRx = "";
+
 
     /// RENDERERS
-//    int resX = 1280;
-//    int resY = 720;
+    ///////////////
+    //    int resX = 1280;
+    //    int resY = 720;
     int resX = ofGetWidth();
     int resY = ofGetHeight();
-    
+
+    // HAS VIDEO ?
+    ///////////////
     if(confHasVideo)
     {
         #ifdef TARGET_RASPBERRY_PI
@@ -44,24 +55,19 @@ void ofApp::setup() {
             _video->setup(id,confOscSendAddress,confOscSendPort);
             _video->setupScreen(ofVec2f(0,0), ofVec2f(resX,resY));
             _video->setupVideoPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(resX,resY));
-            //_video->setupOMXPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(1280,720));
         #endif
 
         renderers.push_back((pmWarpPiRenderer*) _video);
     }
+    // HAS DMX ?
+    ///////////////
     if(confHasDmx)
     {
         pmWarpPiRendererDmx* _dmx = new pmWarpPiRendererDmx();
-
-
         _dmx->setup(id,confOscSendAddress,confOscSendPort);
-
         _dmx->setupDmx(confDmxDevice,confDmxNumChannels,confDmxFirstChannel);
-        
         renderers.push_back((pmWarpPiRenderer*) _dmx);
-        
     }
-    
     //keyPressed('d');
     //ofSetLogLevel(OF_LOG_SILENT);
 }
@@ -109,6 +115,8 @@ void ofApp::update()
     {
         ofxOscMessage* m = new ofxOscMessage();
         
+        // OSC RECEIVER STRING (FOR EASY EDITING FROM DURATION)
+        ////////////////////////
         if(oscReceiverSTRING.hasWaitingMessages())
         {
             ofxOscMessage* mORIG = new ofxOscMessage();
@@ -129,22 +137,24 @@ void ofApp::update()
             ///---------------------------------
             m = processOSC(mORIG);
         }
-        
+
+        // OSC RECEIVER
+        /////////////////
         else if (oscReceiverOSC.hasWaitingMessages())
         {
             oscReceiverOSC.getNextMessage(m);
         }
     
         /// UPDATE ALL RENDERERS
-        ///---------------------------------
+        ///////////////////////////
         for(int i=0;i<renderers.size();i++)
         {
             renderers[i]->updateOSC(m);
         }
         
-        ///---------------------------------
+        ///////////////////////////
         /// MESSAGES THAT AFFECT IN GENERAL
-        ///---------------------------------
+        ///////////////////////////
         string address = m->getAddress();
         
         // get the id
@@ -218,7 +228,287 @@ void ofApp::update()
 
         }
     }
+    
+    //////////
+    /// TCP
+    //////////
+    
+    if(tcpAreWeConnected)
+    {
+        string str = tcpClient.receive();
+        if( str.length() > 0 ){
+            tcpMsgRx = str;
+            
+            ofLog(OF_LOG_NOTICE) << "testApp :: Update : tcpMsg = " << tcpMsgRx << " : " << ofGetElapsedTimef() << endl;
+            
+            ofxOscMessage* mTcp = new ofxOscMessage();
+            
+            mTcp = processTCP(tcpMsgRx);
+            
+            /// UPDATE ALL RENDERERS
+            ///---------------------------------
+            for(int i=0;i<renderers.size();i++)
+            {
+                renderers[i]->updateOSC(mTcp);
+            }
+            
+            
+            
+        }
+        
+        if(!tcpClient.isConnected())
+        {
+            tcpAreWeConnected = false;
+        }
+    }
+    else
+    {
+        //if we are not connected lets try and reconnect every 5 seconds
+        tcpDeltaTime = ofGetElapsedTimeMillis() - tcpConnectTime;
+        
+        if( tcpDeltaTime > 5000 )
+        {
+            cout << "We're not connected to TCP ..." << endl;
+            tcpAreWeConnected = tcpClient.setup(confOscSendAddress, 11999);
+            tcpConnectTime = ofGetElapsedTimeMillis();
+            ofLog(OF_LOG_NOTICE) << "Trying to reconnect TCP...." << endl;
+            cout << "Trying to reconnect TCP...." << endl;
+        }
+        
+    }
+
 }
+
+//-------------------------------------------------------------------------
+ofxOscMessage* ofApp::processTCP(string tcpString)
+{
+    ofxOscMessage* myMessage;
+    myMessage = new ofxOscMessage();
+    
+    // split first argument ... into tokens <string> vector
+    using namespace std;
+    string sentence = tcpString;
+    istringstream iss(sentence);
+    vector<string> tokens;
+    copy(istream_iterator<string>(iss),
+         istream_iterator<string>(),
+         back_inserter(tokens));
+    
+    /// FILL MY MESSAGE ADRESS TO BE PROCESSED
+    myMessage->setAddress("/" +tokens[0]);
+    int numTokens = tokens.size();
+    
+    // JUST TAKE CARE OF THE TCP MESSAGE IF IT's FOR THIS PI id
+    if( ( (id==tokens[0]) || ("all"==tokens[0]) ) )
+    {
+        
+        if(numTokens==1)
+        {
+            cout << "testApp :: process TCP :: OSC MESSAGE WITH NO ARGUMENTS AT ALL ? " << tokens[0] << endl;
+        }
+        
+        ///---------------------------------
+        /// 1 TOKENS : 1 COMMAND NO PARAMS
+        ///---------------------------------
+        
+        else if(numTokens==2)
+        {
+            // 1 token means just a command like : pause, saveQuad, resetQuad, nextQuadPoint, preQuadPoint, ping, shutdown, reboot, debug
+            // so just pass though the command string
+            ofLog(OF_LOG_NOTICE) << " 1 Argument  " << tokens[0] << " : " << tokens[1] << endl;
+            cout << " 1 Argument  " << tokens[0] << " : " << tokens[1] << endl;
+            /// (0) is the command
+            /// ----------------------------
+            myMessage->addStringArg(tokens[1]);
+            
+            if(tokens[1]=="ping")
+            {
+                cout << "Hi!! you ping I pong !!" << endl;
+                tcpClient.send("pong " +id);
+            }
+            else if(tokens[1]=="exit")
+            {
+                cout << "Hi!! I'm exit !!" << endl;
+                //ofSystem("./data/scripts/shutdown.sh");
+                ofLog(OF_LOG_NOTICE) << " osc received exit !! " << endl;
+                std::exit(0);
+                this->exit();
+            }
+            else if(tokens[1]=="shutdown")
+            {
+                cout << "Hi!! I'm shutdown !!" << endl;
+                ofLog(OF_LOG_NOTICE) << " shutdown ? " << endl;
+                ofSystem("/home/pi/openframeworks/apps/MIESPI/WarpPi_rev5/bin/data/scripts/shutdown.sh");
+                
+            }
+            else if(tokens[1]=="reboot")
+            {
+                cout << "Hi!! I'm reboot !!" << endl;
+                ofLog(OF_LOG_NOTICE) << " REBOOT ? " << endl;
+                ofSystem("/home/pi/openframeworks/apps/MIESPI/WarpPi_rev5/bin/data/scripts/reboot.sh");
+            }
+            
+            
+        }
+        
+        ///---------------------------------
+        /// 2 TOKENS : 1 COMMAND 1 PARAMETER
+        ///---------------------------------
+        
+        else if(numTokens==3)
+        {
+            ofLog(OF_LOG_NOTICE) << " 2 Argument  " << tokens[0] << " : " << tokens[1] << " : " << tokens[2] << endl;
+            cout << " 2 Argument  " << tokens[0] << " : " << tokens[1] << " : " << tokens[2] << endl;
+            
+            /// (0) is the command string
+            /// ----------------------------
+            
+            myMessage->addStringArg(tokens[1]);
+            
+            if((tokens[1]=="editQuad")||(tokens[1]=="movePointUp")||(tokens[1]=="movePointDown")||(tokens[1]=="movePointRight")||(tokens[1]=="movePointLeft"))
+            {
+                /// 2 ARGUMENTS 0/ command string 1/int
+                /// ----------------------------
+                // (1) is an int on this commands
+                int val = ofToInt(tokens[2]);
+                myMessage->addIntArg(val);
+            }
+            else if ((tokens[1]=="play")||(tokens[1]=="stop")||(tokens[1]=="restart"))
+            {
+                /// 2 ARGUMENTS 0/ command string 1/float
+                /// ----------------------------
+                // (1) is an float on this commands
+                float valF = ofToFloat(tokens[2]);
+                myMessage->addFloatArg(valF);
+                
+            }
+            else if((tokens[1]=="volume"))
+            {
+                float valF = ofToFloat(tokens[2]);
+                myMessage->addFloatArg(valF);
+            }
+            
+            else if((tokens[1]=="test"))
+            {
+                int val = ofToInt(tokens[2]);
+                if(val == 0)
+                {
+                    /// stop TESTING
+                    setTest(false);
+                }
+                else if (val ==1)
+                {
+                    /// start TESTING
+                    setTest(true);
+                }
+            }
+            else if((tokens[1]=="debug"))
+            {
+                cout << "seems this is a debug message " << endl;
+                int val = ofToInt(tokens[2]);
+                if(val == 0)
+                {
+                    /// stop DEBUG
+                    setDebug(false);
+                }
+                else if (val ==1)
+                {
+                    /// start DEBUG
+                    setDebug(true);
+                    cout << "set Debug TRUE !! " << endl;
+                }
+            }
+        }
+        
+        ///---------------------------------
+        /// 3 TOKENS : 1 COMMAND 2 PARAMETER
+        ///---------------------------------
+        
+        else if(numTokens==4)
+        {
+            ofLog(OF_LOG_NOTICE) << " 3 Argument  " << tokens[0] << " : " << tokens[1] << " : " << tokens[2] << " : " << tokens[3] << " : "  << endl;
+            
+            /// (0) is the command string
+            /// ----------------------------
+            myMessage->addStringArg(tokens[1]);
+            
+            if((tokens[1]=="setAllDMXCh"))
+            {
+                /// 3 ARGUMENTS 0/ command string 1/int 2/float
+                /// ----------------------------
+                
+                // (1) is an int on this commands
+                int val = ofToInt(tokens[2]);
+                myMessage->addIntArg(val);
+                
+                // (2) is an float on this commands
+                float valF = ofToFloat(tokens[3]);
+                myMessage->addFloatArg(valF);
+                
+            }
+            else if((tokens[1]=="load"))
+            {
+                /// 3 ARGUMENTS 0/ command string /1 string 2/float
+                /// ----------------------------
+                
+                // (1) is an int on this commands
+                string val = ofToString(tokens[2]);
+                myMessage->addStringArg(val);
+                
+                // (2) is an float on this commands
+                float valF = ofToFloat(tokens[3]);
+                myMessage->addFloatArg(valF);
+            }
+            
+            
+            
+        }
+        
+        ///---------------------------------
+        /// 4 TOKENS : 1 COMMAND 3 PARAMETER
+        ///---------------------------------
+        
+        else if(numTokens==5)
+        {
+            ofLog(OF_LOG_NOTICE) << " 4 Argument  " << tokens[0] << " : " << tokens[1] << " : " << tokens[2] << " : " << tokens[3] << " : "<< tokens[4] << " : " << endl;
+            
+            /// (0) is the command string
+            /// ----------------------------
+            myMessage->addStringArg(tokens[1]);
+            
+            if((tokens[1]=="setDMXCh"))
+            {
+                /// 4 ARGUMENTS 0/ command string 1/int /2 int 3/float
+                /// ----------------------------
+                
+                // (1) is an int on this commands
+                int val = ofToInt(tokens[2]);
+                myMessage->addIntArg(val);
+                
+                // (2) is an int on this commands
+                int val2 = ofToInt(tokens[3]);
+                myMessage->addIntArg(val2);
+                
+                // (3) is an float on this commands
+                float valF = ofToFloat(tokens[4]);
+                myMessage->addFloatArg(valF);
+            }
+            
+            
+        }
+        
+        //        cout << "testApp : process TCP :: myMessage is OSC address : @ " << myMessage->getAddress() << " : " << myMessage->getArgAsString(0) << " , " << myMessage->getArgAsInt32(1) << endl;
+        
+        
+        return(myMessage);
+    }
+    
+    return(myMessage);
+    
+    
+}
+
+
 
 //-------------------------------------------------------------------------
 ofxOscMessage* ofApp::processOSC(ofxOscMessage* m)
@@ -388,11 +678,14 @@ ofxOscMessage* ofApp::processOSC(ofxOscMessage* m)
 //--------------------------------- -----------------------------
 void ofApp::draw(){
 
+    // BACKGROUND
+    ///////////////
     if(renderers[0]->isDebugging) ofBackground(32);
     else ofBackground(0);
 
 	if(!useFbo)
     {
+        // IF WE DON'T USE THE FBO -> NO HOMOGRAPHY WARPING -> DRAW THE VIDEO TEXTURE
         ofSetColor(255);
         #ifdef TARGET_RASPBERRY_PI
         {
@@ -410,10 +703,10 @@ void ofApp::draw(){
     }
     else
     {
+        // IF WE USE FBO -> APPLY HOMOGRAPHY WARPING -> DRAW RENDERERS NORMALLY
         for(int i=0;i<renderers.size();i++)
         {
             renderers[i]->draw();
-
         }
         
         if(isDebugging)
@@ -430,8 +723,10 @@ void ofApp::draw(){
 }
 
 //--------------------------------------------------------------
-void ofApp::exit() {
-	
+void ofApp::exit()
+{
+    ofLog(OF_LOG_NOTICE) << "on exit() :: TCP CLOSING !!! " << endl;
+    tcpClient.close();
 }
 
 //--------------------------------------------------------------
@@ -482,39 +777,25 @@ void ofApp::keyPressed(int key)
 void ofApp::keyReleased(int key){}
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y){
-
-}
+void ofApp::mouseMoved(int x, int y){}
 
 //--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
-}
+void ofApp::mouseDragged(int x, int y, int button){}
 
 //--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
-}
+void ofApp::mousePressed(int x, int y, int button){}
 
 //--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
+void ofApp::mouseReleased(int x, int y, int button){}
 
 //--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
+void ofApp::windowResized(int w, int h){}
 
 //--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
+void ofApp::gotMessage(ofMessage msg){}
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
-}
+void ofApp::dragEvent(ofDragInfo dragInfo){}
 
 //--------------------------------------------------------------
 void ofApp::showDebug()
@@ -538,11 +819,10 @@ void ofApp::showDebug()
     ofDrawBitmapString("OSC SEND TO ADDRESS : "  + ofToString(confOscSendAddress),debugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString("OSC SEND TO PORT : "  + ofToString(confOscSendPort),debugPosition.x,whichHeight);
-    
     whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString("LAST OSC MSG : "  + lastOscMessage,debugPosition.x,whichHeight);
-
-    
+    whichHeight=whichHeight + lineHeight;
+    ofDrawBitmapString("TCP CONNECTION : "  + ofToString(tcpAreWeConnected),debugPosition.x,whichHeight);
 }
 
 //--------------------------------------------------------------
@@ -551,9 +831,6 @@ void ofApp::setDebug(bool b)
     this->isDebugging = b;
     for(int i=0;i<renderers.size();i++)
     {
-        //pmWarpPiRendererVideoPlayer* vp = (pmWarpPiRendererVideoPlayer*) renderers[i];
-        //vp->isDebugging = isDebugging;
-        //renderers[i]->isDebugging = this->isDebugging;
         renderers[i]->setIsDebugging(b);
     }
     
@@ -565,11 +842,7 @@ void ofApp::toggleDebug()
     this->isDebugging = ! this->isDebugging;
     for(int i=0;i<renderers.size();i++)
     {
-        //pmWarpPiRendererVideoPlayer* vp = (pmWarpPiRendererVideoPlayer*) renderers[i];
-        //vp->isDebugging = isDebugging;
-        //renderers[i]->isDebugging = this->isDebugging;
         renderers[i]->setIsDebugging(this->isDebugging);
-
     }
 
     
@@ -580,11 +853,7 @@ void ofApp::setTest(bool b)
     this->isTesting = b;
     for(int i=0;i<renderers.size();i++)
     {
-        //pmWarpPiRendererVideoPlayer* vp = (pmWarpPiRendererVideoPlayer*) renderers[i];
-        //vp->isDebugging = isDebugging;
-        //renderers[i]->isTesting = this->isTesting;
         renderers[i]->setIsTesting(b);
-        
     }
     
 }
@@ -598,7 +867,6 @@ void ofApp::toggleTest()
         //vp->isDebugging = isDebugging;
         //renderers[i]->isTesting = this->isTesting;
         renderers[i]->setIsTesting(this->isTesting);
-
     }
 
 }

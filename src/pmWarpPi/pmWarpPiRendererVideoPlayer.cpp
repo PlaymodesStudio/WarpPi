@@ -7,7 +7,7 @@ pmWarpPiRendererVideoPlayer::pmWarpPiRendererVideoPlayer()
     videoFileName = "";
     videoPosition = ofVec2f(0,0);
     videoSize = ofVec2f(0,0);
-    videoPlayerDebugPosition = ofVec2f(20,175);
+    videoPlayerDebugPosition = ofVec2f(20,235);
     
     videoPlayer = new ofVideoPlayer();
     
