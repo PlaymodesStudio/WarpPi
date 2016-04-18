@@ -31,9 +31,8 @@
 		B006E9691AF11C25008ED9E3 /* pmWarpPiRendererOMXPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B006E95E1AF11C25008ED9E3 /* pmWarpPiRendererOMXPlayer.cpp */; };
 		B006E96A1AF11C25008ED9E3 /* pmWarpPiRendererScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B006E95F1AF11C25008ED9E3 /* pmWarpPiRendererScreen.cpp */; };
 		B006E96B1AF11C25008ED9E3 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B006E9631AF11C25008ED9E3 /* main.cpp */; };
-		B006E96C1AF11C25008ED9E3 /* testApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B006E9641AF11C25008ED9E3 /* testApp.cpp */; };
 		B006E9701AF11C3C008ED9E3 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B006E96D1AF11C3C008ED9E3 /* main.cpp */; };
-		B006E9711AF11C3C008ED9E3 /* testApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B006E96E1AF11C3C008ED9E3 /* testApp.cpp */; };
+		B006E9711AF11C3C008ED9E3 /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B006E96E1AF11C3C008ED9E3 /* ofApp.cpp */; };
 		B0081E0F1AC4E03C0066020E /* ofxDmx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0081E091AC4E03C0066020E /* ofxDmx.cpp */; };
 		B08A34741AE6580E008153C8 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B08A33191AE65809008153C8 /* libavfilter.a */; };
 		B08A34751AE6580E008153C8 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B08A331A1AE65809008153C8 /* libavcodec.a */; };
@@ -179,11 +178,9 @@
 		B006E9611AF11C25008ED9E3 /* pmWarpPiRendererDmx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pmWarpPiRendererDmx.h; sourceTree = "<group>"; };
 		B006E9621AF11C25008ED9E3 /* pmWarpPiRendererOMXPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pmWarpPiRendererOMXPlayer.h; sourceTree = "<group>"; };
 		B006E9631AF11C25008ED9E3 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		B006E9641AF11C25008ED9E3 /* testApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp.cpp; sourceTree = "<group>"; };
-		B006E9651AF11C25008ED9E3 /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testApp.h; sourceTree = "<group>"; };
 		B006E96D1AF11C3C008ED9E3 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		B006E96E1AF11C3C008ED9E3 /* testApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp.cpp; sourceTree = "<group>"; };
-		B006E96F1AF11C3C008ED9E3 /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testApp.h; sourceTree = "<group>"; };
+		B006E96E1AF11C3C008ED9E3 /* ofApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofApp.cpp; sourceTree = "<group>"; };
+		B006E96F1AF11C3C008ED9E3 /* ofApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofApp.h; sourceTree = "<group>"; };
 		B0081E091AC4E03C0066020E /* ofxDmx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDmx.cpp; sourceTree = "<group>"; };
 		B0081E0A1AC4E03C0066020E /* ofxDmx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDmx.h; sourceTree = "<group>"; };
 		B013601A1AC6369800542D9A /* ofxHomography.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxHomography.h; sourceTree = "<group>"; };
@@ -555,12 +552,10 @@
 			isa = PBXGroup;
 			children = (
 				B006E96D1AF11C3C008ED9E3 /* main.cpp */,
-				B006E96E1AF11C3C008ED9E3 /* testApp.cpp */,
-				B006E96F1AF11C3C008ED9E3 /* testApp.h */,
+				B006E96E1AF11C3C008ED9E3 /* ofApp.cpp */,
+				B006E96F1AF11C3C008ED9E3 /* ofApp.h */,
 				B006E9571AF11C25008ED9E3 /* pmWarpPi */,
 				B006E9631AF11C25008ED9E3 /* main.cpp */,
-				B006E9641AF11C25008ED9E3 /* testApp.cpp */,
-				B006E9651AF11C25008ED9E3 /* testApp.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -1077,7 +1072,6 @@
 				B000ECBE1AC40E3C00C4AC2C /* ofxOscReceiver.cpp in Sources */,
 				B000ECC01AC40E3C00C4AC2C /* IpEndpointName.cpp in Sources */,
 				B006E9681AF11C25008ED9E3 /* pmWarpPiRendererDmx.cpp in Sources */,
-				B006E96C1AF11C25008ED9E3 /* testApp.cpp in Sources */,
 				B0F9C2C31ABE3DA0001AB0E1 /* ofxSlider.cpp in Sources */,
 				B000ECC31AC40E3C00C4AC2C /* OscOutboundPacketStream.cpp in Sources */,
 				B000F04F1AC449A700C4AC2C /* tinyxmlparser.cpp in Sources */,
@@ -1099,7 +1093,7 @@
 				B006E96B1AF11C25008ED9E3 /* main.cpp in Sources */,
 				B000F04D1AC449A700C4AC2C /* tinyxml.cpp in Sources */,
 				B08A34C91AE6580E008153C8 /* BitstreamConverter.cpp in Sources */,
-				B006E9711AF11C3C008ED9E3 /* testApp.cpp in Sources */,
+				B006E9711AF11C3C008ED9E3 /* ofApp.cpp in Sources */,
 				B0081E0F1AC4E03C0066020E /* ofxDmx.cpp in Sources */,
 				B0F9C2BE1ABE3DA0001AB0E1 /* ofxBaseGui.cpp in Sources */,
 				B000ECC41AC40E3C00C4AC2C /* OscPrintReceivedElements.cpp in Sources */,
