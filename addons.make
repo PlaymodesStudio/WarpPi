@@ -1,7 +1,6 @@
-ofxXmlSettings
-ofxOsc
 ofxDmx
 ofxGui
 ofxHomography
+ofxOsc
 ofxTweenzor
-
+ofxXmlSettings
