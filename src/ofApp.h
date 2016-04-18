@@ -18,7 +18,7 @@
 //#define TARGET_OS_MAC
 
 
-class testApp : public ofBaseApp{
+class ofApp : public ofBaseApp{
 public:
     void setup();
     void update();
