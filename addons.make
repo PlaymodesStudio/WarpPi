@@ -4,3 +4,5 @@ ofxHomography
 ofxOsc
 ofxTweenzor
 ofxXmlSettings
+ofxOMXPlayer
+ofxNetwork

@@ -47,7 +47,7 @@ void ofApp::setup()
     {
         #ifdef TARGET_RASPBERRY_PI
             pmWarpPiRendererOMXPlayer* _video = new pmWarpPiRendererOMXPlayer();
-            _video->setup(id,confOscSendIpAddress,confOscSendPort);
+            _video->setup(id);
             _video->setupScreen(ofVec2f(0,0), ofVec2f(resX,resY));
             _video->setupOMXPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(resX,resY));
         #else
