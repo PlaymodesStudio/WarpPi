@@ -1,6 +1,4 @@
 #include "ofApp.h"
-#include "pmWarpPiRendererVideoPlayer.cpp"
-
 
 //--------------------------------------------------------------
 void ofApp::setup()

@@ -1,5 +1,6 @@
-#ifdef TARGET_RASPBERRY_PI
 #include "pmWarpPiRendererOMXPlayer.h"
+
+#ifdef TARGET_RASPBERRY_PI
 
 
 int quadStep = 1;

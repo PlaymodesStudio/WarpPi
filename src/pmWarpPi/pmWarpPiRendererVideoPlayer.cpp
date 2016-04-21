@@ -1,5 +1,6 @@
-#ifdef TARGET_OS_MAC
-#include "pmWarpPiRenderervideoPlayer.h"
+#include "pmWarpPiRendererVideoPlayer.h"
+
+#ifdef TARGET_OSX
 
 //-------------------------------------------------------------------------
 pmWarpPiRendererVideoPlayer::pmWarpPiRendererVideoPlayer()

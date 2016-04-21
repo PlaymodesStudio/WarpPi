@@ -97,7 +97,6 @@ void pmWarpPiRendererScreen::draw()
         ofSetColor(255);
        
         screenFbo->draw(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
-        
     }
     else
     {
@@ -135,6 +134,7 @@ void pmWarpPiRendererScreen::draw()
         }
     }
     
+    gui->draw();
 }
 
 

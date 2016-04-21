@@ -1,18 +1,18 @@
 #pragma once
-#ifndef PM_WARPI_RENDERER_VIDEOPLAYER
-#define PM_WARPI_RENDERER_VIDEOPLAYER
+#ifndef PM_WARPI_RENDERER_IMAGEPLAYER
+#define PM_WARPI_RENDERER_IMAGEPLAYER
 
 #include "pmWarpPiRendererScreen.h"
 #include "ofMain.h"
 
-#ifdef TARGET_OSX
 
-class pmWarpPiRendererVideoPlayer : public pmWarpPiRendererScreen
+
+class pmWarpPiRendererImagePlayer : public pmWarpPiRendererScreen
 {
     
 public:
  
-    pmWarpPiRendererVideoPlayer();
+    pmWarpPiRendererImagePlayer();
     virtual void        updateOSC(ofxOscMessage* m);
     virtual void        deleteRenderer();
 
@@ -21,7 +21,7 @@ public:
     virtual void        updateForScreen();
 
     virtual void        drawIntoFbo();
-    virtual void        setupVideoPlayer(string _name,ofVec2f _pos, ofVec2f _size);
+    virtual void        setupImagePlayer(string _name,ofVec2f _pos, ofVec2f _size);
     virtual void        onComplete(float* arg);
     virtual void        showDebug();
 //    void                showVideoPlayerDebug();
@@ -42,7 +42,8 @@ public:
 
     /// CLASS PARAMS
     /////////////////
-    ofVideoPlayer*      videoPlayer;
+    ofImage*            imagePlayer;
+//    ofVideoPlayer*      videoPlayer;
     string              videoFileName;
     ofVec2f             videoPosition;
     ofVec2f             videoSize;
@@ -51,5 +52,4 @@ public:
     
     
 };
-#endif
 #endif

@@ -1,16 +1,21 @@
 #pragma once
 
+// OF
 #include "ofMain.h"
 
+// PM WARPI
 #include "pmWarpPi.h"
+#include "pmWarpPiRendererDmx.h"
+#include "pmWarpPiRendererImagePlayer.h"
 #ifdef TARGET_RASPBERRY_PI
     #include "pmWarpPiRendererOMXPlayer.h"
 #endif 
-#ifdef TARGET_OS_MAC
+#ifdef TARGET_OSX
     #include "pmWarpPiRendererVideoPlayer.h"
 #endif
-#include "pmWarpPiRendererDmx.h"
 
+
+// OTHERS
 #include<iterator>
 #include<iostream>
 

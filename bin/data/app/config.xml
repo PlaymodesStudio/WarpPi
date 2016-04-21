@@ -11,7 +11,7 @@
     <oscSendAddress> 192.168.1.99 </oscSendAddress>
     <oscSendPort> 9003 </oscSendPort>
     
-    <videoFileName> ./videos/test1080.mov </videoFileName>
+    <videoFileName> ./videos/fingers.mov </videoFileName>
     
     <dmxDevice> 0 </dmxDevice>
     <dmxNumChannels> 4 </dmxNumChannels>
