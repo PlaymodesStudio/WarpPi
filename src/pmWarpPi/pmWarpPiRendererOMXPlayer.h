@@ -12,7 +12,12 @@ class pmWarpPiRendererOMXPlayer : public pmWarpPiRendererVideoPlayer
     
 public:
  
-    pmWarpPiRendererOMXPlayer(){};
+    pmWarpPiRendererOMXPlayer(){
+        videoFileName = "";
+        videoPosition = ofVec2f(0,0);
+        videoSize = ofVec2f(0,0);
+        videoPlayerDebugPosition = ofVec2f(520,20);
+    };
     
     //override methods
     void createPlayer(){
