@@ -8,6 +8,7 @@ pmWarpPiRendererScreen::pmWarpPiRendererScreen()
     screenSize = ofVec2f(0,0);
     doHomography = true;
     doEditQuadPoints = false;
+    shiftPressed = false;
     isTesting = false;
     isDebugging= false;
     currentQuadPoint = 0;
@@ -256,6 +257,9 @@ void pmWarpPiRendererScreen::resetQuad()
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::keyPressed(ofKeyEventArgs &a)
 {
+    if(a.key == OF_KEY_SHIFT){
+        shiftPressed=true;
+    }
     int key = a.key;
     
     int quadStep = 1;
@@ -283,19 +287,19 @@ void pmWarpPiRendererScreen::keyPressed(ofKeyEventArgs &a)
     
     else if (key == OF_KEY_LEFT)
     {
-        distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x - quadStep;
+        distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x - (quadStep * ((shiftPressed) ? 5 : 1));
     }
     else if (key == OF_KEY_RIGHT)
     {
-        distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x + quadStep;
+        distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x + (quadStep * ((shiftPressed) ? 5 : 1));
     }
     else if (key == OF_KEY_UP)
     {
-        distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y - quadStep;
+        distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y - (quadStep * ((shiftPressed) ? 5 : 1));
     }
     else if (key == OF_KEY_DOWN)
     {
-        distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y + quadStep;
+        distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y + (quadStep * ((shiftPressed) ? 5 : 1));
     }
     
     
@@ -304,7 +308,9 @@ void pmWarpPiRendererScreen::keyPressed(ofKeyEventArgs &a)
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::keyReleased(ofKeyEventArgs &a)
 {
-    
+    if(a.key == OF_KEY_SHIFT){
+        shiftPressed=false;
+    }
 }
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::mouseMoved(ofMouseEventArgs &a)
