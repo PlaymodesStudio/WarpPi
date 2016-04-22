@@ -86,9 +86,12 @@ public:
     void mouseEntered(ofMouseEventArgs & args){};
     void mouseExited(ofMouseEventArgs & args){};
 
+private:
     /// CLASS PARAMS
     /////////////////
     ofVideoPlayer*      videoPlayer;
+    
+protected:
     string              videoFileName;
     ofVec2f             videoPosition;
     ofVec2f             videoSize;

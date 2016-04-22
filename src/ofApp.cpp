@@ -706,7 +706,7 @@ void ofApp::draw(){
         #ifdef TARGET_OS_MAC
         {
             pmWarpPiRendererVideoPlayer* v = (pmWarpPiRendererVideoPlayer*) renderers[0];
-            v->videoPlayer->draw(0,0,ofGetWidth(),ofGetHeight());
+            v->drawPlayer();//->draw(0,0,ofGetWidth(),ofGetHeight());
         }
         #endif
     }
@@ -757,7 +757,7 @@ void ofApp::keyPressed(int key)
             vp->setPlayerPaused(false);
         #else
             pmWarpPiRendererVideoPlayer* vp = (pmWarpPiRendererVideoPlayer*) renderers[0];
-            vp->videoPlayer->setPaused(false);
+            vp->setPlayerPaused(false);
         #endif
         
 
