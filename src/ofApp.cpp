@@ -699,7 +699,7 @@ void ofApp::draw(){
         #ifdef TARGET_RASPBERRY_PI
         {
             pmWarpPiRendererOMXPlayer* o = (pmWarpPiRendererOMXPlayer*) renderers[0];
-            o->omxPlayer->draw(0, 0, ofGetWidth(), ofGetHeight());
+            o->drawPlayer();// omxPlayer->draw(0, 0, ofGetWidth(), ofGetHeight());
         }
         #endif
         
@@ -754,7 +754,7 @@ void ofApp::keyPressed(int key)
     {
         #ifdef TARGET_RASPBERRY_PI
             pmWarpPiRendererOMXPlayer* vp = (pmWarpPiRendererOMXPlayer*) renderers[0];
-            vp->omxPlayer->setPaused(false);
+            vp->setPlayerPaused(false);
         #else
             pmWarpPiRendererVideoPlayer* vp = (pmWarpPiRendererVideoPlayer*) renderers[0];
             vp->videoPlayer->setPaused(false);
