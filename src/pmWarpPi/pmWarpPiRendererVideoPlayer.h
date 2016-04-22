@@ -39,8 +39,11 @@ public:
     virtual void updatePlayer(){
         videoPlayer->update();
     };
+    virtual void drawPlayer(int x, int y, int width, int height){
+        videoPlayer->draw(x, y, width, height);
+    }
     virtual void drawPlayer(){
-        videoPlayer->draw(videoPosition.x,videoPosition.y,videoSize.x,videoSize.y);
+        drawPlayer(videoPosition.x,videoPosition.y,videoSize.x,videoSize.y);
     };
     virtual void playPlayer(){
         videoPlayer->play();

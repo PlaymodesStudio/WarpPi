@@ -5,20 +5,21 @@
 #ifdef TARGET_RASPBERRY_PI
 
 #include "ofxOMXPlayer.h"
-#include "pmWarpPiRendererVideoPlayer.h"
+#include "pmWarpPiRendereromxPlayer.h"
 #include "ofMain.h"
 
-class pmWarpPiRendererOMXPlayer : public pmWarpPiRendererVideoPlayer
+class pmWarpPiRendererOMXPlayer : public pmWarpPiRendereromxPlayer
 {
     
 public:
  
-    pmWarpPiRendererOMXPlayer(){pmWarpPiRendererVideoPlayer();};
+    pmWarpPiRendererOMXPlayer(){pmWarpPiRendereromxPlayer();};
     
     //override methods
     virtual void createPlayer(){
-        videoPlayer = new ofxOMXPlayer();
+        omxPlayer = new ofxOMXPlayer();
         ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: New OmxPlayer";
+        
     } override
     
     virtual void loadAndPlay(){
@@ -44,23 +45,63 @@ public:
             settings.displayRect.y = 0;
         }
         //so either pass in the settings
-        videoPlayer->setup(settings);
+        omxPlayer->setup(settings);
     } override
+    
+    virtual void setPlayerVolume(float volume){
+        omxPlayer->setVolume(volume);
+    } override
+    
+    virtual void updatePlayer(){
+        //It auto updates
+    }override
+    
+    virtual void drawPlayer(int x, int y, int width, int height){
+        omxPlayer->draw(x, y, width, height);
+    }override
     
     virtual void playPlayer(){
         setPlayerPaused(false);
     }override
     
-    virtual void updatePlayer(){
-        //It auto updates
+    virtual bool isPlayerPaused(){
+        return omxPlayer->isPaused();
     }override
     
     virtual void stopPlayer(){
         setPlayerPaused(true);
     }override
     
+    virtual void closePlayer(){
+        omxPlayer->close();
+    }override
+    
+    virtual void setPlayerPaused(bool paused){
+        omxPlayer->setPaused(paused);
+    }override
+    
+    virtual void setPlayerPosition(float pct){
+        omxPlayer->setPosition(0.0);
+    }override
+    
+    virtual int getPlayerHeight(){
+        return omxPlayer->getHeight();
+    }override
+    
+    virtual int getPlayerWidth(){
+        return omxPlayer->getWidth();
+    }override
+    
+    virtual int getPlayerCurrentFrame(){
+        return omxPlayer->getCurrentFrame();
+    }override
+    
+    virtual int getPlayerTotalNumFrames(){
+        return omxPlayer->getTotalNumFrames();
+    }override
+    
     virtual ofLoopType getPlayerLoopState(){
-        if(videoPlayer->isLoopingEnabled) return OF_LOOP_NORMAL;
+        if(omxPlayer->isLoopingEnabled) return OF_LOOP_NORMAL;
         else return OF_LOOP_NONE;
     }override
     
@@ -68,8 +109,7 @@ public:
     
 private:
     
-    
-    ofxOMXPlayer*       videoPlayer;
+    ofxOMXPlayer*       omxPlayer;
     
     
     
