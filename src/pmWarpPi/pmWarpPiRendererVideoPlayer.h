@@ -61,7 +61,7 @@ public:
         videoPlayer->setPaused(paused);
     }
     virtual void setPlayerPosition(float pct){
-        videoPlayer->setPosition(0.0);
+        videoPlayer->setPosition(pct);
     }
     virtual int getPlayerHeight(){
         return videoPlayer->getHeight();

@@ -85,7 +85,7 @@ public:
     }
     
     virtual void setPlayerPosition(float pct){
-        omxPlayer->setPosition(0.0);
+//        omxPlayer->setPosition(pct);
     }
     
     virtual int getPlayerHeight(){
@@ -105,8 +105,9 @@ public:
     }
     
     virtual ofLoopType getPlayerLoopState(){
-        if(omxPlayer->isLoopingEnabled()) return OF_LOOP_NORMAL;
-        else return OF_LOOP_NONE;
+//        if(omxPlayer->isLoopingEnabled()) return OF_LOOP_NORMAL;
+//        else return OF_LOOP_NONE;
+        return OF_LOOP_NORMAL;
     }
     
     
