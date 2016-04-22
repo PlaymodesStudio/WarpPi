@@ -57,7 +57,7 @@ void ofApp::setup()
             _video->setupVideoPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(resX,resY));
         #endif
 
-        renderers.push_back((pmWarpPiRenderer*) _video);
+        renderers.push_back(_video);
     }
     // HAS DMX ?
     ///////////////
