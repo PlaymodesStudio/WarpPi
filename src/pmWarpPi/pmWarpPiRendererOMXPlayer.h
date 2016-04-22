@@ -60,6 +60,10 @@ public:
         omxPlayer->draw(x, y, width, height);
     }
     
+    virtual void drawPlayer(){
+        drawPlayer(videoPosition.x,videoPosition.y,videoSize.x,videoSize.y);
+    }
+    
     virtual void playPlayer(){
         setPlayerPaused(false);
     }
@@ -101,7 +105,7 @@ public:
     }
     
     virtual ofLoopType getPlayerLoopState(){
-        if(omxPlayer->isLoopingEnabled) return OF_LOOP_NORMAL;
+        if(omxPlayer->isLoopingEnabled()) return OF_LOOP_NORMAL;
         else return OF_LOOP_NONE;
     }
     
