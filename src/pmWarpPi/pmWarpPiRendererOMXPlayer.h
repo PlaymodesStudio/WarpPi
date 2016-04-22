@@ -20,7 +20,7 @@ public:
         omxPlayer = new ofxOMXPlayer();
         ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: New OmxPlayer";
         
-    } override
+    } 
     
     virtual void loadAndPlay(){
         string videoPath = ofToDataPath(videoFileName, true);
@@ -46,64 +46,64 @@ public:
         }
         //so either pass in the settings
         omxPlayer->setup(settings);
-    } override
+    } 
     
     virtual void setPlayerVolume(float volume){
         omxPlayer->setVolume(volume);
-    } override
+    } 
     
     virtual void updatePlayer(){
         //It auto updates
-    }override
+    }
     
     virtual void drawPlayer(int x, int y, int width, int height){
         omxPlayer->draw(x, y, width, height);
-    }override
+    }
     
     virtual void playPlayer(){
         setPlayerPaused(false);
-    }override
+    }
     
     virtual bool isPlayerPaused(){
         return omxPlayer->isPaused();
-    }override
+    }
     
     virtual void stopPlayer(){
         setPlayerPaused(true);
-    }override
+    }
     
     virtual void closePlayer(){
         omxPlayer->close();
-    }override
+    }
     
     virtual void setPlayerPaused(bool paused){
         omxPlayer->setPaused(paused);
-    }override
+    }
     
     virtual void setPlayerPosition(float pct){
         omxPlayer->setPosition(0.0);
-    }override
+    }
     
     virtual int getPlayerHeight(){
         return omxPlayer->getHeight();
-    }override
+    }
     
     virtual int getPlayerWidth(){
         return omxPlayer->getWidth();
-    }override
+    }
     
     virtual int getPlayerCurrentFrame(){
         return omxPlayer->getCurrentFrame();
-    }override
+    }
     
     virtual int getPlayerTotalNumFrames(){
         return omxPlayer->getTotalNumFrames();
-    }override
+    }
     
     virtual ofLoopType getPlayerLoopState(){
         if(omxPlayer->isLoopingEnabled) return OF_LOOP_NORMAL;
         else return OF_LOOP_NONE;
-    }override
+    }
     
     
     
