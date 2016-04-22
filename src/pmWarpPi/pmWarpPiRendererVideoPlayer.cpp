@@ -10,9 +10,7 @@ pmWarpPiRendererVideoPlayer::pmWarpPiRendererVideoPlayer()
     videoSize = ofVec2f(0,0);
     videoPlayerDebugPosition = ofVec2f(520,20);
     
-    videoPlayer = new ofVideoPlayer();
-    
-    cout << "new video Player " << endl;
+    createPlayer();
     
 }
 //-------------------------------------------------------------------------
@@ -26,8 +24,7 @@ void pmWarpPiRendererVideoPlayer::setupVideoPlayer(string _name,ofVec2f _pos, of
     videoSize = _size;
     isTesting=false;
     
-    videoPlayer->loadMovie(videoFileName);
-    videoPlayer->play();
+    loadAndPlay();
 
     /// GUI
     gui->setup(); // most of the time you don't need a name but don't forget to call setup
@@ -49,12 +46,12 @@ void pmWarpPiRendererVideoPlayer::updateForScreen()
     
     if(isTesting)
     {
-        videoPlayer->setVolume(0);
+        this->setPlayerVolume(0);
     }
     else
     {
-        videoPlayer->setVolume(screenOpacity);
-        videoPlayer->update();
+        this->setPlayerVolume(screenOpacity);
+        this->updatePlayer();
     }
     
 }
@@ -90,7 +87,7 @@ void pmWarpPiRendererVideoPlayer::drawIntoFbo()
         {
             // DRAW VIDEO
             ofSetColor(255 * screenOpacity);
-            videoPlayer->draw(videoPosition.x,videoPosition.y,videoSize.x,videoSize.y);
+            drawPlayer();
         }
     //----
     screenFbo->end();
@@ -108,7 +105,7 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
     
     if(address.find("play")!=-1)
     {
-        videoPlayer->play();
+        playPlayer();
         Tweenzor::add((float *)&screenOpacity.get(), 0.0, 1.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
         Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
     }
@@ -119,8 +116,8 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
     }
     if(address.find("pause")!=-1)
     {
-        if(videoPlayer->isPaused()) videoPlayer->setPaused(false);
-        else videoPlayer->setPaused(true);
+        if(isPlayerPaused()) setPlayerPaused(false);
+        else setPlayerPaused(true);
         
     }
     if(address.find("restart")!=-1)

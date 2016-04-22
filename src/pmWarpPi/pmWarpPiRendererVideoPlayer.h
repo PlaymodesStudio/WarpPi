@@ -5,8 +5,6 @@
 #include "pmWarpPiRendererScreen.h"
 #include "ofMain.h"
 
-#ifdef TARGET_OSX
-
 class pmWarpPiRendererVideoPlayer : public pmWarpPiRendererScreen
 {
     
@@ -25,6 +23,34 @@ public:
     virtual void        onComplete(float* arg);
     virtual void        showDebug();
 //    void                showVideoPlayerDebug();
+    
+    //methods that have to be overwrite by omxplayer class
+    virtual void createPlayer(){
+        videoPlayer = new ofVideoPlayer();
+        cout<<"New Video Player"<<endl;
+    }
+    virtual void loadAndPlay(){
+        videoPlayer->load(videoFileName);
+        playPlayer();
+    };
+    virtual void setPlayerVolume(float volume){
+        videoPlayer->setVolume(volume);
+    };
+    virtual void updatePlayer(){
+        videoPlayer->update();
+    };
+    virtual void drawPlayer(){
+        videoPlayer->draw(videoPosition.x,videoPosition.y,videoSize.x,videoSize.y);
+    };
+    virtual void playPlayer(){
+        videoPlayer->play();
+    };
+    virtual bool isPlayerPaused(){
+        return videoPlayer->isPaused();
+    };
+    virtual void setPlayerPaused(bool paused){
+        videoPlayer->setPaused(paused);
+    }
     
     void keyPressed(ofKeyEventArgs &a);
     void keyReleased(ofKeyEventArgs &a);
@@ -51,5 +77,4 @@ public:
     
     
 };
-#endif
 #endif
