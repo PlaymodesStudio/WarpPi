@@ -1,6 +1,5 @@
 #include "pmWarpPiRendererVideoPlayer.h"
 
-#ifdef TARGET_OSX
 
 //-------------------------------------------------------------------------
 pmWarpPiRendererVideoPlayer::pmWarpPiRendererVideoPlayer()
@@ -228,4 +227,3 @@ void pmWarpPiRendererVideoPlayer::mouseReleased(ofMouseEventArgs &a)
 {
     
 }
-#endif

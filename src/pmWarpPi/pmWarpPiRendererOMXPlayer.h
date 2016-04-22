@@ -6,7 +6,6 @@
 
 #include "ofxOMXPlayer.h"
 #include "pmWarpPiRendererVideoPlayer.h"
-#include "ofMain.h"
 
 class pmWarpPiRendererOMXPlayer : public pmWarpPiRendererVideoPlayer
 {
