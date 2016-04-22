@@ -8,12 +8,12 @@
 #include "pmWarpPiRendererVideoPlayer.h"
 #include "ofMain.h"
 
-class pmWarpPiRendererOMXPlayer : public pmWarpPiRendereromxPlayer
+class pmWarpPiRendererOMXPlayer : public pmWarpPiRendererVideoPlayer
 {
     
 public:
  
-    pmWarpPiRendererOMXPlayer(){pmWarpPiRendereromxPlayer();};
+    pmWarpPiRendererOMXPlayer(){pmWarpPiRendererVideoPlayer();};
     
     //override methods
     virtual void createPlayer(){
