@@ -5,7 +5,7 @@
 #ifdef TARGET_RASPBERRY_PI
 
 #include "ofxOMXPlayer.h"
-#include "pmWarpPiRendereromxPlayer.h"
+#include "pmWarpPiRendererVideoPlayer.h"
 #include "ofMain.h"
 
 class pmWarpPiRendererOMXPlayer : public pmWarpPiRendereromxPlayer
