@@ -29,7 +29,7 @@ public:
         videoPlayer = new ofVideoPlayer();
         cout<<"New Video Player"<<endl;
     };
-    virtual void loadAndPlay(){
+    virtual void loadMovie(){
         videoPlayer->load(videoFileName);
         playPlayer();
     };
@@ -54,6 +54,10 @@ public:
     virtual void stopPlayer(){
         videoPlayer->stop();
     };
+    
+    virtual void restartMovie(){
+        videoPlayer->setPosition(0);
+    }
     virtual void closePlayer(){
         videoPlayer->close();
     };

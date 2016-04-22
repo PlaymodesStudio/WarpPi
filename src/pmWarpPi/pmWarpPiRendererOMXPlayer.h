@@ -24,9 +24,6 @@ public:
         omxPlayer = new ofxOMXPlayer();
         ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: New OmxPlayer";
         
-    };
-    
-    void loadAndPlay(){
         string videoPath = ofToDataPath(videoFileName, true);
         //Somewhat like ofFboSettings we may have a lot of options so this is the current model
         ofxOMXPlayerSettings settings;
@@ -50,6 +47,11 @@ public:
         }
         //so either pass in the settings
         omxPlayer->setup(settings);
+    };
+    
+    void loadMovie(){
+        string videoPath = ofToDataPath(videoFileName, true);
+        omxPlayer->loadMovie(videoPath);
     };
     
     void setPlayerVolume(float volume){
@@ -79,6 +81,10 @@ public:
     void stopPlayer(){
         setPlayerPaused(true);
     };
+    
+    void restartMovie(){
+        omxPlayer->restartMovie();
+    }
     
     void closePlayer(){
         omxPlayer->close();
