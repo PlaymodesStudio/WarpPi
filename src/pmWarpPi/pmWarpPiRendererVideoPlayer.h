@@ -28,7 +28,7 @@ public:
     virtual void createPlayer(){
         videoPlayer = new ofVideoPlayer();
         cout<<"New Video Player"<<endl;
-    }
+    };
     virtual void loadAndPlay(){
         videoPlayer->load(videoFileName);
         playPlayer();
@@ -41,7 +41,7 @@ public:
     };
     virtual void drawPlayer(int x, int y, int width, int height){
         videoPlayer->draw(x, y, width, height);
-    }
+    };
     virtual void drawPlayer(){
         drawPlayer(videoPosition.x,videoPosition.y,videoSize.x,videoSize.y);
     };
@@ -53,31 +53,31 @@ public:
     };
     virtual void stopPlayer(){
         videoPlayer->stop();
-    }
+    };
     virtual void closePlayer(){
         videoPlayer->close();
-    }
+    };
     virtual void setPlayerPaused(bool paused){
         videoPlayer->setPaused(paused);
-    }
+    };
     virtual void setPlayerPosition(float pct){
         videoPlayer->setPosition(pct);
-    }
+    };
     virtual int getPlayerHeight(){
         return videoPlayer->getHeight();
-    }
+    };
     virtual int getPlayerWidth(){
         return videoPlayer->getWidth();
-    }
+    };
     virtual int getPlayerCurrentFrame(){
         return videoPlayer->getCurrentFrame();
-    }
+    };
     virtual int getPlayerTotalNumFrames(){
         return videoPlayer->getTotalNumFrames();
-    }
+    };
     virtual ofLoopType getPlayerLoopState(){
         return videoPlayer->getLoopState();
-    }
+    };
     
     void keyPressed(ofKeyEventArgs &a);
     void keyReleased(ofKeyEventArgs &a);
