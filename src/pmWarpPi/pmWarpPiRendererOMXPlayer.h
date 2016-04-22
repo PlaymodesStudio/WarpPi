@@ -15,13 +15,13 @@ public:
     pmWarpPiRendererOMXPlayer(){};
     
     //override methods
-    virtual void createPlayer(){
+    void createPlayer(){
         omxPlayer = new ofxOMXPlayer();
         ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: New OmxPlayer";
         
     };
     
-    virtual void loadAndPlay(){
+    void loadAndPlay(){
         string videoPath = ofToDataPath(videoFileName, true);
         //Somewhat like ofFboSettings we may have a lot of options so this is the current model
         ofxOMXPlayerSettings settings;
@@ -47,63 +47,63 @@ public:
         omxPlayer->setup(settings);
     };
     
-    virtual void setPlayerVolume(float volume){
+    void setPlayerVolume(float volume){
         omxPlayer->setVolume(volume);
     };
     
-    virtual void updatePlayer(){
+    void updatePlayer(){
         //It auto updates
     };
     
-    virtual void drawPlayer(int x, int y, int width, int height){
+    void drawPlayer(int x, int y, int width, int height){
         omxPlayer->draw(x, y, width, height);
     };
     
-    virtual void drawPlayer(){
+    void drawPlayer(){
         drawPlayer(videoPosition.x,videoPosition.y,videoSize.x,videoSize.y);
     };
     
-    virtual void playPlayer(){
+    void playPlayer(){
         setPlayerPaused(false);
     };
     
-    virtual bool isPlayerPaused(){
+    bool isPlayerPaused(){
         return omxPlayer->isPaused();
     };
     
-    virtual void stopPlayer(){
+    void stopPlayer(){
         setPlayerPaused(true);
     };
     
-    virtual void closePlayer(){
+    void closePlayer(){
         omxPlayer->close();
     };
     
-    virtual void setPlayerPaused(bool paused){
+    void setPlayerPaused(bool paused){
         omxPlayer->setPaused(paused);
     };
     
-    virtual void setPlayerPosition(float pct){
+    void setPlayerPosition(float pct){
 //        omxPlayer->setPosition(pct);
     };
     
-    virtual int getPlayerHeight(){
+    int getPlayerHeight(){
         return omxPlayer->getHeight();
     };
     
-    virtual int getPlayerWidth(){
+    int getPlayerWidth(){
         return omxPlayer->getWidth();
     };
     
-    virtual int getPlayerCurrentFrame(){
+    int getPlayerCurrentFrame(){
         return omxPlayer->getCurrentFrame();
     };
     
-    virtual int getPlayerTotalNumFrames(){
+    int getPlayerTotalNumFrames(){
         return omxPlayer->getTotalNumFrames();
     };
     
-    virtual ofLoopType getPlayerLoopState(){
+    ofLoopType getPlayerLoopState(){
 //        if(omxPlayer->isLoopingEnabled()) return OF_LOOP_NORMAL;
 //        else return OF_LOOP_NONE;
         return OF_LOOP_NORMAL;
