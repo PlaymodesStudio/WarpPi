@@ -48,16 +48,36 @@ public:
     virtual bool isPlayerPaused(){
         return videoPlayer->isPaused();
     };
+    virtual void stopPlayer(){
+        videoPlayer->stop();
+    }
+    virtual void closePlayer(){
+        videoPlayer->close();
+    }
     virtual void setPlayerPaused(bool paused){
         videoPlayer->setPaused(paused);
+    }
+    virtual void setPlayerPosition(float pct){
+        videoPlayer->setPosition(0.0);
+    }
+    virtual int getPlayerHeight(){
+        return videoPlayer->getHeight();
+    }
+    virtual int getPlayerWidth(){
+        return videoPlayer->getWidth();
+    }
+    virtual int getPlayerCurrentFrame(){
+        return videoPlayer->getCurrentFrame();
+    }
+    virtual int getPlayerTotalNumFrames(){
+        return videoPlayer->getTotalNumFrames();
+    }
+    virtual ofLoopType getPlayerLoopState(){
+        return videoPlayer->getLoopState();
     }
     
     void keyPressed(ofKeyEventArgs &a);
     void keyReleased(ofKeyEventArgs &a);
-//    void mouseMoved(ofMouseEventArgs &a);
-//    void mouseDragged(ofMouseEventArgs &a);
-//    void mousePressed(ofMouseEventArgs &a);
-//    void mouseReleased(ofMouseEventArgs &a);
     void mouseMoved(ofMouseEventArgs & args);
     void mouseDragged(ofMouseEventArgs & args);
     void mousePressed(ofMouseEventArgs & args);

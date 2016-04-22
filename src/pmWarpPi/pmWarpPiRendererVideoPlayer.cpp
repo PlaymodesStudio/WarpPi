@@ -122,9 +122,9 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
     }
     if(address.find("restart")!=-1)
     {
-        videoPlayer->setPaused(true);
-        videoPlayer->setPosition(0.0);
-        videoPlayer->play();
+        setPlayerPaused(true);
+        setPlayerPosition(0.0);
+        playPlayer();
         Tweenzor::add((float *)&screenOpacity.get(), 0.0, 1.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
         Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
     }
@@ -140,7 +140,7 @@ void pmWarpPiRendererVideoPlayer::onComplete(float* arg)
     if(arg == &screenOpacity.get())
     {
         cout << "this is a stop?" << endl;
-        if(screenOpacity==0.0) videoPlayer->stop();
+        if(screenOpacity==0.0) stopPlayer();
     }
     //    if(arg == &_x2.get())
     //    {
@@ -155,7 +155,7 @@ void pmWarpPiRendererVideoPlayer::deleteRenderer()
 {
     ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::delete";
     
-    videoPlayer->close();
+    closePlayer();
     
 }
 
@@ -171,17 +171,17 @@ void pmWarpPiRendererVideoPlayer::showDebug()
     ofSetColor(255);
     ofDrawBitmapString(videoFileName,videoPlayerDebugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString(ofToString(videoPlayer->getWidth()) + " x " +ofToString(videoPlayer->getHeight()),videoPlayerDebugPosition.x,whichHeight);
+    ofDrawBitmapString(ofToString(getPlayerWidth()) + " x " +ofToString(getPlayerHeight()),videoPlayerDebugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString(ofToString(videoPlayer->getCurrentFrame()) + " / " +ofToString(videoPlayer->getTotalNumFrames()),videoPlayerDebugPosition.x,whichHeight);
+    ofDrawBitmapString(ofToString(getPlayerCurrentFrame()) + " / " +ofToString(getPlayerTotalNumFrames()),videoPlayerDebugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     string loopType;
     
-    if(videoPlayer->getLoopState()==OF_LOOP_NONE)
+    if(getPlayerLoopState()==OF_LOOP_NONE)
     {
         loopType = "no loop";
     }
-    else if (videoPlayer->getLoopState()== OF_LOOP_NORMAL);
+    else if (getPlayerLoopState()== OF_LOOP_NORMAL);
     {
         loopType = "loop";
     }
@@ -198,7 +198,7 @@ void pmWarpPiRendererVideoPlayer::keyPressed(ofKeyEventArgs &a)
     
     if(key=='p')
     {
-        videoPlayer->play();
+        playPlayer();
     }
     
     cout << "videoplayer key pressed " << key << endl;
