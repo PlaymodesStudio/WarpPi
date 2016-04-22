@@ -49,7 +49,7 @@ void ofApp::setup()
             pmWarpPiRendererOMXPlayer* _video = new pmWarpPiRendererOMXPlayer();
             _video->setup(id);
             _video->setupScreen(ofVec2f(0,0), ofVec2f(resX,resY));
-            _video->setupOMXPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(resX,resY));
+            _video->setupVideoPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(resX,resY));
         #else
             pmWarpPiRendererVideoPlayer* _video = new pmWarpPiRendererVideoPlayer();
             _video->setup(id);
