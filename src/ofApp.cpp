@@ -209,6 +209,8 @@ void ofApp::update()
                 ofxOscMessage m;
                 m.setAddress("/pong");
                 m.addStringArg(id);
+                m.addStringArg(name);
+                m.addStringArg("192.168.1.44");
                 oscSender.sendMessage(m);
                 
                 ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: receveid PING !! answering PONG OMX !! ";
@@ -333,7 +335,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
             if(tokens[1]=="ping")
             {
                 cout << "Hi!! you ping I pong !!" << endl;
-                tcpClient.send("pong " +id);
+                tcpClient.send("pong " +id+ " "+ name+" " + "192.168.1.22");
             }
             else if(tokens[1]=="exit")
             {
