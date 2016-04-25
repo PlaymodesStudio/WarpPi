@@ -144,11 +144,13 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
         /// LOAD MOVIE
         else if(command == "load")
         {
-            videoFileName = m->getArgAsString(1);
+            auto new_videoFileName = m->getArgAsString(1);
             float fadeTime = m->getArgAsFloat(2);
             
-            videoFileName = ofToDataPath("./videos", true);
-
+//            videoFileName = ofToDataPath("./videos", true);
+            new_videoFileName = "./videos/"+new_videoFileName;
+            if(videoFileName == new_videoFileName) return;
+            videoFileName = new_videoFileName;
             
             ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: OSC :: load : " << videoFileName << " : fadeTime : " << fadeTime;
             
