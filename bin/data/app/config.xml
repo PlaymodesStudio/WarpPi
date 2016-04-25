@@ -17,7 +17,7 @@
     <dmxNumChannels> 4 </dmxNumChannels>
     <dmxFirstChannel> 11 </dmxFirstChannel>
     
-    <useTCP>no</useTCP>
+    <useTCP>yes</useTCP>
     <TCPIp>192.168.1.99</TCPIp>
     <TCPPort> 11999 </TCPPort>
     

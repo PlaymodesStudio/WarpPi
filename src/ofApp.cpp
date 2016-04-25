@@ -347,14 +347,19 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
             {
                 cout << "Hi!! I'm shutdown !!" << endl;
                 ofLog(OF_LOG_NOTICE) << " shutdown ? " << endl;
-                ofSystem("/home/pi/openframeworks/apps/MIESPI/WarpPi_rev5/bin/data/scripts/shutdown.sh");
+                string scriptPath = ofToDataPath("scripts/shutdown.sh", true);
+                //ofSystem("/home/pi/openframeworks/apps/MIESPI/WarpPi_rev5/bin/data/scripts/shutdown.sh");
+                ofSystem(scriptPath);
                 
             }
             else if(tokens[1]=="reboot")
             {
                 cout << "Hi!! I'm reboot !!" << endl;
                 ofLog(OF_LOG_NOTICE) << " REBOOT ? " << endl;
-                ofSystem("/home/pi/openframeworks/apps/MIESPI/WarpPi_rev5/bin/data/scripts/reboot.sh");
+                string scriptPath = ofToDataPath("scripts/reboot.sh", true);
+//                ofSystem("/home/pi/openframeworks/apps/MIESPI/WarpPi_rev5/bin/data/scripts/reboot.sh");
+                ofSystem(scriptPath);
+
             }
             
             
