@@ -63,6 +63,7 @@ public:
     /// HOMOGRAPHY
     ///////////////
     bool                doHomography;
+    bool                useFbo;
     bool                doEditQuadPoints;
     bool                shiftPressed;
     int                 currentQuadPoint;

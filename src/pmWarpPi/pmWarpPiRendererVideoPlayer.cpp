@@ -70,7 +70,8 @@ void pmWarpPiRendererVideoPlayer::drawIntoFbo()
     {
     }
     //----
-    screenFbo->begin();
+    if(useFbo)
+        screenFbo->begin();
     //----
  
     
@@ -91,7 +92,8 @@ void pmWarpPiRendererVideoPlayer::drawIntoFbo()
             drawPlayer();
         }
     //----
-    screenFbo->end();
+    if(useFbo)
+        screenFbo->end();
     //----
 }
 

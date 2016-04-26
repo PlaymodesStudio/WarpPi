@@ -7,6 +7,7 @@ pmWarpPiRendererScreen::pmWarpPiRendererScreen()
     screenPosition = ofVec2f(0,0);
     screenSize = ofVec2f(0,0);
     doHomography = true;
+    useFbo = false;
     doEditQuadPoints = false;
     shiftPressed = false;
     isTesting = false;
@@ -90,8 +91,9 @@ void pmWarpPiRendererScreen::update(ofEventArgs & a)
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::draw()
 {
+    if(useFbo)
+        drawIntoFbo();
     
-    drawIntoFbo();
     
     if(isDebugging)
     {
@@ -106,7 +108,10 @@ void pmWarpPiRendererScreen::draw()
         if(doHomography) glMultMatrixf(homography->getPtr());
         
         ofSetColor(255);
-        screenFbo->draw(screenPosition.x,screenPosition.y,screenSize.x,screenSize.y);
+        if(useFbo)
+            screenFbo->draw(screenPosition.x,screenPosition.y,screenSize.x,screenSize.y);
+        else
+            drawIntoFbo();
         
         /// HOMOGRAPHY END
         ofPopMatrix();

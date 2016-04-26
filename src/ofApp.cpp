@@ -785,7 +785,9 @@ void ofApp::keyPressed(int key)
     }
     else if (key=='o')
     {
-        useFbo = !useFbo;
+        //useFbo = !useFbo;
+        pmWarpPiRendererScreen* s = (pmWarpPiRendererScreen*) renderers[0];
+        s->useFbo = !s->useFbo;
     }
    
 }
