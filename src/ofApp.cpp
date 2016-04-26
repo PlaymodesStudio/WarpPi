@@ -15,7 +15,7 @@ void ofApp::setup()
     isTesting = false;
     useFbo = true;
     showFPS = true;
-    ofHideCursor();
+    //ofHideCursor();
     
     /// READ CONF
     readConfig();
@@ -23,7 +23,7 @@ void ofApp::setup()
     /// OSC
     oscReceiverOSC.setup(confOscReceivePort);
     oscReceiverSTRING.setup(confOscReceivePortStringMode);
-    oscSender.setup(confOscSendIpAddress,confOscSendPort);
+    //oscSender.setup(confOscSendIpAddress,confOscSendPort);
     
     /// TCP
     if(confUsesTCP)
