@@ -16,7 +16,8 @@ pmWarpPiRendererScreen::pmWarpPiRendererScreen()
     screenDebugPosition = ofVec2f(270,20);
     testingImage = new ofImage();
     homography = new ofMatrix4x4();
-    screenFbo = new ofFbo();
+    if(screenFbo)
+        screenFbo = new ofFbo();
     screenOpacity = 1.0;
     maxScreenOpacity = 1.0;
     
@@ -36,7 +37,8 @@ void pmWarpPiRendererScreen::setupScreen(ofVec2f _pos,ofVec2f _size)
 
     testingImage->loadImage("./app/testScreen.jpg");
     
-    screenFbo->allocate(screenSize.x,screenSize.y);
+    if(useFbo)
+        screenFbo->allocate(screenSize.x,screenSize.y);
  
     /// TWEENZOR
     // must call this before adding any tweens //
@@ -99,7 +101,11 @@ void pmWarpPiRendererScreen::draw()
     {
         ofSetColor(255);
        
-        screenFbo->draw(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
+        //screenFbo->draw(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
+        if(useFbo)
+            screenFbo->draw(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
+        else
+            drawIntoFbo();
     }
     else
     {
@@ -162,7 +168,8 @@ void pmWarpPiRendererScreen::deleteRenderer()
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::testScreen()
 {
-    screenFbo->begin();
+    if(useFbo)
+        screenFbo->begin();
     
     ofSetColor(255,128,0);
     ofFill();
@@ -170,8 +177,8 @@ void pmWarpPiRendererScreen::testScreen()
     ofSetColor(255);
     testingImage->draw(screenPosition.x,screenPosition.y,screenSize.x,screenSize.y);
     
-    
-    screenFbo->end();
+    if(useFbo);
+        screenFbo->end();
 }
 
 //-------------------------------------------------------------------------
