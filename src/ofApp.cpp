@@ -15,7 +15,7 @@ void ofApp::setup()
     isTesting = false;
     useFbo = true;
     showFPS = true;
-    ofHideCursor();
+    //ofHideCursor();
     
     /// READ CONF
     readConfig();
@@ -23,7 +23,7 @@ void ofApp::setup()
     /// OSC
     oscReceiverOSC.setup(confOscReceivePort);
     oscReceiverSTRING.setup(confOscReceivePortStringMode);
-    oscSender.setup(confOscSendIpAddress,confOscSendPort);
+    //oscSender.setup(confOscSendIpAddress,confOscSendPort);
     
     /// TCP
     if(confUsesTCP)
@@ -49,7 +49,7 @@ void ofApp::setup()
             pmWarpPiRendererOMXPlayer* _video = new pmWarpPiRendererOMXPlayer();
             _video->setup(id);
             _video->setupScreen(ofVec2f(0,0), ofVec2f(resX,resY));
-            _video->setupOMXPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(resX,resY));
+            _video->setupVideoPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(resX,resY));
         #else
             pmWarpPiRendererVideoPlayer* _video = new pmWarpPiRendererVideoPlayer();
             _video->setup(id);
@@ -57,7 +57,7 @@ void ofApp::setup()
             _video->setupVideoPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(resX,resY));
         #endif
 
-        renderers.push_back((pmWarpPiRenderer*) _video);
+        renderers.push_back(_video);
     }
     // HAS DMX ?
     ///////////////
@@ -209,6 +209,8 @@ void ofApp::update()
                 ofxOscMessage m;
                 m.setAddress("/pong");
                 m.addStringArg(id);
+                m.addStringArg(name);
+                m.addStringArg("192.168.1.44");
                 oscSender.sendMessage(m);
                 
                 ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: receveid PING !! answering PONG OMX !! ";
@@ -333,7 +335,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
             if(tokens[1]=="ping")
             {
                 cout << "Hi!! you ping I pong !!" << endl;
-                tcpClient.send("pong " +id);
+                tcpClient.send("pong " +id+ " "+ name+" " + "192.168.1.22");
             }
             else if(tokens[1]=="exit")
             {
@@ -347,14 +349,19 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
             {
                 cout << "Hi!! I'm shutdown !!" << endl;
                 ofLog(OF_LOG_NOTICE) << " shutdown ? " << endl;
-                ofSystem("/home/pi/openframeworks/apps/MIESPI/WarpPi_rev5/bin/data/scripts/shutdown.sh");
+                string scriptPath = ofToDataPath("scripts/shutdown.sh", true);
+                //ofSystem("/home/pi/openframeworks/apps/MIESPI/WarpPi_rev5/bin/data/scripts/shutdown.sh");
+                ofSystem(scriptPath);
                 
             }
             else if(tokens[1]=="reboot")
             {
                 cout << "Hi!! I'm reboot !!" << endl;
                 ofLog(OF_LOG_NOTICE) << " REBOOT ? " << endl;
-                ofSystem("/home/pi/openframeworks/apps/MIESPI/WarpPi_rev5/bin/data/scripts/reboot.sh");
+                string scriptPath = ofToDataPath("scripts/reboot.sh", true);
+//                ofSystem("/home/pi/openframeworks/apps/MIESPI/WarpPi_rev5/bin/data/scripts/reboot.sh");
+                ofSystem(scriptPath);
+
             }
             
             
@@ -699,14 +706,14 @@ void ofApp::draw(){
         #ifdef TARGET_RASPBERRY_PI
         {
             pmWarpPiRendererOMXPlayer* o = (pmWarpPiRendererOMXPlayer*) renderers[0];
-            o->omxPlayer->draw(0, 0, ofGetWidth(), ofGetHeight());
+            o->drawPlayer();// omxPlayer->draw(0, 0, ofGetWidth(), ofGetHeight());
         }
         #endif
         
         #ifdef TARGET_OS_MAC
         {
             pmWarpPiRendererVideoPlayer* v = (pmWarpPiRendererVideoPlayer*) renderers[0];
-            v->videoPlayer->draw(0,0,ofGetWidth(),ofGetHeight());
+            v->drawPlayer();//->draw(0,0,ofGetWidth(),ofGetHeight());
         }
         #endif
     }
@@ -754,10 +761,10 @@ void ofApp::keyPressed(int key)
     {
         #ifdef TARGET_RASPBERRY_PI
             pmWarpPiRendererOMXPlayer* vp = (pmWarpPiRendererOMXPlayer*) renderers[0];
-            vp->omxPlayer->setPaused(false);
+            vp->setPlayerPaused(false);
         #else
             pmWarpPiRendererVideoPlayer* vp = (pmWarpPiRendererVideoPlayer*) renderers[0];
-            vp->videoPlayer->setPaused(false);
+            vp->setPlayerPaused(false);
         #endif
         
 
@@ -778,7 +785,9 @@ void ofApp::keyPressed(int key)
     }
     else if (key=='o')
     {
-        useFbo = !useFbo;
+        //useFbo = !useFbo;
+        pmWarpPiRendererScreen* s = (pmWarpPiRendererScreen*) renderers[0];
+        s->useFbo = !s->useFbo;
     }
    
 }

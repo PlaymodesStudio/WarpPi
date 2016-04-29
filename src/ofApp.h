@@ -7,11 +7,9 @@
 #include "pmWarpPi.h"
 #include "pmWarpPiRendererDmx.h"
 #include "pmWarpPiRendererImagePlayer.h"
+#include "pmWarpPiRendererVideoPlayer.h"
 #ifdef TARGET_RASPBERRY_PI
     #include "pmWarpPiRendererOMXPlayer.h"
-#endif 
-#ifdef TARGET_OSX
-    #include "pmWarpPiRendererVideoPlayer.h"
 #endif
 
 

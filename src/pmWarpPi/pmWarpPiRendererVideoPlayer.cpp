@@ -1,6 +1,5 @@
 #include "pmWarpPiRendererVideoPlayer.h"
 
-#ifdef TARGET_OSX
 
 //-------------------------------------------------------------------------
 pmWarpPiRendererVideoPlayer::pmWarpPiRendererVideoPlayer()
@@ -9,16 +8,11 @@ pmWarpPiRendererVideoPlayer::pmWarpPiRendererVideoPlayer()
     videoPosition = ofVec2f(0,0);
     videoSize = ofVec2f(0,0);
     videoPlayerDebugPosition = ofVec2f(520,20);
-    
-    videoPlayer = new ofVideoPlayer();
-    
-    cout << "new video Player " << endl;
-    
 }
 //-------------------------------------------------------------------------
 void pmWarpPiRendererVideoPlayer::setupVideoPlayer(string _name,ofVec2f _pos, ofVec2f _size)
 {
-    
+    createPlayer();
     /// VIDEO PLAYER
 
     videoFileName = _name;
@@ -26,13 +20,17 @@ void pmWarpPiRendererVideoPlayer::setupVideoPlayer(string _name,ofVec2f _pos, of
     videoSize = _size;
     isTesting=false;
     
-    videoPlayer->loadMovie(videoFileName);
-    videoPlayer->play();
+    loadMovie();
 
     /// GUI
-    gui->setup(); // most of the time you don't need a name but don't forget to call setup
-	gui->add(screenOpacity.set( "opacity", 1.0, 0.0, 1.0));
-    gui->setPosition(videoPlayerDebugPosition.x,videoPlayerDebugPosition.y + 75);
+    if(!guiIsSetup)
+    {
+        gui->setup(); // most of the time you don't need a name but don't forget to call setup
+        gui->add(screenOpacity.set( "opacity", 1.0, 0.0, 1.0));
+        gui->add(maxScreenOpacity.set( "max opacity", 1.0, 0.0, 1.0));
+        gui->setPosition(videoPlayerDebugPosition.x,videoPlayerDebugPosition.y + 75);
+        guiIsSetup = true;
+    }
     
 }
 
@@ -44,17 +42,17 @@ void pmWarpPiRendererVideoPlayer::updateForScreen()
     
     /// TWEENZOR
     Tweenzor::update( ofGetElapsedTimeMillis() );
-    screenOpacity = screenOpacity;
+    screenOpacity = screenOpacity; //Why?
     
     
     if(isTesting)
     {
-        videoPlayer->setVolume(0);
+        this->setPlayerVolume(0);
     }
     else
     {
-        videoPlayer->setVolume(screenOpacity);
-        videoPlayer->update();
+        this->setPlayerVolume(screenOpacity);
+        this->updatePlayer();
     }
     
 }
@@ -72,7 +70,8 @@ void pmWarpPiRendererVideoPlayer::drawIntoFbo()
     {
     }
     //----
-    screenFbo->begin();
+    if(useFbo)
+        screenFbo->begin();
     //----
  
     
@@ -89,11 +88,12 @@ void pmWarpPiRendererVideoPlayer::drawIntoFbo()
         else
         {
             // DRAW VIDEO
-            ofSetColor(255 * screenOpacity);
-            videoPlayer->draw(videoPosition.x,videoPosition.y,videoSize.x,videoSize.y);
+            ofSetColor(255 * screenOpacity * maxScreenOpacity);
+            drawPlayer();
         }
     //----
-    screenFbo->end();
+    if(useFbo)
+        screenFbo->end();
     //----
 }
 
@@ -101,36 +101,156 @@ void pmWarpPiRendererVideoPlayer::drawIntoFbo()
 //-------------------------------------------------------------------------
 void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
 {
-    ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::updateOSC";
+    ofLog(OF_LOG_NOTICE) << "VideoPlayer :: updateOSC :: " << m->getAddress();
     
     
     string address = m->getAddress();
     
-    if(address.find("play")!=-1)
+    // get the id
+    string addressWithoutSlash = address.substr(1,address.size()-1);
+    
+    if((address=="/all")||(id==addressWithoutSlash))
     {
-        videoPlayer->play();
-        Tweenzor::add((float *)&screenOpacity.get(), 0.0, 1.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
-        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
-    }
-    if(address.find("stop")!=-1)
-    {
-        Tweenzor::add((float *)&screenOpacity.get(), 1.0, 0.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
-        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
-    }
-    if(address.find("pause")!=-1)
-    {
-        if(videoPlayer->isPaused()) videoPlayer->setPaused(false);
-        else videoPlayer->setPaused(true);
+        /// THIS MESSAGE IF FOR YOU !!
+        
+        /// COMMAND
+        string command = m->getArgAsString(0);
+        
+        /// PLAY
+        if(command == "play")
+        {
+            //videoPlayer.play();
+            setPlayerPaused(false);
+            Tweenzor::add((float *)&screenOpacity.get(), 0.0, maxScreenOpacity, 0.0, m->getArgAsFloat(1),EASE_IN_OUT_EXPO);
+            Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
+        }
+        /// STOP
+        else if(command == "stop")
+        {
+            Tweenzor::add((float *)&screenOpacity.get(), maxScreenOpacity, 0.0, 0.0, m->getArgAsFloat(1),EASE_IN_OUT_EXPO);
+            Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
+        }
+        /// PAUSE
+        else if(command == "pause")
+        {
+            if(isPlayerPaused()) setPlayerPaused(false);
+            else setPlayerPaused(true);
+        }
+        /// RESTART
+        else if(command == "restart")
+        {
+            restartMovie();
+            Tweenzor::add((float *)&screenOpacity.get(), 0.0, maxScreenOpacity, 0.0, m->getArgAsFloat(1),EASE_IN_OUT_EXPO);
+            Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
+        }
+        /// LOAD MOVIE
+        else if(command == "load")
+        {
+            auto new_videoFileName = m->getArgAsString(1);
+            fadeTime = m->getArgAsFloat(2);
+            
+//            videoFileName = ofToDataPath("./videos", true);
+            new_videoFileName = "./videos/"+new_videoFileName;
+            if(videoFileName == new_videoFileName) return;
+            videoFileName = new_videoFileName;
+            
+            ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: OSC :: load : " << videoFileName << " : fadeTime : " << fadeTime;
+            
+//            loadMovie();
+            
+            Tweenzor::add((float *)&screenOpacity.get(), maxScreenOpacity, 0.0, 0.0, fadeTime, EASE_IN_OUT_EXPO);
+            Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onFadeOutComplete);
+            
+//            Tweenzor::add((float *)&screenOpacity.get(), 0.0, maxScreenOpacity, 0.0, fadeTime,EASE_IN_OUT_EXPO);
+//            Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
+            
+        }
+        /// EDIT QUAD
+        else if(command == "editQuad")
+        {
+            cout << "OMXPLAYER received a doEditQuad !! " << endl;
+            
+            int val = m->getArgAsInt32(1);
+            if(val==0)
+            {
+                doEditQuadPoints = false;
+            }
+            else
+            {
+                doEditQuadPoints = true;
+            }
+        }
+        /// NEXT QUAD POINT
+        else if(command == "nextQuadPoint")
+        {
+            nextQuadPoint();
+        }
+        /// PREVIOUS QUAD POINT
+        else if(command == "preQuadPoint")
+        {
+            previousQuadPoint();
+        }
+        /// MOVE QUAD POINT UP
+        else if(command == "movePointUp")
+        {
+            distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y - m->getArgAsInt32(1);
+        }
+        /// MOVE QUAD POINT DOWN
+        else if(command == "movePointDown")
+        {
+            distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y + m->getArgAsInt32(1);
+        }
+        /// MOVE QUAD POINT LEFT
+        else if(command == "movePointLeft")
+        {
+            distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x - m->getArgAsInt32(1);
+        }
+        /// MOVE QUAD POINT RIGHT
+        else if(command == "movePointRight")
+        {
+            distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x + m->getArgAsInt32(1);
+        }
+        /// SAVE QUAD
+        else if(command == "saveQuad")
+        {
+            saveConfigToXML();
+        }
+        /// RESET QUAD
+        else if(command == "resetQuad")
+        {
+            cout << "Resetting Quad !!" << endl;
+            resetQuad();
+        }
+        
+        
         
     }
-    if(address.find("restart")!=-1)
-    {
-        videoPlayer->setPaused(true);
-        videoPlayer->setPosition(0.0);
-        videoPlayer->play();
-        Tweenzor::add((float *)&screenOpacity.get(), 0.0, 1.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
-        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
-    }
+    
+//    if(address.find("play")!=-1)
+//    {
+//        playPlayer();
+//        Tweenzor::add((float *)&screenOpacity.get(), 0.0, 1.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
+//        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
+//    }
+//    if(address.find("stop")!=-1)
+//    {
+//        Tweenzor::add((float *)&screenOpacity.get(), 1.0, 0.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
+//        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
+//    }
+//    if(address.find("pause")!=-1)
+//    {
+//        if(isPlayerPaused()) setPlayerPaused(false);
+//        else setPlayerPaused(true);
+//        
+//    }
+//    if(address.find("restart")!=-1)
+//    {
+//        setPlayerPaused(true);
+//        setPlayerPosition(0.0);
+//        playPlayer();
+//        Tweenzor::add((float *)&screenOpacity.get(), 0.0, 1.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
+//        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
+//    }
     
 }
 
@@ -143,7 +263,7 @@ void pmWarpPiRendererVideoPlayer::onComplete(float* arg)
     if(arg == &screenOpacity.get())
     {
         cout << "this is a stop?" << endl;
-        if(screenOpacity==0.0) videoPlayer->stop();
+        if(screenOpacity==0.0) stopPlayer();
     }
     //    if(arg == &_x2.get())
     //    {
@@ -153,12 +273,34 @@ void pmWarpPiRendererVideoPlayer::onComplete(float* arg)
     
 }
 
+//--------------------------------------------------------------
+void pmWarpPiRendererVideoPlayer::onFadeOutComplete(float* arg)
+{
+    // this function is called on when the tween is complete //
+    cout << "screen :: FadeOut Completed : arg = " << *arg << endl;
+    loadMovie();
+    Tweenzor::add((float *)&screenOpacity.get(), 0.0, maxScreenOpacity, 0.0, fadeTime, EASE_IN_OUT_EXPO);
+    Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
+    
+//    if(arg == &screenOpacity.get())
+//    {
+//        cout << "this is a stop?" << endl;
+//        if(screenOpacity==0.0) stopPlayer();
+//    }
+//    //    if(arg == &_x2.get())
+//    //    {
+//    //        Tweenzor::add((float *)&_x1.get(), 0, ofGetWidth(), 0, 2,EASE_IN_OUT_EXPO);
+//    //        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&_x1.get()), this, &testApp::onComplete);
+//    //    }
+    
+}
+
 //-------------------------------------------------------------------------
 void pmWarpPiRendererVideoPlayer::deleteRenderer()
 {
     ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::delete";
     
-    videoPlayer->close();
+    closePlayer();
     
 }
 
@@ -174,17 +316,17 @@ void pmWarpPiRendererVideoPlayer::showDebug()
     ofSetColor(255);
     ofDrawBitmapString(videoFileName,videoPlayerDebugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString(ofToString(videoPlayer->getWidth()) + " x " +ofToString(videoPlayer->getHeight()),videoPlayerDebugPosition.x,whichHeight);
+    ofDrawBitmapString(ofToString(getPlayerWidth()) + " x " +ofToString(getPlayerHeight()),videoPlayerDebugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString(ofToString(videoPlayer->getCurrentFrame()) + " / " +ofToString(videoPlayer->getTotalNumFrames()),videoPlayerDebugPosition.x,whichHeight);
+    ofDrawBitmapString(ofToString(getPlayerCurrentFrame()) + " / " +ofToString(getPlayerTotalNumFrames()),videoPlayerDebugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     string loopType;
     
-    if(videoPlayer->getLoopState()==OF_LOOP_NONE)
+    if(getPlayerLoopState()==OF_LOOP_NONE)
     {
         loopType = "no loop";
     }
-    else if (videoPlayer->getLoopState()== OF_LOOP_NORMAL);
+    else if (getPlayerLoopState()== OF_LOOP_NORMAL);
     {
         loopType = "loop";
     }
@@ -201,7 +343,7 @@ void pmWarpPiRendererVideoPlayer::keyPressed(ofKeyEventArgs &a)
     
     if(key=='p')
     {
-        videoPlayer->play();
+        playPlayer();
     }
     
     cout << "videoplayer key pressed " << key << endl;
@@ -231,4 +373,3 @@ void pmWarpPiRendererVideoPlayer::mouseReleased(ofMouseEventArgs &a)
 {
     
 }
-#endif

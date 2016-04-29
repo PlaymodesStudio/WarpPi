@@ -7,14 +7,17 @@ pmWarpPiRendererScreen::pmWarpPiRendererScreen()
     screenPosition = ofVec2f(0,0);
     screenSize = ofVec2f(0,0);
     doHomography = true;
+    useFbo = false;
     doEditQuadPoints = false;
+    shiftPressed = false;
     isTesting = false;
     isDebugging= false;
     currentQuadPoint = 0;
     screenDebugPosition = ofVec2f(270,20);
     testingImage = new ofImage();
     homography = new ofMatrix4x4();
-    screenFbo = new ofFbo();
+    if(screenFbo)
+        screenFbo = new ofFbo();
     screenOpacity = 1.0;
     maxScreenOpacity = 1.0;
     
@@ -34,7 +37,8 @@ void pmWarpPiRendererScreen::setupScreen(ofVec2f _pos,ofVec2f _size)
 
     testingImage->loadImage("./app/testScreen.jpg");
     
-    screenFbo->allocate(screenSize.x,screenSize.y);
+    if(useFbo)
+        screenFbo->allocate(screenSize.x,screenSize.y);
  
     /// TWEENZOR
     // must call this before adding any tweens //
@@ -89,14 +93,19 @@ void pmWarpPiRendererScreen::update(ofEventArgs & a)
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::draw()
 {
+    if(useFbo)
+        drawIntoFbo();
     
-    drawIntoFbo();
     
     if(isDebugging)
     {
         ofSetColor(255);
        
-        screenFbo->draw(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
+        //screenFbo->draw(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
+        if(useFbo)
+            screenFbo->draw(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
+        else
+            drawIntoFbo();
     }
     else
     {
@@ -105,7 +114,10 @@ void pmWarpPiRendererScreen::draw()
         if(doHomography) glMultMatrixf(homography->getPtr());
         
         ofSetColor(255);
-        screenFbo->draw(screenPosition.x,screenPosition.y,screenSize.x,screenSize.y);
+        if(useFbo)
+            screenFbo->draw(screenPosition.x,screenPosition.y,screenSize.x,screenSize.y);
+        else
+            drawIntoFbo();
         
         /// HOMOGRAPHY END
         ofPopMatrix();
@@ -156,7 +168,8 @@ void pmWarpPiRendererScreen::deleteRenderer()
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::testScreen()
 {
-    screenFbo->begin();
+    if(useFbo)
+        screenFbo->begin();
     
     ofSetColor(255,128,0);
     ofFill();
@@ -164,8 +177,8 @@ void pmWarpPiRendererScreen::testScreen()
     ofSetColor(255);
     testingImage->draw(screenPosition.x,screenPosition.y,screenSize.x,screenSize.y);
     
-    
-    screenFbo->end();
+    if(useFbo);
+        screenFbo->end();
 }
 
 //-------------------------------------------------------------------------
@@ -256,6 +269,9 @@ void pmWarpPiRendererScreen::resetQuad()
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::keyPressed(ofKeyEventArgs &a)
 {
+    if(a.key == OF_KEY_SHIFT){
+        shiftPressed=true;
+    }
     int key = a.key;
     
     int quadStep = 1;
@@ -283,19 +299,19 @@ void pmWarpPiRendererScreen::keyPressed(ofKeyEventArgs &a)
     
     else if (key == OF_KEY_LEFT)
     {
-        distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x - quadStep;
+        distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x - (quadStep * ((shiftPressed) ? 5 : 1));
     }
     else if (key == OF_KEY_RIGHT)
     {
-        distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x + quadStep;
+        distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x + (quadStep * ((shiftPressed) ? 5 : 1));
     }
     else if (key == OF_KEY_UP)
     {
-        distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y - quadStep;
+        distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y - (quadStep * ((shiftPressed) ? 5 : 1));
     }
     else if (key == OF_KEY_DOWN)
     {
-        distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y + quadStep;
+        distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y + (quadStep * ((shiftPressed) ? 5 : 1));
     }
     
     
@@ -304,7 +320,9 @@ void pmWarpPiRendererScreen::keyPressed(ofKeyEventArgs &a)
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::keyReleased(ofKeyEventArgs &a)
 {
-    
+    if(a.key == OF_KEY_SHIFT){
+        shiftPressed=false;
+    }
 }
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::mouseMoved(ofMouseEventArgs &a)
