@@ -12,6 +12,8 @@
     <oscSendPort> 9003 </oscSendPort>
     
     <videoFileName> ./videos/fingers.mov </videoFileName>
+    <useFbo> no </useFbo>
+    <doHomography> yes </doHomography>
     
     <dmxDevice> 0 </dmxDevice>
     <dmxNumChannels> 4 </dmxNumChannels>

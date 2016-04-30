@@ -50,11 +50,15 @@ void ofApp::setup()
             _video->setup(id);
             _video->setupScreen(ofVec2f(0,0), ofVec2f(resX,resY));
             _video->setupVideoPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(resX,resY));
+            _video->useFbo = useFbo;
+            _video->doHomography = doHomography;
         #else
             pmWarpPiRendererVideoPlayer* _video = new pmWarpPiRendererVideoPlayer();
             _video->setup(id);
             _video->setupScreen(ofVec2f(0,0), ofVec2f(resX,resY));
             _video->setupVideoPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(resX,resY));
+            _video->useFbo = useFbo;
+            _video->doHomography = doHomography;
         #endif
 
         renderers.push_back(_video);
@@ -88,8 +92,10 @@ void ofApp::readConfig()
     confOscSendIpAddress = configXML.getValue("oscSendAddress","error");
     confOscReceivePortStringMode = configXML.getValue("oscReceivePortStringMode",-1);
     
-    /// VIDEO FILE
+    /// VIDEO SETTINGS
     confVideoFileName = configXML.getValue("videoFileName","error");
+    useFbo = configXML.getValue("useFbo", "false") == "yes" ? true: false;
+    doHomography = configXML.getValue("doHomography", "no") == "yes" ? true: false;
     
     /// WHAT IT HAS ?
     confHasVideo = confHasDmx = false;
@@ -699,26 +705,26 @@ void ofApp::draw(){
     if(renderers[0]->isDebugging) ofBackground(32);
     else ofBackground(0);
 
-	if(!useFbo)
-    {
-        // IF WE DON'T USE THE FBO -> NO HOMOGRAPHY WARPING -> DRAW THE VIDEO TEXTURE
-        ofSetColor(255);
-        #ifdef TARGET_RASPBERRY_PI
-        {
-            pmWarpPiRendererOMXPlayer* o = (pmWarpPiRendererOMXPlayer*) renderers[0];
-            o->drawPlayer();// omxPlayer->draw(0, 0, ofGetWidth(), ofGetHeight());
-        }
-        #endif
-        
-        #ifdef TARGET_OS_MAC
-        {
-            pmWarpPiRendererVideoPlayer* v = (pmWarpPiRendererVideoPlayer*) renderers[0];
-            v->drawPlayer();//->draw(0,0,ofGetWidth(),ofGetHeight());
-        }
-        #endif
-    }
-    else
-    {
+//	if(!useFbo)
+//    {
+//        // IF WE DON'T USE THE FBO -> NO HOMOGRAPHY WARPING -> DRAW THE VIDEO TEXTURE
+//        ofSetColor(255);
+//        #ifdef TARGET_RASPBERRY_PI
+//        {
+//            pmWarpPiRendererOMXPlayer* o = (pmWarpPiRendererOMXPlayer*) renderers[0];
+//            o->drawPlayer();// omxPlayer->draw(0, 0, ofGetWidth(), ofGetHeight());
+//        }
+//        #endif
+//        
+//        #ifdef TARGET_OS_MAC
+//        {
+//            pmWarpPiRendererVideoPlayer* v = (pmWarpPiRendererVideoPlayer*) renderers[0];
+//            v->drawPlayer();//->draw(0,0,ofGetWidth(),ofGetHeight());
+//        }
+//        #endif
+//    }
+//    else
+//    {
         // IF WE USE FBO -> APPLY HOMOGRAPHY WARPING -> DRAW RENDERERS NORMALLY
         for(int i=0;i<renderers.size();i++)
         {
@@ -729,7 +735,7 @@ void ofApp::draw(){
         {
             showDebug();
         }
-    }
+//    }
     if(showFPS)
     {
         ofSetColor(255);

@@ -69,6 +69,7 @@ public:
     bool                        isTesting;
     ofVec2f                     debugPosition;
     bool                        useFbo;
+    bool                        doHomography;
     bool                        showFPS;
     
     void                        toggleDebug();
