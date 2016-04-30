@@ -301,7 +301,7 @@ void ofApp::update()
             if( tcpDeltaTime > 5000 )
             {
                 cout << "We're not connected to TCP ..." << endl;
-                tcpAreWeConnected = tcpClient.setup(confOscSendIpAddress, 11999);
+                tcpAreWeConnected = tcpClient.setup(confTCPSendIpAddress, 11999);
                 tcpConnectTime = ofGetElapsedTimeMillis();
                 ofLog(OF_LOG_NOTICE) << "Trying to reconnect TCP...." << endl;
                 cout << "Trying to reconnect TCP...." << endl;
