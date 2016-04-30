@@ -1,4 +1,5 @@
 #include "ofApp.h"
+#include "LocalAddressGrabber.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -858,6 +859,8 @@ void ofApp::showDebug()
     ofDrawBitmapString("ID : " +ofToString(id),debugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString("NAME : " + name,debugPosition.x,whichHeight);
+    whichHeight=whichHeight + lineHeight;
+    ofDrawBitmapString("IP : " + LocalAddressGrabber::getMyProbableIpAddress() ,debugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString("OSC RECEIVE PORT: "  + ofToString(confOscReceivePort),debugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
