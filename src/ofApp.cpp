@@ -355,7 +355,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
             if(tokens[1]=="ping")
             {
                 cout << "Hi!! you ping I pong !!" << endl;
-                tcpClient.send("pong " +id+ " "+ name+" " + "192.168.1.22");
+                tcpClient.send("pong " +id+ " "+ name);
             }
             else if(tokens[1]=="exit")
             {
