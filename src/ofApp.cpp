@@ -409,6 +409,12 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
                 float valF = ofToFloat(tokens[2]);
                 myMessage->addFloatArg(valF);
             }
+            else if((tokens[1]=="fbo") || (tokens[1]=="homography"))
+            {
+                float valF = ofToInt(tokens[2]);
+                bool valB = (valF == 1) ? true : false;
+                myMessage->addBoolArg(valB);
+            }
             
             else if((tokens[1]=="test"))
             {
@@ -440,6 +446,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
                     cout << "set Debug TRUE !! " << endl;
                 }
             }
+            
         }
         
         ///---------------------------------

@@ -165,6 +165,7 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
 //            Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
             
         }
+        
         /// EDIT QUAD
         else if(command == "editQuad")
         {
@@ -225,6 +226,8 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
         
         
     }
+    
+    pmWarpPiRendererScreen::updateOSC(m);
     
 //    if(address.find("play")!=-1)
 //    {

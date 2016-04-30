@@ -16,8 +16,7 @@ pmWarpPiRendererScreen::pmWarpPiRendererScreen()
     screenDebugPosition = ofVec2f(270,20);
     testingImage = new ofImage();
     homography = new ofMatrix4x4();
-    if(screenFbo)
-        screenFbo = new ofFbo();
+    screenFbo = new ofFbo();
     screenOpacity = 1.0;
     maxScreenOpacity = 1.0;
     
@@ -154,7 +153,32 @@ void pmWarpPiRendererScreen::draw()
 void pmWarpPiRendererScreen::updateOSC(ofxOscMessage* m)
 {
     ofLog(OF_LOG_NOTICE) << "RendScreen::updateOSC";
+    string address = m->getAddress();
     
+    // get the id
+    string addressWithoutSlash = address.substr(1,address.size()-1);
+    
+    if((address=="/all")||(id==addressWithoutSlash))
+    {
+        /// THIS MESSAGE IF FOR YOU !!
+        
+        /// COMMAND
+        string command = m->getArgAsString(0);
+        
+        /// PLAY
+        if(command == "homography")
+        {
+            doHomography =  m->getArgAsBool(1);
+        }
+        else if(command == "fbo")
+        {
+            useFbo = m->getArgAsBool(1);
+            if(useFbo){
+                if(!screenFbo->isAllocated())
+                    screenFbo->allocate(screenSize.x,screenSize.y);
+            }
+        }
+    }
 }
 
 //-------------------------------------------------------------------------
