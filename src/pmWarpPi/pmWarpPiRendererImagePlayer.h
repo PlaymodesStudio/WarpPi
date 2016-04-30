@@ -25,6 +25,8 @@ public:
     virtual void        onComplete(float* arg);
     virtual void        showDebug();
 //    void                showVideoPlayerDebug();
+    bool loadImages();
+    void drawImage(int index, int alpha);
     
     void keyPressed(ofKeyEventArgs &a);
     void keyReleased(ofKeyEventArgs &a);
@@ -42,12 +44,23 @@ public:
 
     /// CLASS PARAMS
     /////////////////
-    ofImage*            imagePlayer;
-//    ofVideoPlayer*      videoPlayer;
-    string              videoFileName;
-    ofVec2f             videoPosition;
-    ofVec2f             videoSize;
-    ofVec2f             videoPlayerDebugPosition;
+    ofDirectory dir;
+    deque<ofImage> images;
+    vector<string> imagePaths;
+    
+    int currentImage, nextImage;
+    bool hasMedia;
+    
+    float beginImageTime; // store when we start time timer
+    float nextImageTime; // when do want to stop the timer
+    
+    float fadeTime;
+    
+    
+    string              folderName;
+    ofVec2f             imagePosition;
+    ofVec2f             imageSize;
+    ofVec2f             imagePlayerDebugPosition;
     
     
     
