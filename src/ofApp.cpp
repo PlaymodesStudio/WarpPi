@@ -508,7 +508,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
                 myMessage->addFloatArg(valF);
                 
             }
-            else if((tokens[1]=="load") || (tokens[1]=="loadImage"))
+            else if((tokens[1]=="load") || (tokens[1]=="loadImage") || (tokens[1]=="loadFolder"))
             {
                 /// 3 ARGUMENTS 0/ command string /1 string 2/float
                 /// ----------------------------

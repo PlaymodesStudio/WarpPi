@@ -135,8 +135,24 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
             Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, fadeTime,EASE_IN_OUT_EXPO);
             Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
         }
-        
-        
+        else if(command == "loadFolder")
+        {
+            folderPlay = true;
+            folderName = m->getArgAsString(1);
+            fadeTime = m->getArgAsFloat(2);
+            hasMedia = loadImages();
+            if(hasMedia){
+                currentImage=-1;
+                nextImage = currentImage+1;
+                nextImage %= imagesInFolderPaths.size();
+                images.pop_back();
+                images.push_back(ofImage(imagesInFolderPaths[nextImage]));
+            }
+            
+            
+            Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, fadeTime,EASE_IN_OUT_EXPO);
+            Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
+        }
     }
     
     //    if(address.find("play")!=-1)
