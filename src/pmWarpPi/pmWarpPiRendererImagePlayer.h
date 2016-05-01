@@ -23,10 +23,11 @@ public:
     virtual void        drawElement(ofRectangle container);
     virtual void        setupImagePlayer(string _name,ofVec2f _pos, ofVec2f _size);
     virtual void        onComplete(float* arg);
+    virtual void        onCrossFadeComplete(float* arg);
     virtual void        showDebug();
 //    void                showVideoPlayerDebug();
     bool loadImages();
-    void drawImage(int index, int alpha, ofRectangle container);
+    void drawImage(int index, float alpha, ofRectangle container);
     
     void keyPressed(ofKeyEventArgs &a);
     void keyReleased(ofKeyEventArgs &a);
@@ -52,6 +53,7 @@ public:
     
     int currentImage, nextImage;
     bool hasMedia;
+    float crossFadeAlpha;
     
     float beginImageTime; // store when we start time timer
     float nextImageTime; // when do want to stop the timer

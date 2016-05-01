@@ -39,12 +39,17 @@ void pmWarpPiRendererImagePlayer::setupImagePlayer(string _name,ofVec2f _pos, of
     beginImageTime = ofGetElapsedTimef();  // get the start time
     nextImageTime = 5; // in seconds
     fadeTime = 1;
+    crossFadeAlpha = 1;
     
-
+    
     /// GUI
     gui->setup(); // most of the time you don't need a name but don't forget to call setup
-	gui->add(screenOpacity.set( "opacity", 1.0, 0.0, 1.0));
+    gui->add(screenOpacity.set( "opacity", 1.0, 0.0, 1.0));
     gui->setPosition(imagePlayerDebugPosition.x,imagePlayerDebugPosition.y + 75);
+    
+    
+    Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, nextImageTime-fadeTime, fadeTime,EASE_IN_OUT_EXPO);
+    Tweenzor::addCompleteListener(Tweenzor::getTween((float*)&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
     
 }
 
@@ -56,22 +61,6 @@ void pmWarpPiRendererImagePlayer::updateForScreen()
     
     /// TWEENZOR
     Tweenzor::update( ofGetElapsedTimeMillis() );
-    screenOpacity = screenOpacity;
-    
-    if(ofGetElapsedTimef()-beginImageTime > nextImageTime && folderPlay){
-        if(hasMedia){
-            currentImage++;
-            currentImage %= imagesInFolderPaths.size();
-            nextImage = currentImage+1;
-            nextImage %= imagesInFolderPaths.size();
-            images.pop_front();
-            images.push_back(ofImage(imagesInFolderPaths[nextImage]));
-        }
-        beginImageTime = ofGetElapsedTimef();
-    }else if(!folderPlay){
-        //beginImageTime = ofGetElapsedTimef();
-    }
-    
     
 }
 
@@ -79,43 +68,36 @@ void pmWarpPiRendererImagePlayer::updateForScreen()
 void pmWarpPiRendererImagePlayer::drawElement(ofRectangle container)
 {
     ofLog(OF_LOG_NOTICE) << "RendImagePlayer::draw";
-
+    
     // SCREEN BACKGROUND
     ofSetColor(0,0,0,255);
     ofFill();
     //ofDrawRectangle(0,0,screenSize.x,screenSize.y);
-        
-
+    
+    
     // DRAW Image
-    ofSetColor(255 * screenOpacity);
-    int maxAlpha = screenOpacity*255;
-    if(hasMedia){
-        ofHideCursor();
-        int alphaValue = 255;
-        if(ofGetElapsedTimef()-beginImageTime > nextImageTime-(fadeTime))
-            alphaValue = maxAlpha - ((ofGetElapsedTimef()-beginImageTime)-(nextImageTime-(fadeTime)))/(fadeTime)*maxAlpha;
-        
-        //draw current image
-        drawImage(0, alphaValue, container);
-        
-        //draw next image
-        if(alphaValue != maxAlpha){
-            drawImage(1, (maxAlpha-alphaValue), container);
-        }
-    }else if(images.size() != 0)
-        drawImage(0, maxAlpha, container);
+    
+    //draw current image
+    drawImage(0, crossFadeAlpha, container);
+    //draw next image
+    drawImage(1, screenOpacity-crossFadeAlpha, container);
+    
+    //for testing image rotation
+    int testSize = 100;
+    drawImage(0, 255, ofRectangle(0,ofGetHeight()-testSize, testSize , testSize));
+    drawImage(1, 255, ofRectangle(testSize,ofGetHeight()-testSize,testSize , testSize));
     
 }
 
 //-----------------------------------------------------------------------
-void pmWarpPiRendererImagePlayer::drawImage(int index, int alpha, ofRectangle container)
+void pmWarpPiRendererImagePlayer::drawImage(int index, float alpha, ofRectangle container)
 {
     ofPushStyle();
-    ofSetColor(255, 255, 255, alpha);
+    ofSetColor(255, 255, 255, alpha*255);
     //if(isDebugging)
-        //images[index].draw(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
+    //images[index].draw(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
     //else
-        images[index].draw(container);
+    images[index].draw(container);
     ofPopStyle();
 }
 
@@ -137,7 +119,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
         
         /// COMMAND
         string command = m->getArgAsString(0);
-    
+        
         /// LOAD IMAGE
         if(command == "loadImage")
         {
@@ -155,31 +137,31 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
         
     }
     
-//    if(address.find("play")!=-1)
-//    {
-//        videoPlayer->play();
-//        Tweenzor::add((float *)&screenOpacity.get(), 0.0, 1.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
-//        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
-//    }
-//    if(address.find("stop")!=-1)
-//    {
-//        Tweenzor::add((float *)&screenOpacity.get(), 1.0, 0.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
-//        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
-//    }
-//    if(address.find("pause")!=-1)
-//    {
-//        if(videoPlayer->isPaused()) videoPlayer->setPaused(false);
-//        else videoPlayer->setPaused(true);
-//        
-//    }
-//    if(address.find("restart")!=-1)
-//    {
-//        videoPlayer->setPaused(true);
-//        videoPlayer->setPosition(0.0);
-//        videoPlayer->play();
-//        Tweenzor::add((float *)&screenOpacity.get(), 0.0, 1.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
-//        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
-//    }
+    //    if(address.find("play")!=-1)
+    //    {
+    //        videoPlayer->play();
+    //        Tweenzor::add((float *)&screenOpacity.get(), 0.0, 1.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
+    //        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
+    //    }
+    //    if(address.find("stop")!=-1)
+    //    {
+    //        Tweenzor::add((float *)&screenOpacity.get(), 1.0, 0.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
+    //        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
+    //    }
+    //    if(address.find("pause")!=-1)
+    //    {
+    //        if(videoPlayer->isPaused()) videoPlayer->setPaused(false);
+    //        else videoPlayer->setPaused(true);
+    //
+    //    }
+    //    if(address.find("restart")!=-1)
+    //    {
+    //        videoPlayer->setPaused(true);
+    //        videoPlayer->setPosition(0.0);
+    //        videoPlayer->play();
+    //        Tweenzor::add((float *)&screenOpacity.get(), 0.0, 1.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
+    //        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
+    //    }
     
     
 }
@@ -204,6 +186,24 @@ void pmWarpPiRendererImagePlayer::onComplete(float* arg)
     
 }
 
+//--------------------------------------------------------------
+void pmWarpPiRendererImagePlayer::onCrossFadeComplete(float *arg)
+{
+    cout<<"tween completed"<<endl;
+    if(folderPlay){
+        currentImage++;
+        currentImage %= imagesInFolderPaths.size();
+        nextImage = currentImage+1;
+        nextImage %= imagesInFolderPaths.size();
+        images.pop_front();
+        images.push_back(ofImage(imagesInFolderPaths[nextImage]));
+        crossFadeAlpha=screenOpacity;
+        
+        Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, nextImageTime-fadeTime, fadeTime,EASE_IN_OUT_EXPO);
+        Tweenzor::addCompleteListener(Tweenzor::getTween((float*)&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
+    }
+}
+
 //-------------------------------------------------------------------------
 void pmWarpPiRendererImagePlayer::deleteRenderer()
 {
@@ -216,7 +216,7 @@ void pmWarpPiRendererImagePlayer::deleteRenderer()
 //-------------------------------------------------------------------------
 void pmWarpPiRendererImagePlayer::showDebug()
 {
-        
+    
     int lineHeight = 15;
     int whichHeight = imagePlayerDebugPosition.y;
     ofSetColor(255,128,0);
@@ -257,7 +257,7 @@ void pmWarpPiRendererImagePlayer::keyPressed(ofKeyEventArgs &a)
     
     if(key=='p')
     {
-//        videoPlayer->play();
+        //        videoPlayer->play();
     }
     
     cout << "videoplayer key pressed " << key << endl;
