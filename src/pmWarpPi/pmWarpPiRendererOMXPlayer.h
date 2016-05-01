@@ -63,7 +63,7 @@ public:
     };
     
     virtual void drawPlayer(ofRectangle container){
-        omxPlayer->draw(container);
+        omxPlayer->draw(container.x, container.y, container.width, container.height);
     };
     
     void drawPlayer(int x, int y, int width, int height){
