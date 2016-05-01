@@ -26,7 +26,7 @@ public:
     /// CLASS FUNCTIONS
     ////////////////////
     virtual void        setupScreen(ofVec2f _pos,ofVec2f _size);
-    virtual void        drawIntoFbo(){};
+    virtual void        drawElement(ofRectangle container){};
 
     void keyPressed(ofKeyEventArgs &a);
     void keyReleased(ofKeyEventArgs &a);
@@ -49,6 +49,11 @@ public:
     
     /// CLASS PARAMS
     /////////////////
+    
+    ofRectangle         screenRect;
+    ofRectangle         elementRect;
+    ofRectangle         elementDebugRect;
+    
     ofFbo*              screenFbo;
     ofVec2f             screenPosition;
     ofVec2f             screenSize;

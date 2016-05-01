@@ -85,67 +85,46 @@ void pmWarpPiRendererImagePlayer::updateForScreen()
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiRendererImagePlayer::drawIntoFbo()
+void pmWarpPiRendererImagePlayer::drawElement(ofRectangle container)
 {
-    ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::draw";
-    if(isDebugging)
-    {
-        showScreenDebug();
-        showDebug();
-    }
-    else
-    {
-    }
-    //----
-    screenFbo->begin();
-    //----
- 
-    
-        // SCREEN BACKGROUND
-        ofSetColor(0,0,0,255);
-        ofFill();
-        //ofDrawRectangle(0,0,screenSize.x,screenSize.y);
+    ofLog(OF_LOG_NOTICE) << "RendImagePlayer::draw";
+
+    // SCREEN BACKGROUND
+    ofSetColor(0,0,0,255);
+    ofFill();
+    //ofDrawRectangle(0,0,screenSize.x,screenSize.y);
         
-        if(isTesting)
-        {
-            ofSetColor(255);
-            testingImage->draw(imagePosition.x,imagePosition.y,imageSize.x,imageSize.y);
+
+    // DRAW Image
+    ofSetColor(255 * screenOpacity);
+    int maxAlpha = screenOpacity*255;
+    if(hasMedia){
+        ofHideCursor();
+        int alphaValue = 255;
+        if(ofGetElapsedTimef()-beginImageTime > nextImageTime-(fadeTime))
+            alphaValue = maxAlpha - ((ofGetElapsedTimef()-beginImageTime)-(nextImageTime-(fadeTime)))/(fadeTime)*maxAlpha;
+        
+        //draw current image
+        drawImage(0, alphaValue, container);
+        
+        //draw next image
+        if(alphaValue != maxAlpha){
+            drawImage(1, (maxAlpha-alphaValue), container);
         }
-        else
-        {
-            // DRAW VIDEO
-            ofSetColor(255 * screenOpacity);
-            int maxAlpha = screenOpacity*255;
-            if(hasMedia){
-                ofHideCursor();
-                int alphaValue = 255;
-                if(ofGetElapsedTimef()-beginImageTime > nextImageTime-(fadeTime))
-                    alphaValue = maxAlpha - ((ofGetElapsedTimef()-beginImageTime)-(nextImageTime-(fadeTime)))/(fadeTime)*maxAlpha;
-                
-                //draw current image
-                drawImage(0, alphaValue);
-                
-                //draw next image
-                if(alphaValue != maxAlpha){
-                    drawImage(1, (maxAlpha-alphaValue));
-                }
-            }else if(images.size() != 0)
-                drawImage(0, maxAlpha);
-        }
-    //----
-    screenFbo->end();
-    //----
+    }else if(images.size() != 0)
+        drawImage(0, maxAlpha, container);
+    
 }
 
-//
-void pmWarpPiRendererImagePlayer::drawImage(int index, int alpha)
+//-----------------------------------------------------------------------
+void pmWarpPiRendererImagePlayer::drawImage(int index, int alpha, ofRectangle container)
 {
     ofPushStyle();
     ofSetColor(255, 255, 255, alpha);
-    if(isDebugging)
-        images[index].draw(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
-    else
-        images[index].draw(imagePosition.x, imagePosition.y, imageSize.x, imageSize.y);
+    //if(isDebugging)
+        //images[index].draw(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
+    //else
+        images[index].draw(container);
     ofPopStyle();
 }
 

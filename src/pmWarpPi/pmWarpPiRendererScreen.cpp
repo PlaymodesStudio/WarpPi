@@ -3,6 +3,9 @@
 //-------------------------------------------------------------------------
 pmWarpPiRendererScreen::pmWarpPiRendererScreen()
 {
+    screenRect = ofRectangle(0,0, ofGetWidth(), ofGetHeight());
+    elementRect = screenRect;
+    elementDebugRect = ofRectangle(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
     
     screenPosition = ofVec2f(0,0);
     screenSize = ofVec2f(0,0);
@@ -92,58 +95,55 @@ void pmWarpPiRendererScreen::update(ofEventArgs & a)
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::draw()
 {
-    if(useFbo)
-        drawIntoFbo();
+
+    /// HOMOGRAPHY START
+    ofPushMatrix();
+    if(doHomography && !isDebugging) glMultMatrixf(homography->getPtr());
     
+    ofSetColor(255);
+    if(useFbo) screenFbo->begin();
     
-    if(isDebugging)
-    {
-        ofSetColor(255);
-       
-        //screenFbo->draw(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
-        if(useFbo)
-            screenFbo->draw(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
-        else
-            drawIntoFbo();
+    if(isTesting){
+        if(isDebugging) testingImage->draw(elementDebugRect);
+        else testingImage->draw(elementRect);
     }
-    else
+    else{
+        if(isDebugging) drawElement(elementDebugRect);
+        else drawElement(elementRect);
+    }
+    
+    if(useFbo){
+        screenFbo->end();
+        screenFbo->draw(0,0);
+    }
+    
+    /// HOMOGRAPHY END
+    ofPopMatrix();
+    
+    if(doEditQuadPoints && !isDebugging)
     {
-        /// HOMOGRAPHY START
-        ofPushMatrix();
-        if(doHomography) glMultMatrixf(homography->getPtr());
-        
-        ofSetColor(255);
-        if(useFbo)
-            screenFbo->draw(screenPosition.x,screenPosition.y,screenSize.x,screenSize.y);
-        else
-            drawIntoFbo();
-        
-        /// HOMOGRAPHY END
-        ofPopMatrix();
-        
-        if(doEditQuadPoints)
+        // draw circle arround corners
+        for(int i=0;i<4;i++)
         {
-            // draw circle arround corners
-            for(int i=0;i<4;i++)
-            {
-                ofSetCircleResolution(64);
-                ofNoFill();
-                ofSetLineWidth(10);
-                if(currentQuadPoint==i) ofSetColor(255,128,0,128);
-                else ofSetColor(0,128,255,128);
-                ofDrawCircle(distortedCorners[i],75);
-            }
-            
-            // draw lines
-            ofSetColor(0,128,255,128);
-            ofSetLineWidth(2);
-            for(int i=0;i<3;i++)
-            {
-                ofDrawLine(distortedCorners[i],distortedCorners[i+1]);
-            }
-            ofDrawLine(distortedCorners[3],distortedCorners[0]);
+            ofSetCircleResolution(64);
+            ofNoFill();
+            ofSetLineWidth(10);
+            if(currentQuadPoint==i) ofSetColor(255,128,0,128);
+            else ofSetColor(0,128,255,128);
+            ofDrawCircle(distortedCorners[i],75);
         }
+        
+        // draw lines
+        ofSetColor(0,128,255,128);
+        ofSetLineWidth(2);
+        for(int i=0;i<3;i++)
+        {
+            ofDrawLine(distortedCorners[i],distortedCorners[i+1]);
+        }
+        ofDrawLine(distortedCorners[3],distortedCorners[0]);
     }
+    
+    if(isDebugging) showScreenDebug(); showDebug();
     
     gui->draw();
 }

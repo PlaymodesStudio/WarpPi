@@ -20,13 +20,13 @@ public:
     ////////////////////
     virtual void        updateForScreen();
 
-    virtual void        drawIntoFbo();
+    virtual void        drawElement(ofRectangle container);
     virtual void        setupImagePlayer(string _name,ofVec2f _pos, ofVec2f _size);
     virtual void        onComplete(float* arg);
     virtual void        showDebug();
 //    void                showVideoPlayerDebug();
     bool loadImages();
-    void drawImage(int index, int alpha);
+    void drawImage(int index, int alpha, ofRectangle container);
     
     void keyPressed(ofKeyEventArgs &a);
     void keyReleased(ofKeyEventArgs &a);

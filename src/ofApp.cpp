@@ -62,10 +62,10 @@ void ofApp::setup()
             _video->doHomography = doHomography;
         #endif
 
-        //renderers.push_back(_video);
+        renderers.push_back(_video);
     }
     
-    // HAS VIDEO ?
+    // HAS Image?
     ///////////////
     if(confHasVideo)
     {
@@ -75,7 +75,7 @@ void ofApp::setup()
         _image->setupImagePlayer("test", ofVec2f(0,0),ofVec2f(resX,resY));
         _image->useFbo = useFbo;
         _image->doHomography = doHomography;
-        renderers.push_back(_image);
+        //renderers.push_back(_image);
     }
     
     // HAS DMX ?

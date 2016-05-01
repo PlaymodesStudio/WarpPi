@@ -18,7 +18,7 @@ public:
     ////////////////////
     virtual void        updateForScreen();
 
-    virtual void        drawIntoFbo();
+    virtual void        drawElement(ofRectangle container);
     virtual void        setupVideoPlayer(string _name,ofVec2f _pos, ofVec2f _size);
     virtual void        onComplete(float* arg);
     virtual void        onFadeOutComplete(float* arg);
@@ -39,6 +39,9 @@ public:
     };
     virtual void updatePlayer(){
         videoPlayer->update();
+    };
+    virtual void drawPlayer(ofRectangle container){
+        videoPlayer->draw(container);
     };
     virtual void drawPlayer(int x, int y, int width, int height){
         videoPlayer->draw(x, y, width, height);

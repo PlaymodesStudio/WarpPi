@@ -80,7 +80,7 @@
 //}
 //
 ////-------------------------------------------------------------------------
-//void pmWarpPiRendererOMXPlayer::drawIntoFbo()
+//void pmWarpPiRendererOMXPlayer::drawElement()
 //{
 //    if(isDebugging)
 //    {

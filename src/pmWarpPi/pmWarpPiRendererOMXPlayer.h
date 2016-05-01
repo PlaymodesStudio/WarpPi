@@ -62,6 +62,10 @@ public:
         //It auto updates
     };
     
+    virtual void drawPlayer(ofRectangle container){
+        omxPlayer->draw(container);
+    };
+    
     void drawPlayer(int x, int y, int width, int height){
         omxPlayer->draw(x, y, width, height);
     };

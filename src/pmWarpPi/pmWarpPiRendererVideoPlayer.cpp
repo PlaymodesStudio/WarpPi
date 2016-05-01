@@ -58,43 +58,18 @@ void pmWarpPiRendererVideoPlayer::updateForScreen()
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiRendererVideoPlayer::drawIntoFbo()
+void pmWarpPiRendererVideoPlayer::drawElement(ofRectangle container)
 {
     ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::draw";
-    if(isDebugging)
-    {
-        showScreenDebug();
-        showDebug();
-    }
-    else
-    {
-    }
-    //----
-    if(useFbo)
-        screenFbo->begin();
-    //----
- 
-    
+
         // SCREEN BACKGROUND
         ofSetColor(0,0,0,255);
         ofFill();
-        ofDrawRectangle(0,0,screenSize.x,screenSize.y);
-        
-        if(isTesting)
-        {
-            ofSetColor(255);
-            testingImage->draw(videoPosition.x,videoPosition.y,videoSize.x,videoSize.y);
-        }
-        else
-        {
+        ofDrawRectangle(container);
+    
             // DRAW VIDEO
             ofSetColor(255 * screenOpacity * maxScreenOpacity);
-            drawPlayer();
-        }
-    //----
-    if(useFbo)
-        screenFbo->end();
-    //----
+            drawPlayer(container);
 }
 
 
