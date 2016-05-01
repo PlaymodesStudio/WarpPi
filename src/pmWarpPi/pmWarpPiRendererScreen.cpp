@@ -34,7 +34,7 @@ void pmWarpPiRendererScreen::setupScreen(ofVec2f _pos,ofVec2f _size)
     isTesting = false;
     currentQuadPoint = 0;
 
-    testingImage->loadImage("./app/testScreen.jpg");
+    testingImage->load("./app/testScreen.jpg");
     
     if(useFbo)
         screenFbo->allocate(screenSize.x,screenSize.y);
@@ -131,7 +131,7 @@ void pmWarpPiRendererScreen::draw()
                 ofSetLineWidth(10);
                 if(currentQuadPoint==i) ofSetColor(255,128,0,128);
                 else ofSetColor(0,128,255,128);
-                ofCircle(distortedCorners[i],75);
+                ofDrawCircle(distortedCorners[i],75);
             }
             
             // draw lines
@@ -139,9 +139,9 @@ void pmWarpPiRendererScreen::draw()
             ofSetLineWidth(2);
             for(int i=0;i<3;i++)
             {
-                ofLine(distortedCorners[i],distortedCorners[i+1]);
+                ofDrawLine(distortedCorners[i],distortedCorners[i+1]);
             }
-            ofLine(distortedCorners[3],distortedCorners[0]);
+            ofDrawLine(distortedCorners[3],distortedCorners[0]);
         }
     }
     
@@ -197,7 +197,7 @@ void pmWarpPiRendererScreen::testScreen()
     
     ofSetColor(255,128,0);
     ofFill();
-    ofRect(screenPosition.x,screenPosition.y,screenSize.x,screenSize.y);
+    ofDrawRectangle(screenPosition.x,screenPosition.y,screenSize.x,screenSize.y);
     ofSetColor(255);
     testingImage->draw(screenPosition.x,screenPosition.y,screenSize.x,screenSize.y);
     

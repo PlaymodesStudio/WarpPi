@@ -78,7 +78,7 @@ void pmWarpPiRendererVideoPlayer::drawIntoFbo()
         // SCREEN BACKGROUND
         ofSetColor(0,0,0,255);
         ofFill();
-        ofRect(0,0,screenSize.x,screenSize.y);
+        ofDrawRectangle(0,0,screenSize.x,screenSize.y);
         
         if(isTesting)
         {
