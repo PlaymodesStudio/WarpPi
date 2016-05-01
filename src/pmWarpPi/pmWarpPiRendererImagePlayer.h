@@ -46,7 +46,9 @@ public:
     /////////////////
     ofDirectory dir;
     deque<ofImage> images;
-    vector<string> imagePaths;
+    vector<string> imagesInFolderPaths;
+    string  imagePath;
+    bool folderPlay; //if it's true plays a folder, else plays only one image;
     
     int currentImage, nextImage;
     bool hasMedia;

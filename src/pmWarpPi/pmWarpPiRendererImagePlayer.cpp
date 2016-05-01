@@ -22,16 +22,16 @@ void pmWarpPiRendererImagePlayer::setupImagePlayer(string _name,ofVec2f _pos, of
     imagePosition = _pos;
     imageSize = _size;
     isTesting=false;
-    
+    folderPlay=true;
     
     //load images to vector;
     hasMedia = loadImages();
     if(hasMedia){
         currentImage=0;
         nextImage = currentImage+1;
-        nextImage %= imagePaths.size();
-        images.push_back(ofImage(imagePaths[currentImage]));
-        images.push_back(ofImage(imagePaths[nextImage]));
+        nextImage %= imagesInFolderPaths.size();
+        images.push_back(ofImage(imagesInFolderPaths[currentImage]));
+        images.push_back(ofImage(imagesInFolderPaths[nextImage]));
     }else
         images.push_back(ofImage("images/wallpaper.jpg"));
     
@@ -58,30 +58,21 @@ void pmWarpPiRendererImagePlayer::updateForScreen()
     Tweenzor::update( ofGetElapsedTimeMillis() );
     screenOpacity = screenOpacity;
     
-    if(ofGetElapsedTimef()-beginImageTime > nextImageTime){
+    if(ofGetElapsedTimef()-beginImageTime > nextImageTime && folderPlay){
         if(hasMedia){
             currentImage++;
-            currentImage %= imagePaths.size();
+            currentImage %= imagesInFolderPaths.size();
             nextImage = currentImage+1;
-            nextImage %= imagePaths.size();
+            nextImage %= imagesInFolderPaths.size();
             images.pop_front();
-            images.push_back(ofImage(imagePaths[nextImage]));
+            images.push_back(ofImage(imagesInFolderPaths[nextImage]));
         }
         beginImageTime = ofGetElapsedTimef();
+    }else if(!folderPlay){
+        //beginImageTime = ofGetElapsedTimef();
     }
     
     
-    if(isTesting)
-    {
-        //videoPlayer->setVolume(0);
-    }
-    else
-    {
-        //videoPlayer->setVolume(screenOpacity);
-        
-    }
-    
-    //videoPlayer->update();
 }
 
 //-------------------------------------------------------------------------
@@ -135,8 +126,35 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
     ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::updateOSC";
     
     
-//    string address = m->getAddress();
-//    
+    string address = m->getAddress();
+    
+    // get the id
+    string addressWithoutSlash = address.substr(1,address.size()-1);
+    
+    if((address=="/all")||(id==addressWithoutSlash))
+    {
+        /// THIS MESSAGE IF FOR YOU !!
+        
+        /// COMMAND
+        string command = m->getArgAsString(0);
+    
+        /// LOAD IMAGE
+        if(command == "loadImage")
+        {
+            //no folder play
+            folderPlay = false;
+            //get varliables
+            imagePath = m->getArgAsString(1);
+            fadeTime = m->getArgAsFloat(2);
+            //load new image
+            images.pop_back();
+            images.push_back(ofImage("images/"+imagePath));
+            beginImageTime = ofGetElapsedTimef()-nextImageTime+fadeTime;
+        }
+        
+        
+    }
+    
 //    if(address.find("play")!=-1)
 //    {
 //        videoPlayer->play();
@@ -162,7 +180,8 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
 //        Tweenzor::add((float *)&screenOpacity.get(), 0.0, 1.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
 //        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
 //    }
-//    
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -208,7 +227,7 @@ void pmWarpPiRendererImagePlayer::showDebug()
     whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString(ofToString(images[0].getWidth()) + " x " +ofToString(images[0].getHeight()),imagePlayerDebugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString(imagePaths[currentImage],imagePlayerDebugPosition.x,whichHeight);
+    ofDrawBitmapString(imagesInFolderPaths[currentImage],imagePlayerDebugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     string loopType;
     
@@ -226,7 +245,7 @@ bool pmWarpPiRendererImagePlayer::loadImages()
     
     // you can now iterate through the files and load them into the ofImage vector
     for(int i = 0; i < (int)dir.size(); i++){
-        imagePaths.push_back(dir.getPath(i));
+        imagesInFolderPaths.push_back(dir.getPath(i));
     }
     return true;
 }

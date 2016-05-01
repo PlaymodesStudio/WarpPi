@@ -15,6 +15,7 @@ void pmWarpPiRendererVideoPlayer::setupVideoPlayer(string _name,ofVec2f _pos, of
     createPlayer();
     /// VIDEO PLAYER
 
+    elementRect.set(_pos, _size.x, _size.y);
     videoFileName = _name;
     videoPosition = _pos;
     videoSize = _size;

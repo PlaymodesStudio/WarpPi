@@ -62,7 +62,7 @@ void ofApp::setup()
             _video->doHomography = doHomography;
         #endif
 
-        renderers.push_back(_video);
+        //renderers.push_back(_video);
     }
     
     // HAS Image?
@@ -75,7 +75,7 @@ void ofApp::setup()
         _image->setupImagePlayer("test", ofVec2f(0,0),ofVec2f(resX,resY));
         _image->useFbo = useFbo;
         _image->doHomography = doHomography;
-        //renderers.push_back(_image);
+        renderers.push_back(_image);
     }
     
     // HAS DMX ?
@@ -508,7 +508,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
                 myMessage->addFloatArg(valF);
                 
             }
-            else if((tokens[1]=="load"))
+            else if((tokens[1]=="load") || (tokens[1]=="loadImage"))
             {
                 /// 3 ARGUMENTS 0/ command string /1 string 2/float
                 /// ----------------------------

@@ -29,7 +29,8 @@ pmWarpPiRendererScreen::pmWarpPiRendererScreen()
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::setupScreen(ofVec2f _pos,ofVec2f _size)
 {
-    
+    screenRect.setPosition(_pos);
+    screenRect.setSize(_size.x, _size.y);
     screenPosition = _pos;
     screenSize = _size;
     doHomography = true;
