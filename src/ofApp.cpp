@@ -256,6 +256,12 @@ void ofApp::update()
                 std::exit(0);
                 this->exit();
             }
+            /// CLOSE connection
+            else if(command == "close")
+            {
+                cout << " received close connection" << endl;
+                tcpClient.close();
+            }
 
         }
     }
@@ -302,8 +308,12 @@ void ofApp::update()
             if( tcpDeltaTime > 5000 )
             {
                 cout << "We're not connected to TCP ..." << endl;
-                tcpAreWeConnected = tcpClient.setup(confTCPSendIpAddress, 11999);
+                tcpAreWeConnected = tcpClient.setup(confTCPSendIpAddress, confTCPPort);
                 tcpConnectTime = ofGetElapsedTimeMillis();
+                if(!tcpAreWeConnected){
+                    tcpClient.setup(confTCPSendIpAddress, confTCPPort+10);
+                    tcpClient.close();
+                }
                 ofLog(OF_LOG_NOTICE) << "Trying to reconnect TCP...." << endl;
                 cout << "Trying to reconnect TCP...." << endl;
             }
@@ -383,6 +393,14 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
 //                ofSystem("/home/pi/openframeworks/apps/MIESPI/WarpPi_rev5/bin/data/scripts/reboot.sh");
                 ofSystem(scriptPath);
 
+            }
+            else if(tokens[1] == "close")
+            {
+                cout << " received close connection" << endl;
+                ofLog(OF_LOG_NOTICE) << " Close connection " << endl;
+                tcpClient.close();
+                tcpClient.setup(confTCPSendIpAddress, confTCPPort+10);
+                tcpClient.close();
             }
             
             
@@ -770,6 +788,8 @@ void ofApp::draw(){
 void ofApp::exit()
 {
     ofLog(OF_LOG_NOTICE) << "on exit() :: TCP CLOSING !!! " << endl;
+    tcpClient.close();
+    tcpClient.setup(confTCPSendIpAddress, confTCPPort+10);
     tcpClient.close();
 }
 
