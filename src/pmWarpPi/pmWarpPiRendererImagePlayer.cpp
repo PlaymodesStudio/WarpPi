@@ -128,10 +128,12 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
             //get varliables
             imagePath = m->getArgAsString(1);
             fadeTime = m->getArgAsFloat(2);
-            //load new image
+            
             images.pop_back();
             images.push_back(ofImage("images/"+imagePath));
-            beginImageTime = ofGetElapsedTimef()-nextImageTime+fadeTime;
+        
+            Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, fadeTime,EASE_IN_OUT_EXPO);
+            Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
         }
         
         
@@ -200,7 +202,13 @@ void pmWarpPiRendererImagePlayer::onCrossFadeComplete(float *arg)
         crossFadeAlpha=screenOpacity;
         
         Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, nextImageTime-fadeTime, fadeTime,EASE_IN_OUT_EXPO);
-        Tweenzor::addCompleteListener(Tweenzor::getTween((float*)&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
+        Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
+    }
+    else
+    {
+        images.pop_front();
+        images.push_back(ofImage("images/"+imagePath));
+        crossFadeAlpha=screenOpacity;
     }
 }
 
