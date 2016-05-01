@@ -266,7 +266,7 @@ bool pmWarpPiRendererImagePlayer::loadImages()
         return false;
     
     dir.sort(); // in linux the file system doesn't return file lists ordered in alphabetical order
-    
+    imagesInFolderPaths.clear();
     // you can now iterate through the files and load them into the ofImage vector
     for(int i = 0; i < (int)dir.size(); i++){
         imagesInFolderPaths.push_back(dir.getPath(i));
