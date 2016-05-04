@@ -4,6 +4,7 @@
     <name> firstOne </name>
     
     <hasVideo>yes </hasVideo>
+    <hasImage> yes </hasImage>
     <hasDMX>no</hasDMX>
     
     <oscReceivePort> 9001 </oscReceivePort>

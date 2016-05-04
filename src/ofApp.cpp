@@ -62,12 +62,12 @@ void ofApp::setup()
             _video->doHomography = doHomography;
         #endif
 
-        //renderers.push_back(_video);
+        renderers.push_back(_video);
     }
     
     // HAS Image?
     ///////////////
-    if(confHasVideo)
+    if(confHasImage)
     {
         pmWarpPiRendererImagePlayer* _image = new pmWarpPiRendererImagePlayer();
         _image->setup(id);
@@ -114,8 +114,10 @@ void ofApp::readConfig()
     
     /// WHAT IT HAS ?
     confHasVideo = confHasDmx = false;
-    if(configXML.getValue("hasVideo","error")=="yes") confHasVideo=true;
+    if(configXML.getValue("hasVideo","error") == "yes") confHasVideo=true;
     else confHasVideo=false;
+    
+    confHasImage = configXML.getValue("hasImage", "false") == "yes" ? true: false;
 
     if(configXML.getValue("hasDMX","error")=="yes") confHasDmx=true;
     else confHasDmx=false;

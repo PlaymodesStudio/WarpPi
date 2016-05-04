@@ -90,6 +90,7 @@ public:
     int                         confOscSendPort;
     string                      confOscSendIpAddress;
     bool                        confHasVideo;
+    bool                        confHasImage;
     bool                        confHasDmx;
     string                      confVideoFileName;
     string                      confName;
