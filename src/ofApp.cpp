@@ -76,7 +76,7 @@ void ofApp::setup()
         _image->setupImagePlayer("test", ofVec2f(0,0),ofVec2f(resX,resY));
         _image->useFbo = useFbo;
         _image->doHomography = doHomography;
-        _image->screenOpacity.set(0.0);
+        //_image->screenOpacity.set(0.0);
         ofAddListener(_image->swapEvent, this, &ofApp::swapToImage);
         renderers.push_back(_image);
     }
@@ -773,6 +773,7 @@ void ofApp::draw(){
         // IF WE USE FBO -> APPLY HOMOGRAPHY WARPING -> DRAW RENDERERS NORMALLY
         for(int i=0;i<renderers.size();i++)
         {
+            if(i == 1)return;
             renderers[i]->draw();
         }
         
@@ -953,10 +954,14 @@ void ofApp::toggleTest()
 void ofApp::swapToImage(bool &b)
 {
     cout<<"swapToImage"<<endl;
+    if(typeid(renderers[0]) == typeid(pmWarpPiRendererImagePlayer)) return;
+    swap(renderers[0], renderers[1]);
 }
 
 //--------------------------------------------------------------
 void ofApp::swapToVideo(bool &b)
 {
+    if(typeid(renderers[0]) == typeid(pmWarpPiRendererVideoPlayer)) return;
+    swap(renderers[0], renderers[1]);
     cout<<"swapToVideo"<<endl;
 }
