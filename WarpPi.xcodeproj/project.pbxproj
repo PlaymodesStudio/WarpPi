@@ -29,6 +29,16 @@
 		8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81967292BFC87A0144BD32C6 /* ofxOscSender.cpp */; };
 		933A2227713C720CEFF80FD9 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B40EDA85BEB63E46785BC29 /* tinyxml.cpp */; };
 		9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 832BDC407620CDBA568B713D /* tinyxmlerror.cpp */; };
+		9FCC2D8F1CD9F3FD0066FC01 /* pmWarpPiRendererArtNet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9FCC2D8D1CD9F3FD0066FC01 /* pmWarpPiRendererArtNet.cpp */; };
+		9FCC2DAA1CD9F4260066FC01 /* ofxArtNet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9FCC2D931CD9F4260066FC01 /* ofxArtNet.cpp */; };
+		9FCC2DAB1CD9F4260066FC01 /* ofxArtNetDmxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9FCC2D951CD9F4260066FC01 /* ofxArtNetDmxData.cpp */; };
+		9FCC2DAC1CD9F4260066FC01 /* ofxArtNetNodeEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9FCC2D971CD9F4260066FC01 /* ofxArtNetNodeEntry.cpp */; };
+		9FCC2DAD1CD9F4260066FC01 /* artnet.c in Sources */ = {isa = PBXBuildFile; fileRef = 9FCC2DA41CD9F4260066FC01 /* artnet.c */; };
+		9FCC2DAE1CD9F4260066FC01 /* misc.c in Sources */ = {isa = PBXBuildFile; fileRef = 9FCC2DA51CD9F4260066FC01 /* misc.c */; };
+		9FCC2DAF1CD9F4260066FC01 /* network.c in Sources */ = {isa = PBXBuildFile; fileRef = 9FCC2DA61CD9F4260066FC01 /* network.c */; };
+		9FCC2DB01CD9F4260066FC01 /* receive.c in Sources */ = {isa = PBXBuildFile; fileRef = 9FCC2DA71CD9F4260066FC01 /* receive.c */; };
+		9FCC2DB11CD9F4260066FC01 /* tod.c in Sources */ = {isa = PBXBuildFile; fileRef = 9FCC2DA81CD9F4260066FC01 /* tod.c */; };
+		9FCC2DB21CD9F4260066FC01 /* transmit.c in Sources */ = {isa = PBXBuildFile; fileRef = 9FCC2DA91CD9F4260066FC01 /* transmit.c */; };
 		ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADD194746185E2DA11468377 /* IpEndpointName.cpp */; };
 		B266578FC55D23BFEBC042E7 /* ofxGuiGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF8674C7975F1063C5E30CA /* ofxGuiGroup.cpp */; };
 		B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 802251BAF1B35B1D67B32FD0 /* ofxSliderGroup.cpp */; };
@@ -121,6 +131,28 @@
 		9BF3AA0D4FAA89D0F8A0E545 /* OscReceivedElements.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = OscReceivedElements.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscReceivedElements.cpp; sourceTree = SOURCE_ROOT; };
 		9F16132B1CD52F7300312775 /* LocalAddressGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalAddressGrabber.h; sourceTree = "<group>"; };
 		9F7986DC4EB05E75FCE2C777 /* ofxOscSender.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscSender.h; path = ../../../addons/ofxOsc/src/ofxOscSender.h; sourceTree = SOURCE_ROOT; };
+		9FCC2D8D1CD9F3FD0066FC01 /* pmWarpPiRendererArtNet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pmWarpPiRendererArtNet.cpp; sourceTree = "<group>"; };
+		9FCC2D8E1CD9F3FD0066FC01 /* pmWarpPiRendererArtNet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pmWarpPiRendererArtNet.h; sourceTree = "<group>"; };
+		9FCC2D921CD9F4260066FC01 /* LocalAddressGrabber.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalAddressGrabber.h; sourceTree = "<group>"; };
+		9FCC2D931CD9F4260066FC01 /* ofxArtNet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxArtNet.cpp; sourceTree = "<group>"; };
+		9FCC2D941CD9F4260066FC01 /* ofxArtNet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxArtNet.h; sourceTree = "<group>"; };
+		9FCC2D951CD9F4260066FC01 /* ofxArtNetDmxData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxArtNetDmxData.cpp; sourceTree = "<group>"; };
+		9FCC2D961CD9F4260066FC01 /* ofxArtNetDmxData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxArtNetDmxData.h; sourceTree = "<group>"; };
+		9FCC2D971CD9F4260066FC01 /* ofxArtNetNodeEntry.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxArtNetNodeEntry.cpp; sourceTree = "<group>"; };
+		9FCC2D981CD9F4260066FC01 /* ofxArtNetNodeEntry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxArtNetNodeEntry.h; sourceTree = "<group>"; };
+		9FCC2D9C1CD9F4260066FC01 /* artnet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = artnet.h; sourceTree = "<group>"; };
+		9FCC2D9D1CD9F4260066FC01 /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		9FCC2D9E1CD9F4260066FC01 /* misc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = misc.h; sourceTree = "<group>"; };
+		9FCC2D9F1CD9F4260066FC01 /* packets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = packets.h; sourceTree = "<group>"; };
+		9FCC2DA01CD9F4260066FC01 /* private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = private.h; sourceTree = "<group>"; };
+		9FCC2DA11CD9F4260066FC01 /* tod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tod.h; sourceTree = "<group>"; };
+		9FCC2DA21CD9F4260066FC01 /* unistd_d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = unistd_d.h; sourceTree = "<group>"; };
+		9FCC2DA41CD9F4260066FC01 /* artnet.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = artnet.c; sourceTree = "<group>"; };
+		9FCC2DA51CD9F4260066FC01 /* misc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = misc.c; sourceTree = "<group>"; };
+		9FCC2DA61CD9F4260066FC01 /* network.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = network.c; sourceTree = "<group>"; };
+		9FCC2DA71CD9F4260066FC01 /* receive.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = receive.c; sourceTree = "<group>"; };
+		9FCC2DA81CD9F4260066FC01 /* tod.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tod.c; sourceTree = "<group>"; };
+		9FCC2DA91CD9F4260066FC01 /* transmit.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = transmit.c; sourceTree = "<group>"; };
 		A2AAA8CA403479E6FCDF920E /* OscHostEndianness.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscHostEndianness.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscHostEndianness.h; sourceTree = SOURCE_ROOT; };
 		ADD194746185E2DA11468377 /* IpEndpointName.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = IpEndpointName.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/IpEndpointName.cpp; sourceTree = SOURCE_ROOT; };
 		AE335EB4709BFD4671EEAC84 /* MessageMappingOscPacketListener.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MessageMappingOscPacketListener.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/MessageMappingOscPacketListener.h; sourceTree = SOURCE_ROOT; };
@@ -302,6 +334,75 @@
 			name = ofxDmx;
 			sourceTree = "<group>";
 		};
+		9FCC2D901CD9F4260066FC01 /* ofxArtNet_PM */ = {
+			isa = PBXGroup;
+			children = (
+				9FCC2D911CD9F4260066FC01 /* src */,
+				9FCC2D991CD9F4260066FC01 /* libs */,
+			);
+			name = ofxArtNet_PM;
+			sourceTree = "<group>";
+		};
+		9FCC2D911CD9F4260066FC01 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				9FCC2D921CD9F4260066FC01 /* LocalAddressGrabber.h */,
+				9FCC2D931CD9F4260066FC01 /* ofxArtNet.cpp */,
+				9FCC2D941CD9F4260066FC01 /* ofxArtNet.h */,
+				9FCC2D951CD9F4260066FC01 /* ofxArtNetDmxData.cpp */,
+				9FCC2D961CD9F4260066FC01 /* ofxArtNetDmxData.h */,
+				9FCC2D971CD9F4260066FC01 /* ofxArtNetNodeEntry.cpp */,
+				9FCC2D981CD9F4260066FC01 /* ofxArtNetNodeEntry.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxArtNet_PM/src;
+			sourceTree = "<group>";
+		};
+		9FCC2D991CD9F4260066FC01 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				9FCC2D9A1CD9F4260066FC01 /* artnet */,
+			);
+			name = libs;
+			path = ../../../addons/ofxArtNet_PM/libs;
+			sourceTree = "<group>";
+		};
+		9FCC2D9A1CD9F4260066FC01 /* artnet */ = {
+			isa = PBXGroup;
+			children = (
+				9FCC2D9B1CD9F4260066FC01 /* include */,
+				9FCC2DA31CD9F4260066FC01 /* src */,
+			);
+			path = artnet;
+			sourceTree = "<group>";
+		};
+		9FCC2D9B1CD9F4260066FC01 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				9FCC2D9C1CD9F4260066FC01 /* artnet.h */,
+				9FCC2D9D1CD9F4260066FC01 /* common.h */,
+				9FCC2D9E1CD9F4260066FC01 /* misc.h */,
+				9FCC2D9F1CD9F4260066FC01 /* packets.h */,
+				9FCC2DA01CD9F4260066FC01 /* private.h */,
+				9FCC2DA11CD9F4260066FC01 /* tod.h */,
+				9FCC2DA21CD9F4260066FC01 /* unistd_d.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		9FCC2DA31CD9F4260066FC01 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				9FCC2DA41CD9F4260066FC01 /* artnet.c */,
+				9FCC2DA51CD9F4260066FC01 /* misc.c */,
+				9FCC2DA61CD9F4260066FC01 /* network.c */,
+				9FCC2DA71CD9F4260066FC01 /* receive.c */,
+				9FCC2DA81CD9F4260066FC01 /* tod.c */,
+				9FCC2DA91CD9F4260066FC01 /* transmit.c */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		A763ED608B35AE3310251DEE /* src */ = {
 			isa = PBXGroup;
 			children = (
@@ -336,6 +437,7 @@
 				E6053AB7FEC63D5F83825B88 /* ofxOsc */,
 				FDD04E4D261D3569FFD1D18C /* ofxTweenzor */,
 				1F4FB5C423662B96ADFDCC0B /* ofxXmlSettings */,
+				9FCC2D901CD9F4260066FC01 /* ofxArtNet_PM */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -401,6 +503,8 @@
 				D72541E51CC91C5700430572 /* pmWarpPiRendererScreen.h */,
 				D72541E61CC91C5700430572 /* pmWarpPiRendererVideoPlayer.cpp */,
 				D72541E71CC91C5700430572 /* pmWarpPiRendererVideoPlayer.h */,
+				9FCC2D8D1CD9F3FD0066FC01 /* pmWarpPiRendererArtNet.cpp */,
+				9FCC2D8E1CD9F3FD0066FC01 /* pmWarpPiRendererArtNet.h */,
 			);
 			path = pmWarpPi;
 			sourceTree = "<group>";
@@ -629,11 +733,13 @@
 				837220E80EB56CD44AD27F2A /* ofxSlider.cpp in Sources */,
 				B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */,
 				1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */,
+				9FCC2D8F1CD9F3FD0066FC01 /* pmWarpPiRendererArtNet.cpp in Sources */,
 				72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */,
 				5864AD82E20F15536D054EA3 /* ofxOscMessage.cpp in Sources */,
 				4ADB88E2FB52E76A471065DE /* ofxOscParameterSync.cpp in Sources */,
 				640279EE111671BD026CB013 /* ofxOscReceiver.cpp in Sources */,
 				D72541E91CC91C5700430572 /* pmWarpPiRendererDmx.cpp in Sources */,
+				9FCC2DAF1CD9F4260066FC01 /* network.c in Sources */,
 				8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */,
 				ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */,
 				D72541EB1CC91C5700430572 /* pmWarpPiRendererOMXPlayer.cpp in Sources */,
@@ -641,17 +747,25 @@
 				D7F3D2F01CC550BF00B8CA4C /* ofxTCPServer.cpp in Sources */,
 				D72541ED1CC91C5700430572 /* pmWarpPiRendererVideoPlayer.cpp in Sources */,
 				510CAFE035E576A4E1502D52 /* UdpSocket.cpp in Sources */,
+				9FCC2DAB1CD9F4260066FC01 /* ofxArtNetDmxData.cpp in Sources */,
+				9FCC2DAE1CD9F4260066FC01 /* misc.c in Sources */,
+				9FCC2DB21CD9F4260066FC01 /* transmit.c in Sources */,
 				62545D179C94265CA1389D4A /* OscOutboundPacketStream.cpp in Sources */,
 				D72541EC1CC91C5700430572 /* pmWarpPiRendererScreen.cpp in Sources */,
 				C4782ECC372420ACE0615B74 /* OscPrintReceivedElements.cpp in Sources */,
+				9FCC2DB01CD9F4260066FC01 /* receive.c in Sources */,
 				0546D1A38E13BD319CC9755B /* OscReceivedElements.cpp in Sources */,
+				9FCC2DAA1CD9F4260066FC01 /* ofxArtNet.cpp in Sources */,
 				879A251454401BC0B6E4F238 /* OscTypes.cpp in Sources */,
 				6205DF95C4D4CD36CC5A274C /* Tween.cpp in Sources */,
 				124BB58EFBC1472D607D739B /* Tweenzor.cpp in Sources */,
+				9FCC2DAC1CD9F4260066FC01 /* ofxArtNetNodeEntry.cpp in Sources */,
 				63B57AC5BF4EF088491E0317 /* ofxXmlSettings.cpp in Sources */,
 				933A2227713C720CEFF80FD9 /* tinyxml.cpp in Sources */,
 				9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */,
+				9FCC2DB11CD9F4260066FC01 /* tod.c in Sources */,
 				5A4349E9754D6FA14C0F2A3A /* tinyxmlparser.cpp in Sources */,
+				9FCC2DAD1CD9F4260066FC01 /* artnet.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -801,6 +915,7 @@
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
+				USER_HEADER_SEARCH_PATHS = ../../../addons/ofxArtNet_PM/libs/artnet/include/;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -843,6 +958,7 @@
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = ../../../addons/ofxArtNet_PM/libs/artnet/include/;
 				WRAPPER_EXTENSION = app;
 				baseConfigurationReference = E4EB6923138AFD0F00A09F29;
 			};
