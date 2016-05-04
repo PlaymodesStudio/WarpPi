@@ -42,6 +42,8 @@ public:
     void mouseEntered(ofMouseEventArgs & args){};
     void mouseExited(ofMouseEventArgs & args){};
     
+    ofEvent<bool>      swapEvent;
+    
 
     void                testScreen();
     void                resetQuad();

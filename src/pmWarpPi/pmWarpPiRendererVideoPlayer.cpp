@@ -32,7 +32,6 @@ void pmWarpPiRendererVideoPlayer::setupVideoPlayer(string _name,ofVec2f _pos, of
         gui->setPosition(videoPlayerDebugPosition.x,videoPlayerDebugPosition.y + 75);
         guiIsSetup = true;
     }
-    
 }
 
 //-------------------------------------------------------------------------
@@ -129,6 +128,9 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
             new_videoFileName = "./videos/"+new_videoFileName;
             if(videoFileName == new_videoFileName) return;
             videoFileName = new_videoFileName;
+            
+            bool toSend = true;
+            ofNotifyEvent(swapEvent, toSend, this);
             
             ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: OSC :: load : " << videoFileName << " : fadeTime : " << fadeTime;
             

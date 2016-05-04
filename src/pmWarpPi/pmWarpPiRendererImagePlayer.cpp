@@ -132,6 +132,9 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
             images.pop_back();
             images.push_back(ofImage("images/"+imagePath));
         
+            bool toSend = true;
+            ofNotifyEvent(swapEvent, toSend, this);
+            
             Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, fadeTime,EASE_IN_OUT_EXPO);
             Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
         }

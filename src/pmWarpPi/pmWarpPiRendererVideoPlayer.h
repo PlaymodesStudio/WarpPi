@@ -96,6 +96,7 @@ public:
     void mouseScrolled(ofMouseEventArgs & args){};
     void mouseEntered(ofMouseEventArgs & args){};
     void mouseExited(ofMouseEventArgs & args){};
+    
 
 private:
     /// CLASS PARAMS

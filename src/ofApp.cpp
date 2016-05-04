@@ -61,7 +61,8 @@ void ofApp::setup()
             _video->useFbo = useFbo;
             _video->doHomography = doHomography;
         #endif
-
+        //_video->screenOpacity.set(0.0);
+        ofAddListener(_video->swapEvent, this, &ofApp::swapToVideo);
         renderers.push_back(_video);
     }
     
@@ -75,6 +76,8 @@ void ofApp::setup()
         _image->setupImagePlayer("test", ofVec2f(0,0),ofVec2f(resX,resY));
         _image->useFbo = useFbo;
         _image->doHomography = doHomography;
+        _image->screenOpacity.set(0.0);
+        ofAddListener(_image->swapEvent, this, &ofApp::swapToImage);
         renderers.push_back(_image);
     }
     
@@ -944,5 +947,16 @@ void ofApp::toggleTest()
         //renderers[i]->isTesting = this->isTesting;
         renderers[i]->setIsTesting(this->isTesting);
     }
+}
 
+//--------------------------------------------------------------
+void ofApp::swapToImage(bool &b)
+{
+    cout<<"swapToImage"<<endl;
+}
+
+//--------------------------------------------------------------
+void ofApp::swapToVideo(bool &b)
+{
+    cout<<"swapToVideo"<<endl;
 }
