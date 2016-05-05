@@ -962,22 +962,15 @@ void ofApp::toggleTest()
 //--------------------------------------------------------------
 void ofApp::swapToImage(bool &b)
 {
-    
-    if(typeid(renderers[0]).hash_code() != typeid(pmWarpPiRendererImagePlayer).hash_code())
+    if(renderers[0]->getType() != renderImage)
         swap(renderers[0], renderers[1]);
-    cout<<"swapToImage"<<endl;
-    
-    
-
 }
 
 //--------------------------------------------------------------
 void ofApp::swapToVideo(bool &b)
 {
-    if(typeid(renderers[0]).hash_code() != typeid(pmWarpPiRendererVideoPlayer).hash_code())
+    if(renderers[0]->getType() != renderVideo)
         swap(renderers[0], renderers[1]);
-    
-    cout<<"swapToVideo"<<endl;
 }
 
 //--------------------------------------------------------------

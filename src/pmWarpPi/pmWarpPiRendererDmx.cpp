@@ -6,6 +6,7 @@ pmWarpPiRendererDmx::pmWarpPiRendererDmx()
 {
     dmx = new ofxDmx();
     ofLog(OF_LOG_NOTICE) << "pmDMX :: new Renderer DMX";
+    type = renderDmx;
 }
 
 //-------------------------------------------------------------------------

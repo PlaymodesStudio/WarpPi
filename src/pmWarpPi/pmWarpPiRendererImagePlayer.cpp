@@ -12,6 +12,7 @@ pmWarpPiRendererImagePlayer::pmWarpPiRendererImagePlayer()
     //videoPlayer = new ofVideoPlayer();
     
     cout << "new Image Player " << endl;
+    type = renderImage;
     
 }
 //-------------------------------------------------------------------------

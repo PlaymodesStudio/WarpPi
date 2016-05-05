@@ -15,6 +15,12 @@
 class pmLedsC4Screen;
 */
 
+enum renderType{
+    renderImage,
+    renderVideo,
+    renderDmx,
+    renderArtNet
+};
 
 class pmWarpPiRenderer
 {
@@ -37,6 +43,7 @@ public:
     virtual void        showDebug(){};
     virtual void        setIsTesting(bool b){isTesting=b;};
     virtual void        setIsDebugging(bool b){isDebugging=b;};
+    renderType          getType(){return type;};
 //
 //    void mouseMoved(ofMouseEventArgs &a){};
 //    void mouseDragged(ofMouseEventArgs &a){};
@@ -57,6 +64,7 @@ public:
     bool                isDebugging;   
     bool                isTesting;
     string              id;
+    renderType          type;
     
     /// OSC
     ////////
