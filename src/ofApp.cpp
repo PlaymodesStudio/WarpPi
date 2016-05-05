@@ -932,8 +932,6 @@ void ofApp::toggleDebug()
     {
         renderers[i]->setIsDebugging(this->isDebugging);
     }
-
-    
 }
 //--------------------------------------------------------------
 void ofApp::setTest(bool b)
@@ -943,7 +941,6 @@ void ofApp::setTest(bool b)
     {
         renderers[i]->setIsTesting(b);
     }
-    
 }
 //--------------------------------------------------------------
 void ofApp::toggleTest()
@@ -962,8 +959,10 @@ void ofApp::toggleTest()
 void ofApp::swapToImage(bool &b)
 {
     if(renderers[0]->getType() != renderImage){
-        renderers[1]->fadeIn(5);
-        renderers[0]->fadeOut(5);
+        renderers[1]->fadeIn(2);
+        string message = "11 stop 2";
+        ofxOscMessage* m = processTCP(message);
+        renderers[0]->updateOSC(m);
         swap(renderers[0], renderers[1]);
     }
 }

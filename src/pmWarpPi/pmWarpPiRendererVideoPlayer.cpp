@@ -136,14 +136,8 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
             
             ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: OSC :: load : " << videoFileName << " : fadeTime : " << fadeTime;
             
-//            loadMovie();
-            
             Tweenzor::add((float *)&screenOpacity.get(), maxScreenOpacity, 0.0, 0.0, fadeTime, EASE_IN_OUT_EXPO);
             Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onFadeOutComplete);
-            
-//            Tweenzor::add((float *)&screenOpacity.get(), 0.0, maxScreenOpacity, 0.0, fadeTime,EASE_IN_OUT_EXPO);
-//            Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
-            
         }
         
         /// EDIT QUAD
@@ -248,12 +242,6 @@ void pmWarpPiRendererVideoPlayer::onComplete(float* arg)
         cout << "this is a stop?" << endl;
         if(screenOpacity==0.0) stopPlayer();
     }
-    //    if(arg == &_x2.get())
-    //    {
-    //        Tweenzor::add((float *)&_x1.get(), 0, ofGetWidth(), 0, 2,EASE_IN_OUT_EXPO);
-    //        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&_x1.get()), this, &testApp::onComplete);
-    //    }
-    
 }
 
 //--------------------------------------------------------------
@@ -264,17 +252,6 @@ void pmWarpPiRendererVideoPlayer::onFadeOutComplete(float* arg)
     loadMovie();
     Tweenzor::add((float *)&screenOpacity.get(), 0.0, maxScreenOpacity, 0.0, fadeTime, EASE_IN_OUT_EXPO);
     Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
-    
-//    if(arg == &screenOpacity.get())
-//    {
-//        cout << "this is a stop?" << endl;
-//        if(screenOpacity==0.0) stopPlayer();
-//    }
-//    //    if(arg == &_x2.get())
-//    //    {
-//    //        Tweenzor::add((float *)&_x1.get(), 0, ofGetWidth(), 0, 2,EASE_IN_OUT_EXPO);
-//    //        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&_x1.get()), this, &testApp::onComplete);
-//    //    }
     
 }
 
