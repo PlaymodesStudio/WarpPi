@@ -7,7 +7,7 @@ pmWarpPiRendererImagePlayer::pmWarpPiRendererImagePlayer()
     folderName = "";
     imagePosition = ofVec2f(0,0);
     imageSize = ofVec2f(0,0);
-    imagePlayerDebugPosition = ofVec2f(520,20);
+    imagePlayerDebugPosition = ofVec2f(770,20);
     
     //videoPlayer = new ofVideoPlayer();
     

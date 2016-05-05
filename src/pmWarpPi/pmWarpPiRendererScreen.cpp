@@ -144,7 +144,10 @@ void pmWarpPiRendererScreen::draw()
         ofDrawLine(distortedCorners[3],distortedCorners[0]);
     }
     
-    if(isDebugging) showScreenDebug(); showDebug();
+    if(isDebugging){
+        showScreenDebug();
+        showDebug();
+    }
     
     gui->draw();
 }
