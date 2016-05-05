@@ -59,7 +59,7 @@ public:
     float nextImageTime; // when do want to stop the timer
     
     float fadeTime;
-    
+    bool canSwap;
     
     string              folderName;
     ofVec2f             imagePosition;

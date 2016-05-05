@@ -40,6 +40,7 @@ void pmWarpPiRendererImagePlayer::setupImagePlayer(string _name,ofVec2f _pos, of
     nextImageTime = 5; // in seconds
     fadeTime = 1;
     crossFadeAlpha = 1;
+    canSwap = false;
     
     
     /// GUI
@@ -123,6 +124,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
         /// LOAD IMAGE
         if(command == "loadImage")
         {
+            if(canSwap){
             //no folder play
             folderPlay = false;
             //get varliables
@@ -135,8 +137,10 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
             bool toSend = true;
             ofNotifyEvent(swapEvent, toSend, this);
             
-            Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, fadeTime,EASE_IN_OUT_EXPO);
+            Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, fadeTime, EASE_IN_OUT_EXPO);
             Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
+            canSwap = false;
+            }
         }
         else if(command == "loadFolder")
         {
@@ -155,6 +159,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
             
             Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, fadeTime,EASE_IN_OUT_EXPO);
             Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
+            canSwap = false;
         }
     }
     
@@ -229,6 +234,7 @@ void pmWarpPiRendererImagePlayer::onCrossFadeComplete(float *arg)
         images.push_back(ofImage("images/"+imagePath));
         crossFadeAlpha=screenOpacity;
     }
+    canSwap = true;
 }
 
 //-------------------------------------------------------------------------
