@@ -262,7 +262,10 @@ void pmWarpPiRendererImagePlayer::showDebug()
     whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString(ofToString(images[0].getWidth()) + " x " +ofToString(images[0].getHeight()),imagePlayerDebugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString(imagesInFolderPaths[currentImage],imagePlayerDebugPosition.x,whichHeight);
+    if(currentImage != -1 && folderPlay)
+        ofDrawBitmapString(imagesInFolderPaths[currentImage],imagePlayerDebugPosition.x,whichHeight);
+    else
+        ofDrawBitmapString(imagePath, imagePlayerDebugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     string loopType;
     
