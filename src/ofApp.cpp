@@ -80,7 +80,7 @@ void ofApp::setup()
         _image->setupImagePlayer("test", ofVec2f(0,0),ofVec2f(resX,resY));
         _image->useFbo = useFbo;
         _image->doHomography = doHomography;
-        //_image->screenOpacity.set(0.0);
+        _image->screenOpacity.set(0.0);
         ofAddListener(_image->swapEvent, this, &ofApp::swapToImage);
         renderers.push_back(_image);
     }
@@ -92,7 +92,7 @@ void ofApp::setup()
         pmWarpPiRendererDmx* _dmx = new pmWarpPiRendererDmx();
         _dmx->setup(id);
         _dmx->setupDmx(confDmxDevice,confDmxNumChannels,confDmxFirstChannel);
-        renderers.push_back((pmWarpPiRenderer*) _dmx);
+        //renderers.push_back((pmWarpPiRenderer*) _dmx);
     }
     //keyPressed('d');
     //ofSetLogLevel(OF_LOG_SILENT);
@@ -779,8 +779,7 @@ void ofApp::draw(){
         // IF WE USE FBO -> APPLY HOMOGRAPHY WARPING -> DRAW RENDERERS NORMALLY
     for(int i=0;i<renderers.size();i++)
     {
-        if(i != 1)
-            renderers[i]->draw();
+        renderers[i]->draw();
     }
     
     if(this->isDebugging)
@@ -962,15 +961,22 @@ void ofApp::toggleTest()
 //--------------------------------------------------------------
 void ofApp::swapToImage(bool &b)
 {
-    if(renderers[0]->getType() != renderImage)
+    if(renderers[0]->getType() != renderImage){
+        renderers[1]->fadeIn(5);
+        renderers[0]->fadeOut(5);
         swap(renderers[0], renderers[1]);
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::swapToVideo(bool &b)
 {
-    if(renderers[0]->getType() != renderVideo)
+    if(renderers[0]->getType() != renderVideo){
+        renderers[1]->fadeIn(5);
+        renderers[0]->fadeOut(5);
         swap(renderers[0], renderers[1]);
+    }
+    
 }
 
 //--------------------------------------------------------------

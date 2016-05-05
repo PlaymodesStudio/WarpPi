@@ -85,10 +85,11 @@ void pmWarpPiRendererImagePlayer::drawElement(ofRectangle container)
     drawImage(1, screenOpacity-crossFadeAlpha, container);
     
     //for testing image rotation
-    int testSize = 100;
-    drawImage(0, 255, ofRectangle(0,ofGetHeight()-testSize, testSize , testSize));
-    drawImage(1, 255, ofRectangle(testSize,ofGetHeight()-testSize,testSize , testSize));
-    
+    if(isDebugging){
+        int testSize = 100;
+        drawImage(0, 255, ofRectangle(0,ofGetHeight()-testSize, testSize , testSize));
+        drawImage(1, 255, ofRectangle(testSize,ofGetHeight()-testSize,testSize , testSize));
+    }
 }
 
 //-----------------------------------------------------------------------

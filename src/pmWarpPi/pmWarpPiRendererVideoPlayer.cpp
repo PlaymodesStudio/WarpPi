@@ -63,15 +63,15 @@ void pmWarpPiRendererVideoPlayer::updateForScreen()
 void pmWarpPiRendererVideoPlayer::drawElement(ofRectangle container)
 {
     ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::draw";
-
-        // SCREEN BACKGROUND
-        ofSetColor(0,0,0,255);
-        ofFill();
-        ofDrawRectangle(container);
     
-            // DRAW VIDEO
-            ofSetColor(255 * screenOpacity * maxScreenOpacity);
-            drawPlayer(container);
+    // SCREEN BACKGROUND
+//    ofSetColor(0,0,0,255*screenOpacity);
+//    ofFill();
+    //ofDrawRectangle(container);
+    
+    // DRAW VIDEO
+    ofSetColor(255,255,255,255 * screenOpacity * maxScreenOpacity);
+    drawPlayer(container);
 }
 
 
