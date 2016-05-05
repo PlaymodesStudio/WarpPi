@@ -6,3 +6,4 @@ ofxTweenzor
 ofxXmlSettings
 ofxOMXPlayer
 ofxNetwork
+ofxArtNet_PM
