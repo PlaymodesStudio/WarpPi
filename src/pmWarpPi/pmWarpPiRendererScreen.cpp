@@ -182,6 +182,57 @@ void pmWarpPiRendererScreen::updateOSC(ofxOscMessage* m)
                     screenFbo->allocate(screenSize.x,screenSize.y);
             }
         }
+        
+        /// EDIT QUAD
+        else if(command == "editQuad")
+        {
+            cout << "Screen received a doEditQuad !! " << endl;
+            
+            int val = m->getArgAsInt32(1);
+            doEditQuadPoints = (val == 0) ? false : true;
+        }
+        /// NEXT QUAD POINT
+        else if(command == "nextQuadPoint")
+        {
+            nextQuadPoint();
+        }
+        /// PREVIOUS QUAD POINT
+        else if(command == "preQuadPoint")
+        {
+            previousQuadPoint();
+        }
+        /// MOVE QUAD POINT UP
+        else if(command == "movePointUp")
+        {
+            distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y - m->getArgAsInt32(1);
+        }
+        /// MOVE QUAD POINT DOWN
+        else if(command == "movePointDown")
+        {
+            distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y + m->getArgAsInt32(1);
+        }
+        /// MOVE QUAD POINT LEFT
+        else if(command == "movePointLeft")
+        {
+            distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x - m->getArgAsInt32(1);
+        }
+        /// MOVE QUAD POINT RIGHT
+        else if(command == "movePointRight")
+        {
+            distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x + m->getArgAsInt32(1);
+        }
+        /// SAVE QUAD
+        else if(command == "saveQuad")
+        {
+            saveConfigToXML();
+        }
+        /// RESET QUAD
+        else if(command == "resetQuad")
+        {
+            cout << "Resetting Quad !!" << endl;
+            resetQuad();
+        }
+
     }
 }
 

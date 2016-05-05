@@ -204,34 +204,6 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
             canSwap = false;
         }
     }
-    
-    //    if(address.find("play")!=-1)
-    //    {
-    //        videoPlayer->play();
-    //        Tweenzor::add((float *)&screenOpacity.get(), 0.0, 1.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
-    //        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
-    //    }
-    //    if(address.find("stop")!=-1)
-    //    {
-    //        Tweenzor::add((float *)&screenOpacity.get(), 1.0, 0.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
-    //        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
-    //    }
-    //    if(address.find("pause")!=-1)
-    //    {
-    //        if(videoPlayer->isPaused()) videoPlayer->setPaused(false);
-    //        else videoPlayer->setPaused(true);
-    //
-    //    }
-    //    if(address.find("restart")!=-1)
-    //    {
-    //        videoPlayer->setPaused(true);
-    //        videoPlayer->setPosition(0.0);
-    //        videoPlayer->play();
-    //        Tweenzor::add((float *)&screenOpacity.get(), 0.0, 1.0, 0.0, m->getArgAsFloat(0),EASE_IN_OUT_EXPO);
-    //        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
-    //    }
-    
-    
 }
 
 //--------------------------------------------------------------
@@ -243,15 +215,7 @@ void pmWarpPiRendererImagePlayer::onComplete(float* arg)
     if(arg == &screenOpacity.get())
     {
         cout << "this is a stop?" << endl;
-        //if(screenOpacity==0.0) videoPlayer->stop();
     }
-    
-    //    if(arg == &_x2.get())
-    //    {
-    //        Tweenzor::add((float *)&_x1.get(), 0, ofGetWidth(), 0, 2,EASE_IN_OUT_EXPO);
-    //        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&_x1.get()), this, &testApp::onComplete);
-    //    }
-    
 }
 
 //--------------------------------------------------------------
@@ -284,7 +248,7 @@ void pmWarpPiRendererImagePlayer::deleteRenderer()
 {
     ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::delete";
     
-    //videoPlayer->close();
+    images.clear();
     
 }
 
