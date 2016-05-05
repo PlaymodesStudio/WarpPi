@@ -40,18 +40,18 @@ void pmWarpPiRendererImagePlayer::setupImagePlayer(string _name,ofVec2f _pos, of
     beginImageTime = ofGetElapsedTimef();  // get the start time
     nextImageTime = 5; // in seconds
     fadeTime = 1;
-    crossFadeAlpha = 1;
     canSwap = false;
     
     
     /// GUI
     gui->setup(); // most of the time you don't need a name but don't forget to call setup
-    gui->add(screenOpacity.set( "opacity", 1.0, 0.0, 1.0));
+    gui->add(screenOpacity.set( "opacity", 0.0, 0.0, 1.0));
     gui->setPosition(imagePlayerDebugPosition.x,imagePlayerDebugPosition.y + 75);
+    crossFadeAlpha = screenOpacity;
     
     
-    Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, nextImageTime-fadeTime, fadeTime,EASE_IN_OUT_EXPO);
-    Tweenzor::addCompleteListener(Tweenzor::getTween((float*)&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
+//    Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, nextImageTime-fadeTime, fadeTime,EASE_IN_OUT_EXPO);
+//    Tweenzor::addCompleteListener(Tweenzor::getTween((float*)&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
     
 }
 
@@ -82,7 +82,7 @@ void pmWarpPiRendererImagePlayer::drawElement(ofRectangle container)
     //draw current image
     drawImage(0, crossFadeAlpha, container);
     //draw next image
-    drawImage(1, screenOpacity-crossFadeAlpha, container);
+    drawImage(1, screenOpacity.get()-crossFadeAlpha, container);
     
     //for testing image rotation
     if(isDebugging){
@@ -130,10 +130,11 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
             //get varliables
             auto temp_fadeTime = m->getArgAsFloat(2);
             
-            images.pop_back();
-            images.push_back(ofImage("images/"+imagePath));
             
-            bool toSend = true;
+//            images.pop_back();
+//            images.push_back(ofImage("images/"+imagePath));
+            
+//            bool toSend = true;
             //ofNotifyEvent(swapEvent, toSend, this);
             
             Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, temp_fadeTime, EASE_IN_OUT_EXPO);

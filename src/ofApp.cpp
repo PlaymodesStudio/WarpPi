@@ -80,7 +80,6 @@ void ofApp::setup()
         _image->setupImagePlayer("test", ofVec2f(0,0),ofVec2f(resX,resY));
         _image->useFbo = useFbo;
         _image->doHomography = doHomography;
-        _image->screenOpacity.set(0.0);
         ofAddListener(_image->swapEvent, this, &ofApp::swapToImage);
         renderers.push_back(_image);
     }
