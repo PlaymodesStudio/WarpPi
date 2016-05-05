@@ -59,6 +59,7 @@ public:
     int                         tcpDeltaTime;
     string                      tcpMsgRx;
     ofxOscMessage*              processTCP(string s);
+    void                        sendTCPAwake();
 
     /// WARPPI
     ////////////

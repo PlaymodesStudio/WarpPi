@@ -9,7 +9,7 @@
     
     <oscReceivePort> 9001 </oscReceivePort>
     <oscReceivePortStringMode> 9002 </oscReceivePortStringMode>
-    <oscSendAddress> 192.168.1.99 </oscSendAddress>
+    <oscSendAddress> 127.0.0.1 </oscSendAddress>
     <oscSendPort> 9003 </oscSendPort>
     
     <videoFileName> ./videos/fingers.mov </videoFileName>
@@ -21,7 +21,7 @@
     <dmxFirstChannel> 11 </dmxFirstChannel>
     
     <useTCP>yes</useTCP>
-    <TCPIp>192.168.1.99</TCPIp>
+    <TCPIp>127.0.0.1</TCPIp>
     <TCPPort> 11999 </TCPPort>
     
 </config>
