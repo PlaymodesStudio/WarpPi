@@ -75,7 +75,6 @@ public:
     bool                doHomography;
     bool                useFbo;
     bool                doEditQuadPoints;
-    bool                shiftPressed;
     int                 currentQuadPoint;
     ofPoint             originalCorners[4];
     ofPoint             distortedCorners[4];

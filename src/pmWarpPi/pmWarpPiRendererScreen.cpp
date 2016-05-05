@@ -372,13 +372,10 @@ void pmWarpPiRendererScreen::onFadeComplete(float *args)
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::keyPressed(ofKeyEventArgs &a)
 {
-    if(a.key == OF_KEY_SHIFT){
-        shiftPressed=true;
-    }
     int key = a.key;
     
     int quadStep = 1;
-    if(ofGetKeyPressed(OF_KEY_SHIFT)) quadStep = 1;
+    if(ofGetKeyPressed(OF_KEY_SHIFT)) quadStep = 5;
     
     if(key=='q')
     {
@@ -423,9 +420,7 @@ void pmWarpPiRendererScreen::keyPressed(ofKeyEventArgs &a)
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::keyReleased(ofKeyEventArgs &a)
 {
-    if(a.key == OF_KEY_SHIFT){
-        shiftPressed=false;
-    }
+
 }
 //-------------------------------------------------------------------------
 void pmWarpPiRendererScreen::mouseMoved(ofMouseEventArgs &a)
