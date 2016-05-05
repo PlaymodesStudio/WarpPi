@@ -1,5 +1,6 @@
 #include "ofApp.h"
 #include "LocalAddressGrabber.h"
+#include <typeinfo>
 
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -771,17 +772,16 @@ void ofApp::draw(){
 //    else
 //    {
         // IF WE USE FBO -> APPLY HOMOGRAPHY WARPING -> DRAW RENDERERS NORMALLY
-        for(int i=0;i<renderers.size();i++)
-        {
-            if(i == 1)return;
+    for(int i=0;i<renderers.size();i++)
+    {
+        if(i != 1)
             renderers[i]->draw();
-        }
-        
-        if(isDebugging)
-        {
-            showDebug();
-        }
-//    }
+    }
+    
+    if(this->isDebugging)
+    {
+        showDebug();
+    }
     if(showFPS)
     {
         ofSetColor(255);
@@ -842,6 +842,10 @@ void ofApp::keyPressed(int key)
         //useFbo = !useFbo;
         pmWarpPiRendererScreen* s = (pmWarpPiRendererScreen*) renderers[0];
         s->useFbo = !s->useFbo;
+    }
+    else if ( key == 'd')
+    {
+        //toggleDebug();
     }
    
 }
@@ -919,7 +923,7 @@ void ofApp::setDebug(bool b)
 //--------------------------------------------------------------
 void ofApp::toggleDebug()
 {
-    this->isDebugging = ! this->isDebugging;
+    this->isDebugging = !this->isDebugging;
     for(int i=0;i<renderers.size();i++)
     {
         renderers[i]->setIsDebugging(this->isDebugging);
@@ -953,15 +957,20 @@ void ofApp::toggleTest()
 //--------------------------------------------------------------
 void ofApp::swapToImage(bool &b)
 {
+    
+    if(typeid(renderers[0]).hash_code() != typeid(pmWarpPiRendererImagePlayer).hash_code())
+        swap(renderers[0], renderers[1]);
     cout<<"swapToImage"<<endl;
-    if(typeid(renderers[0]) == typeid(pmWarpPiRendererImagePlayer)) return;
-    swap(renderers[0], renderers[1]);
+    
+    
+
 }
 
 //--------------------------------------------------------------
 void ofApp::swapToVideo(bool &b)
 {
-    if(typeid(renderers[0]) == typeid(pmWarpPiRendererVideoPlayer)) return;
-    swap(renderers[0], renderers[1]);
+    if(typeid(renderers[0]).hash_code() != typeid(pmWarpPiRendererVideoPlayer).hash_code())
+        swap(renderers[0], renderers[1]);
+    
     cout<<"swapToVideo"<<endl;
 }
