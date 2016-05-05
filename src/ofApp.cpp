@@ -31,9 +31,12 @@ void ofApp::setup()
     if(confUsesTCP)
     {
         tcpAreWeConnected = tcpClient.setup(confTCPSendIpAddress, confTCPPort);
-        tcpConnectTime=0;
+        tcpConnectTime=15;
         tcpDeltaTime=0;
         tcpMsgRx = "";
+        
+        // we send an awake message once we're connected (so Master can ping and update list of connected slaves)
+        if(tcpAreWeConnected) sendTCPAwake();
     }
 
     /// RENDERERS
@@ -259,8 +262,8 @@ void ofApp::update()
             {
                 //ofSystem("./data/scripts/shutdown.sh");
                 cout << " osc received exit !! " << endl;
-                std::exit(0);
                 this->exit();
+                std::exit(0);
             }
             /// CLOSE connection
             else if(command == "close")
@@ -308,7 +311,7 @@ void ofApp::update()
         }
         else
         {
-            //if we are not connected lets try and reconnect every 5 seconds
+            //if we are not connected lets try and reconnect every 15 seconds
             tcpDeltaTime = ofGetElapsedTimeMillis() - tcpConnectTime;
             
             if( tcpDeltaTime > 5000 )
@@ -316,12 +319,17 @@ void ofApp::update()
                 cout << "We're not connected to TCP ..." << endl;
                 tcpAreWeConnected = tcpClient.setup(confTCPSendIpAddress, confTCPPort);
                 tcpConnectTime = ofGetElapsedTimeMillis();
-                if(!tcpAreWeConnected){
-                    tcpClient.setup(confTCPSendIpAddress, confTCPPort+10);
+                if(!tcpAreWeConnected)
+                {
                     tcpClient.close();
                 }
+                else
+                {
+                    // we send an awake message once we're connected (so Master can ping and update list of connected slaves)
+                    sendTCPAwake();
+                }
                 ofLog(OF_LOG_NOTICE) << "Trying to reconnect TCP...." << endl;
-                cout << "Trying to reconnect TCP...." << endl;
+                cout << "Trying to reconnect TCP at : "  << confTCPSendIpAddress << " : " << confTCPPort << endl;
             }
             
         }
@@ -377,10 +385,9 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
             else if(tokens[1]=="exit")
             {
                 cout << "Hi!! I'm exit !!" << endl;
-                //ofSystem("./data/scripts/shutdown.sh");
                 ofLog(OF_LOG_NOTICE) << " osc received exit !! " << endl;
-                std::exit(0);
                 this->exit();
+                std::exit(0);
             }
             else if(tokens[1]=="shutdown")
             {
@@ -404,8 +411,6 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
             {
                 cout << " received close connection" << endl;
                 ofLog(OF_LOG_NOTICE) << " Close connection " << endl;
-                tcpClient.close();
-                tcpClient.setup(confTCPSendIpAddress, confTCPPort+10);
                 tcpClient.close();
             }
             
@@ -794,8 +799,8 @@ void ofApp::draw(){
 void ofApp::exit()
 {
     ofLog(OF_LOG_NOTICE) << "on exit() :: TCP CLOSING !!! " << endl;
-    tcpClient.close();
-    tcpClient.setup(confTCPSendIpAddress, confTCPPort+10);
+    cout <<  "on exit() :: TCP CLOSING !!! " << endl;
+    sendTCPAwake();
     tcpClient.close();
 }
 
@@ -973,4 +978,11 @@ void ofApp::swapToVideo(bool &b)
         swap(renderers[0], renderers[1]);
     
     cout<<"swapToVideo"<<endl;
+}
+
+//--------------------------------------------------------------
+void ofApp::sendTCPAwake()
+{
+    cout << "Sending TCP : awake to server !! " << confTCPSendIpAddress << " : " << confTCPPort << endl;
+    tcpClient.send("awake "  + ofToString(confId));
 }
