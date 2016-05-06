@@ -438,7 +438,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
                 int val = ofToInt(tokens[2]);
                 myMessage->addIntArg(val);
             }
-            else if ((tokens[1]=="play")||(tokens[1]=="stop")||(tokens[1]=="restart"))
+            else if ((tokens[1]=="playVideo")||(tokens[1]=="stopVideo")||(tokens[1]=="restartVideo")||(tokens[1]=="playImage")||(tokens[1]=="stopImage"))
             {
                 /// 2 ARGUMENTS 0/ command string 1/float
                 /// ----------------------------
@@ -518,7 +518,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
                 myMessage->addFloatArg(valF);
                 
             }
-            else if((tokens[1]=="load") || (tokens[1]=="loadImage") || (tokens[1]=="loadFolder"))
+            else if((tokens[1]=="loadVideo") || (tokens[1]=="loadImage") || (tokens[1]=="loadFolder"))
             {
                 /// 3 ARGUMENTS 0/ command string /1 string 2/float
                 /// ----------------------------
@@ -976,7 +976,7 @@ void ofApp::swapToImage(bool &b)
     if(renderers[0]->getType() != renderImage){
         renderers[1]->fadeIn(2);
         ((pmWarpPiRendererImagePlayer*)renderers[1])->loadImages();
-        string message = "11 stop 2";
+        string message = "11 stopVideo 2";
         ofxOscMessage* m = processTCP(message);
         renderers[0]->updateOSC(m);
         swap(renderers[0], renderers[1]);

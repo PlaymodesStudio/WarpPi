@@ -124,7 +124,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
         string command = m->getArgAsString(0);
         
         /// PLAY
-        if(command == "play")
+        if(command == "playImage")
         {
             //no folder play
             //get varliables
@@ -144,7 +144,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
         }
         
         /// STOP
-        if(command == "stop")
+        if(command == "stopImage")
         {
             //no folder play
             folderPlay = false;
