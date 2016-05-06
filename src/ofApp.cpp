@@ -565,6 +565,22 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
                 float valF = ofToFloat(tokens[4]);
                 myMessage->addFloatArg(valF);
             }
+            else if((tokens[1]=="loadFolder"))
+            {
+                /// 3 ARGUMENTS 0/ command string /1 string 2/float
+                /// ----------------------------
+                
+                // (1) is an int on this commands
+                string val = ofToString(tokens[2]);
+                myMessage->addStringArg(val);
+                
+                // (2) is an float on this commands
+                float valF = ofToFloat(tokens[3]);
+                myMessage->addFloatArg(valF);
+                
+                float valF2 = ofToFloat(tokens[4]);
+                myMessage->addFloatArg(valF2);
+            }
             
             
         }
@@ -959,6 +975,7 @@ void ofApp::swapToImage(bool &b)
 {
     if(renderers[0]->getType() != renderImage){
         renderers[1]->fadeIn(2);
+        ((pmWarpPiRendererImagePlayer*)renderers[1])->loadImages();
         string message = "11 stop 2";
         ofxOscMessage* m = processTCP(message);
         renderers[0]->updateOSC(m);

@@ -40,14 +40,14 @@ void pmWarpPiRendererImagePlayer::setupImagePlayer(string _name,ofVec2f _pos, of
     beginImageTime = ofGetElapsedTimef();  // get the start time
     nextImageTime = 5; // in seconds
     fadeTime = 1;
-    canSwap = false;
+    canSwap = true;
     
     
     /// GUI
     gui->setup(); // most of the time you don't need a name but don't forget to call setup
     gui->add(screenOpacity.set( "opacity", 0.0, 0.0, 1.0));
     gui->setPosition(imagePlayerDebugPosition.x,imagePlayerDebugPosition.y + 75);
-    crossFadeAlpha = screenOpacity;
+    crossFadeAlpha = 1;
     
     
 //    Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, nextImageTime-fadeTime, fadeTime,EASE_IN_OUT_EXPO);
@@ -96,7 +96,7 @@ void pmWarpPiRendererImagePlayer::drawElement(ofRectangle container)
 void pmWarpPiRendererImagePlayer::drawImage(int index, float alpha, ofRectangle container)
 {
     ofPushStyle();
-    ofSetColor(255, 255, 255, alpha*255);
+    ofSetColor(255, 255, 255, alpha*255*screenOpacity);
     //if(isDebugging)
     //images[index].draw(0,ofGetHeight()-ofGetHeight()/2,ofGetWidth()/2,ofGetHeight()/2);
     //else
@@ -189,6 +189,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
             folderPlay = true;
             folderName = m->getArgAsString(1);
             fadeTime = m->getArgAsFloat(2);
+            nextImageTime = m->getArgAsFloat(3);
             hasMedia = loadImages();
             if(hasMedia){
                 currentImage=-1;
@@ -204,6 +205,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
             canSwap = false;
         }
     }
+    pmWarpPiRendererScreen::updateOSC(m);
 }
 
 //--------------------------------------------------------------

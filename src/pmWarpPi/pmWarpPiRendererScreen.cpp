@@ -12,7 +12,6 @@ pmWarpPiRendererScreen::pmWarpPiRendererScreen()
     doHomography = true;
     useFbo = false;
     doEditQuadPoints = false;
-    shiftPressed = false;
     isTesting = false;
     isDebugging= false;
     currentQuadPoint = 0;
@@ -399,19 +398,19 @@ void pmWarpPiRendererScreen::keyPressed(ofKeyEventArgs &a)
     
     else if (key == OF_KEY_LEFT)
     {
-        distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x - (quadStep * ((shiftPressed) ? 5 : 1));
+        distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x - quadStep;
     }
     else if (key == OF_KEY_RIGHT)
     {
-        distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x + (quadStep * ((shiftPressed) ? 5 : 1));
+        distortedCorners[currentQuadPoint].x = distortedCorners[currentQuadPoint].x + quadStep;
     }
     else if (key == OF_KEY_UP)
     {
-        distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y - (quadStep * ((shiftPressed) ? 5 : 1));
+        distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y - quadStep;
     }
     else if (key == OF_KEY_DOWN)
     {
-        distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y + (quadStep * ((shiftPressed) ? 5 : 1));
+        distortedCorners[currentQuadPoint].y = distortedCorners[currentQuadPoint].y + quadStep;
     }
     
     
