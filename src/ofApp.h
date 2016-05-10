@@ -81,8 +81,8 @@ public:
     /// RENDERERS
     ///////////////
     vector<pmWarpPiRenderer*>    renderers;
-    void                        swapToImage(bool &b);
-    void                        swapToVideo(bool &b);
+    void                        swapToImage(float &f);
+    void                        swapToVideo(float &f);
     
     /// CONFIG
     ////////////

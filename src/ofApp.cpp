@@ -971,24 +971,19 @@ void ofApp::toggleTest()
 }
 
 //--------------------------------------------------------------
-void ofApp::swapToImage(bool &b)
+void ofApp::swapToImage(float &fade)
 {
     if(renderers[0]->getType() != renderImage){
-        renderers[1]->fadeIn(2);
-        ((pmWarpPiRendererImagePlayer*)renderers[1])->loadImages();
-        string message = "11 stopVideo 2";
-        ofxOscMessage* m = processTCP(message);
-        renderers[0]->updateOSC(m);
+        ((pmWarpPiRendererVideoPlayer*)renderers[0])->stopVideoPlayer(fade);
         swap(renderers[0], renderers[1]);
     }
 }
 
 //--------------------------------------------------------------
-void ofApp::swapToVideo(bool &b)
+void ofApp::swapToVideo(float &fade)
 {
     if(renderers[0]->getType() != renderVideo){
-        renderers[1]->fadeIn(5);
-        renderers[0]->fadeOut(5);
+        ((pmWarpPiRendererImagePlayer*)renderers[0])->stopImagePlayer(fade);
         swap(renderers[0], renderers[1]);
     }
     

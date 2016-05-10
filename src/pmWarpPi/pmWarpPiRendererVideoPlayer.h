@@ -19,11 +19,15 @@ public:
     virtual void        updateForScreen();
 
     virtual void        drawElement(ofRectangle container);
-    virtual void        setupVideoPlayer(string _name,ofVec2f _pos, ofVec2f _size);
+    virtual void        setupVideoPlayer(string _name,ofVec2f _pos, ofVec2f _size, bool active = true);
     virtual void        onComplete(float* arg);
     virtual void        onFadeOutComplete(float* arg);
     virtual void        showDebug();
 //    void                showVideoPlayerDebug();
+    
+    
+    void stopVideoPlayer(float fadeTime);
+    void startVideoPlayer(float fadeTime);
     
     //methods that have to be overwrite by omxplayer class
     virtual void createPlayer(){

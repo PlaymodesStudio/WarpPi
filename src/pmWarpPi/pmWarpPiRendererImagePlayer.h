@@ -21,11 +21,15 @@ public:
     virtual void        updateForScreen();
 
     virtual void        drawElement(ofRectangle container);
-    virtual void        setupImagePlayer(string _name,ofVec2f _pos, ofVec2f _size);
+    virtual void        setupImagePlayer(string _name,ofVec2f _pos, ofVec2f _size, bool active = false);
     virtual void        onComplete(float* arg);
     virtual void        onCrossFadeComplete(float* arg);
     virtual void        showDebug();
 //    void                showVideoPlayerDebug();
+    
+    void stopImagePlayer(float fadeTime);
+    void startImagePlayer(float fadeTime);
+    
     bool loadImages();
     void drawImage(int index, float alpha, ofRectangle container);
     
@@ -56,6 +60,8 @@ public:
     
     float fadeTime;
     bool canSwap;
+    
+    
     
     string              folderName;
     ofVec2f             imagePosition;

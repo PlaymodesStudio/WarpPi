@@ -16,7 +16,7 @@ pmWarpPiRendererImagePlayer::pmWarpPiRendererImagePlayer()
     
 }
 //-------------------------------------------------------------------------
-void pmWarpPiRendererImagePlayer::setupImagePlayer(string _name,ofVec2f _pos, ofVec2f _size)
+void pmWarpPiRendererImagePlayer::setupImagePlayer(string _name,ofVec2f _pos, ofVec2f _size, bool active)
 {
     //SET PARAMS
     folderName = _name;
@@ -24,6 +24,7 @@ void pmWarpPiRendererImagePlayer::setupImagePlayer(string _name,ofVec2f _pos, of
     imageSize = _size;
     isTesting=false;
     folderPlay=true;
+    activePlayer = active;
     
     //load images to vector;
     hasMedia = loadImages();
@@ -128,7 +129,13 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
         {
             //no folder play
             //get varliables
-            auto temp_fadeTime = m->getArgAsFloat(2);
+            auto temp_fadeTime = m->getArgAsFloat(1);
+            
+            if(!activePlayer){
+                activePlayer = true;
+                ofNotifyEvent(swapEvent, temp_fadeTime, this);
+                startImagePlayer(fadeTime);
+            }
             
             
 //            images.pop_back();
@@ -146,38 +153,36 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
         /// STOP
         if(command == "stopImage")
         {
-            //no folder play
-            folderPlay = false;
-            //get varliables
-            auto temp_fadeTime = m->getArgAsFloat(1);
-            
-            images.pop_back();
-            images.push_back(ofImage(" "));
 
-            bool toSend = true;
+            stopImagePlayer(m->getArgAsFloat(1));
+            //bool toSend = true;
             //ofNotifyEvent(swapEvent, toSend, this);
-            
-            Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, temp_fadeTime, EASE_IN_OUT_EXPO);
-            //Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
         }
         
         /// LOAD IMAGE
         if(command == "loadImage")
         {
             if(canSwap){
+                
+                
+                
                 //no folder play
                 folderPlay = false;
                 //get varliables
                 auto temp_imagePath = m->getArgAsString(1);
                 fadeTime = m->getArgAsFloat(2);
                 
+                if(!activePlayer){
+                    activePlayer = true;
+                    ofNotifyEvent(swapEvent, fadeTime, this);
+                    startImagePlayer(fadeTime);
+                }
+                
                 images.pop_back();
                 images.push_back(ofImage("images/"+temp_imagePath));
                 if(images[1].getWidth() != 0)
                     imagePath = temp_imagePath;
                 
-                bool toSend = true;
-                ofNotifyEvent(swapEvent, toSend, this);
                 
                 Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, fadeTime, EASE_IN_OUT_EXPO);
                 Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
@@ -186,10 +191,18 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
         }
         else if(command == "loadFolder")
         {
+            
             folderPlay = true;
             folderName = m->getArgAsString(1);
             fadeTime = m->getArgAsFloat(2);
             nextImageTime = m->getArgAsFloat(3);
+            
+            if(!activePlayer){
+                activePlayer = true;
+                ofNotifyEvent(swapEvent, fadeTime, this);
+                startImagePlayer(fadeTime);
+            }
+            
             hasMedia = loadImages();
             if(hasMedia){
                 currentImage=-1;
@@ -224,7 +237,7 @@ void pmWarpPiRendererImagePlayer::onComplete(float* arg)
 void pmWarpPiRendererImagePlayer::onCrossFadeComplete(float *arg)
 {
     cout<<"tween completed"<<endl;
-    if(folderPlay){
+    if(folderPlay && activePlayer){
         currentImage++;
         currentImage %= imagesInFolderPaths.size();
         nextImage = currentImage+1;
@@ -276,6 +289,24 @@ void pmWarpPiRendererImagePlayer::showDebug()
     string loopType;
     
     
+}
+
+//-------------------------------------------------------------------------
+void pmWarpPiRendererImagePlayer::stopImagePlayer(float _fadeTime)
+{
+    activePlayer = false;
+    
+    images.pop_back();
+    images.push_back(ofImage(" "));
+    
+    Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, _fadeTime, EASE_IN_OUT_EXPO);
+    Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
+}
+
+//-------------------------------------------------------------------------
+void pmWarpPiRendererImagePlayer::startImagePlayer(float _fadeTime)
+{
+    Tweenzor::add((float *)&screenOpacity.get(), 0.0, maxScreenOpacity, 0.0, _fadeTime, EASE_IN_OUT_EXPO);
 }
 
 //-------------------------------------------------------------------------

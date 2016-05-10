@@ -45,7 +45,7 @@ public:
     void mouseEntered(ofMouseEventArgs & args){};
     void mouseExited(ofMouseEventArgs & args){};
     
-    ofEvent<bool>      swapEvent;
+    ofEvent<float>      swapEvent;
     
 
     void                testScreen();
@@ -69,6 +69,8 @@ public:
     ofParameter<float>  screenOpacity;
     ofParameter<float>  maxScreenOpacity;
     
+    bool                activePlayer;
+    
 
     /// HOMOGRAPHY
     ///////////////
@@ -81,6 +83,7 @@ public:
     ofMatrix4x4*        homography;
     void                nextQuadPoint();
     void                previousQuadPoint();
+
     
 
     
