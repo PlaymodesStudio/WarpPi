@@ -246,7 +246,7 @@ void pmWarpPiRendererImagePlayer::onCrossFadeComplete(float *arg)
         images.push_back(ofImage(imagesInFolderPaths[nextImage]));
         crossFadeAlpha=screenOpacity;
         
-        Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, nextImageTime-fadeTime, fadeTime,EASE_IN_OUT_EXPO);
+        Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, nextImageTime, fadeTime,EASE_IN_OUT_EXPO);
         Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
     }
     else
