@@ -2,12 +2,12 @@
 #ifndef PM_WARPI_RENDERER_IMAGEPLAYER
 #define PM_WARPI_RENDERER_IMAGEPLAYER
 
-#include "pmWarpPiRendererScreen.h"
+#include "pmWarpPiRendererDrawable.h"
 #include "ofMain.h"
 
 
 
-class pmWarpPiRendererImagePlayer : public pmWarpPiRendererScreen
+class pmWarpPiRendererImagePlayer : public pmWarpPiRendererDrawable
 {
     
 public:

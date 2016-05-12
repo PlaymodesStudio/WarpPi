@@ -844,12 +844,12 @@ void ofApp::keyPressed(int key)
     }
     else if (key=='h')
     {
-	    pmWarpPiRendererScreen* s = (pmWarpPiRendererScreen*) renderers[0];
+	    pmWarpPiRendererDrawable* s = (pmWarpPiRendererDrawable*) renderers[0];
 	    s->doHomography=!s->doHomography;
     }    
     else if (key=='e')
     {
-        pmWarpPiRendererScreen* s = (pmWarpPiRendererScreen*) renderers[0];
+        pmWarpPiRendererDrawable* s = (pmWarpPiRendererDrawable*) renderers[0];
         s->doEditQuadPoints=!s->doEditQuadPoints;
     }
     else if (key=='f')
@@ -859,7 +859,7 @@ void ofApp::keyPressed(int key)
     else if (key=='o')
     {
         //useFbo = !useFbo;
-        pmWarpPiRendererScreen* s = (pmWarpPiRendererScreen*) renderers[0];
+        pmWarpPiRendererDrawable* s = (pmWarpPiRendererDrawable*) renderers[0];
         s->useFbo = !s->useFbo;
     }
     else if ( key == 'd')

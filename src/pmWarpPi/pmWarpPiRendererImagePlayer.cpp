@@ -218,7 +218,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
             canSwap = false;
         }
     }
-    pmWarpPiRendererScreen::updateOSC(m);
+    pmWarpPiRendererDrawable::updateOSC(m);
 }
 
 //--------------------------------------------------------------

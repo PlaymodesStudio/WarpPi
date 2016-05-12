@@ -6,11 +6,11 @@
 #include "ofMain.h"
 #include "ofxHomography.h"
 
-class pmWarpPiRendererScreen : public pmWarpPiRenderer
+class pmWarpPiRendererDrawable : public pmWarpPiRenderer
 {
     
 public:
-    pmWarpPiRendererScreen();
+    pmWarpPiRendererDrawable();
     virtual void        update(ofEventArgs & a);
     virtual void        updateOSC(ofxOscMessage* m);
     virtual void        updateForScreen(){};

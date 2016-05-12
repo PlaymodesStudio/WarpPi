@@ -1,7 +1,7 @@
-#include "pmWarpPiRendererScreen.h"
+#include "pmWarpPiRendererDrawable.h"
 
 //-------------------------------------------------------------------------
-pmWarpPiRendererScreen::pmWarpPiRendererScreen()
+pmWarpPiRendererDrawable::pmWarpPiRendererDrawable()
 {
     screenRect = ofRectangle(0,0, ofGetWidth(), ofGetHeight());
     elementRect = screenRect;
@@ -26,7 +26,7 @@ pmWarpPiRendererScreen::pmWarpPiRendererScreen()
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::setupScreen(ofVec2f _pos,ofVec2f _size)
+void pmWarpPiRendererDrawable::setupScreen(ofVec2f _pos,ofVec2f _size)
 {
     screenRect.setPosition(_pos);
     screenRect.setSize(_size.x, _size.y);
@@ -47,7 +47,7 @@ void pmWarpPiRendererScreen::setupScreen(ofVec2f _pos,ofVec2f _size)
 	Tweenzor::init();
     
 //    Tweenzor::add((float *)&screenOpacity.get(), 0.0, 1.0, 0.0, 4,EASE_IN_OUT_EXPO);
-//    Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererScreen::onComplete);
+//    Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererDrawable::onComplete);
 
     /// HOMOGRAPHY
     originalCorners[0].set(0, 0);
@@ -68,7 +68,7 @@ void pmWarpPiRendererScreen::setupScreen(ofVec2f _pos,ofVec2f _size)
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::update(ofEventArgs & a)
+void pmWarpPiRendererDrawable::update(ofEventArgs & a)
 {
     /// TWEENZOR
     Tweenzor::update( ofGetElapsedTimeMillis() );
@@ -93,7 +93,7 @@ void pmWarpPiRendererScreen::update(ofEventArgs & a)
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::draw()
+void pmWarpPiRendererDrawable::draw()
 {
 
     /// HOMOGRAPHY START
@@ -153,7 +153,7 @@ void pmWarpPiRendererScreen::draw()
 
 
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::updateOSC(ofxOscMessage* m)
+void pmWarpPiRendererDrawable::updateOSC(ofxOscMessage* m)
 {
     ofLog(OF_LOG_NOTICE) << "RendScreen::updateOSC";
     string address = m->getAddress();
@@ -236,7 +236,7 @@ void pmWarpPiRendererScreen::updateOSC(ofxOscMessage* m)
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::deleteRenderer()
+void pmWarpPiRendererDrawable::deleteRenderer()
 {
     ofLog(OF_LOG_NOTICE) << "RendScreen::delete";
     Tweenzor::destroy();
@@ -244,7 +244,7 @@ void pmWarpPiRendererScreen::deleteRenderer()
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::testScreen()
+void pmWarpPiRendererDrawable::testScreen()
 {
     if(useFbo)
         screenFbo->begin();
@@ -260,7 +260,7 @@ void pmWarpPiRendererScreen::testScreen()
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::showScreenDebug()
+void pmWarpPiRendererDrawable::showScreenDebug()
 {
     int lineHeight = 15;
     int whichHeight = screenDebugPosition.y;
@@ -275,7 +275,7 @@ void pmWarpPiRendererScreen::showScreenDebug()
 
 }
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::nextQuadPoint()
+void pmWarpPiRendererDrawable::nextQuadPoint()
 {
     currentQuadPoint = (currentQuadPoint + 1 ) % 4 ;
 
@@ -305,7 +305,7 @@ void pmWarpPiRendererScreen::nextQuadPoint()
 */
 }
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::previousQuadPoint()
+void pmWarpPiRendererDrawable::previousQuadPoint()
 {
     currentQuadPoint = currentQuadPoint - 1 ;
     if (currentQuadPoint<0) currentQuadPoint = 3;
@@ -328,7 +328,7 @@ void pmWarpPiRendererScreen::previousQuadPoint()
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::resetQuad()
+void pmWarpPiRendererDrawable::resetQuad()
 {
     distortedCorners[0].x = 0.0;
     distortedCorners[0].y = 0.0;
@@ -345,20 +345,20 @@ void pmWarpPiRendererScreen::resetQuad()
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::fadeIn(float fadeTime)
+void pmWarpPiRendererDrawable::fadeIn(float fadeTime)
 {
     Tweenzor::add((float*)&screenOpacity.get(), screenOpacity, maxScreenOpacity, 0.0, fadeTime, EASE_IN_OUT_EXPO);
-    Tweenzor::addCompleteListener(Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererScreen::onFadeComplete);
+    Tweenzor::addCompleteListener(Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererDrawable::onFadeComplete);
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::fadeOut(float fadeTime)
+void pmWarpPiRendererDrawable::fadeOut(float fadeTime)
 {
     Tweenzor::add((float*)&screenOpacity.get(), screenOpacity, 0.0,  0.0, fadeTime, EASE_IN_OUT_EXPO);
-    Tweenzor::addCompleteListener(Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererScreen::onFadeComplete);
+    Tweenzor::addCompleteListener(Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererDrawable::onFadeComplete);
 }
 
-void pmWarpPiRendererScreen::onFadeComplete(float *args)
+void pmWarpPiRendererDrawable::onFadeComplete(float *args)
 {
     if(*args == 0.0){//screen has fade out
         cout<<"fadeOut done"<<endl;
@@ -369,7 +369,7 @@ void pmWarpPiRendererScreen::onFadeComplete(float *args)
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::keyPressed(ofKeyEventArgs &a)
+void pmWarpPiRendererDrawable::keyPressed(ofKeyEventArgs &a)
 {
     int key = a.key;
     
@@ -417,32 +417,32 @@ void pmWarpPiRendererScreen::keyPressed(ofKeyEventArgs &a)
     
 }
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::keyReleased(ofKeyEventArgs &a)
+void pmWarpPiRendererDrawable::keyReleased(ofKeyEventArgs &a)
 {
 
 }
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::mouseMoved(ofMouseEventArgs &a)
+void pmWarpPiRendererDrawable::mouseMoved(ofMouseEventArgs &a)
 {
 
 }
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::mouseDragged(ofMouseEventArgs &a)
+void pmWarpPiRendererDrawable::mouseDragged(ofMouseEventArgs &a)
 {
     
 }
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::mousePressed(ofMouseEventArgs &a)
+void pmWarpPiRendererDrawable::mousePressed(ofMouseEventArgs &a)
 {
     
 }
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::mouseReleased(ofMouseEventArgs &a)
+void pmWarpPiRendererDrawable::mouseReleased(ofMouseEventArgs &a)
 {
     
 }
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::saveConfigToXML()
+void pmWarpPiRendererDrawable::saveConfigToXML()
 {
     ofxXmlSettings configXML;
     
@@ -468,7 +468,7 @@ void pmWarpPiRendererScreen::saveConfigToXML()
 
 }
 //-------------------------------------------------------------------------
-void pmWarpPiRendererScreen::loadConfigFromXML()
+void pmWarpPiRendererDrawable::loadConfigFromXML()
 {
     doEditQuadPoints = false;
     

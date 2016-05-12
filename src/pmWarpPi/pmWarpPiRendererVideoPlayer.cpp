@@ -156,7 +156,7 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
         }
     }
     
-    pmWarpPiRendererScreen::updateOSC(m);
+    pmWarpPiRendererDrawable::updateOSC(m);
 }
 
 //--------------------------------------------------------------
