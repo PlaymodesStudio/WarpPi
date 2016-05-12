@@ -97,22 +97,26 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
         /// PLAY
         if(command == "playVideo")
         {
-            float fade = m->getArgAsFloat(1);
-            //videoPlayer.play();
-            if(!activePlayer){
-                activePlayer = true;
-                ofNotifyEvent(swapEvent, fade, this);
+            if (isPlayerPaused()){
+                float fade = m->getArgAsFloat(1);
+                //videoPlayer.play();
+                if(!activePlayer){
+                    activePlayer = true;
+                    ofNotifyEvent(swapEvent, fade, this);
+                }
+                
+                setPlayerPaused(false);
+                Tweenzor::add((float *)&screenOpacity.get(), 0.0, maxScreenOpacity, 0.0, fade, EASE_IN_OUT_EXPO);
+                Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
             }
-            
-            setPlayerPaused(false);
-            Tweenzor::add((float *)&screenOpacity.get(), 0.0, maxScreenOpacity, 0.0, fade, EASE_IN_OUT_EXPO);
-            Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
         }
         /// STOP
         else if(command == "stopVideo")
         {
-            Tweenzor::add((float *)&screenOpacity.get(), maxScreenOpacity, 0.0, 0.0, m->getArgAsFloat(1),EASE_IN_OUT_EXPO);
-            Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
+            if(!isPlayerPaused()){
+                Tweenzor::add((float *)&screenOpacity.get(), maxScreenOpacity, 0.0, 0.0, m->getArgAsFloat(1),EASE_IN_OUT_EXPO);
+                Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
+            }
         }
         /// PAUSE
         else if(command == "pauseVideo")
@@ -132,23 +136,23 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
         {
             
            
-            auto new_videoFileName = m->getArgAsString(1);
-            fadeTime = m->getArgAsFloat(2);
-            
-            if(!activePlayer){
-                activePlayer = true;
-                ofNotifyEvent(swapEvent, fadeTime, this);
+            auto new_videoFileName = "./videos/" +  m->getArgAsString(1);
+            ofFile videoCheck(new_videoFileName);
+            if(videoFileName != new_videoFileName && videoCheck.exists()){
+                fadeTime = m->getArgAsFloat(2);
+                
+                if(!activePlayer){
+                    activePlayer = true;
+                    ofNotifyEvent(swapEvent, fadeTime, this);
+                }
+                //            videoFileName = ofToDataPath("./videos", true);
+                videoFileName = new_videoFileName;
+                
+                ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: OSC :: load : " << videoFileName << " : fadeTime : " << fadeTime;
+                
+                Tweenzor::add((float *)&screenOpacity.get(), maxScreenOpacity, 0.0, 0.0, fadeTime, EASE_IN_OUT_EXPO);
+                Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onFadeOutComplete);
             }
-            
-//            videoFileName = ofToDataPath("./videos", true);
-            new_videoFileName = "./videos/"+new_videoFileName;
-            if(videoFileName == new_videoFileName) return;
-            videoFileName = new_videoFileName;
-            
-            ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: OSC :: load : " << videoFileName << " : fadeTime : " << fadeTime;
-            
-            Tweenzor::add((float *)&screenOpacity.get(), maxScreenOpacity, 0.0, 0.0, fadeTime, EASE_IN_OUT_EXPO);
-            Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onFadeOutComplete);
         }
     }
     
