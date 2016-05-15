@@ -39,51 +39,8 @@ void ofApp::setup()
         if(tcpAreWeConnected) sendTCPAwake();
     }
 
-    /// RENDERERS
-    ///////////////
-    //    int resX = 1280;
-    //    int resY = 720;
-    int resX = ofGetWidth();
-    int resY = ofGetHeight();
-
-    // HAS VIDEO ?
-    ///////////////
-    if(confHasVideo)
-    {
-        #ifdef TARGET_RASPBERRY_PI
-            pmWarpPiRendererOMXPlayer* _video = new pmWarpPiRendererOMXPlayer();
-            _video->setup(id);
-            _video->setupScreen(ofVec2f(0,0), ofVec2f(resX,resY));
-            _video->setupVideoPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(resX,resY));
-            _video->useFbo = useFbo;
-            _video->doHomography = doHomography;
-        #else
-            pmWarpPiRendererVideoPlayer* _video = new pmWarpPiRendererVideoPlayer();
-            _video->setup(id);
-            _video->setupScreen(ofVec2f(0,0), ofVec2f(resX,resY));
-            _video->setupVideoPlayer(confVideoFileName, ofVec2f(0,0),ofVec2f(resX,resY));
-            _video->useFbo = useFbo;
-            _video->doHomography = doHomography;
-        #endif
-        //_video->screenOpacity.set(0.0);
-        ofAddListener(_video->swapEvent, this, &ofApp::swapToVideo);
-        renderers.push_back(_video);
-    }
-    
-    // HAS Image?
-    ///////////////
-    if(confHasImage)
-    {
-        pmWarpPiRendererImagePlayer* _image = new pmWarpPiRendererImagePlayer();
-        _image->setup(id);
-        _image->setupScreen(ofVec2f(0,0), ofVec2f(resX,resY));
-        _image->setupImagePlayer("test", ofVec2f(0,0),ofVec2f(resX,resY));
-        _image->useFbo = useFbo;
-        _image->doHomography = doHomography;
-        ofAddListener(_image->swapEvent, this, &ofApp::swapToImage);
-        renderers.push_back(_image);
-    }
-    
+    screen.setup(confHasVideo, confHasImage, useFbo, doHomography);
+        
     // HAS DMX ?
     ///////////////
     if(confHasDmx)
@@ -146,6 +103,7 @@ void ofApp::readConfig()
 //--------------------------------------------------------------
 void ofApp::update()
 {
+    screen.update();
     /// OSC
     
     while( oscReceiverSTRING.hasWaitingMessages() || oscReceiverOSC.hasWaitingMessages() )
@@ -184,10 +142,7 @@ void ofApp::update()
     
         /// UPDATE ALL RENDERERS
         ///////////////////////////
-        for(int i=0;i<renderers.size();i++)
-        {
-            renderers[i]->updateOSC(m);
-        }
+        screen.updateOSC(m);
         
         ///////////////////////////
         /// MESSAGES THAT AFFECT IN GENERAL
@@ -202,38 +157,8 @@ void ofApp::update()
             /// COMMAND
             string command = m->getArgAsString(0);
 
-            /// DEBUG
-            if(command == "debug")
-            {
-                int val = m->getArgAsInt32(1);
-                if(val == 0)
-                {
-                    /// stop DEBUGGING
-                    setDebug(false);
-                }
-                else if (val ==1)
-                {
-                    /// start DEBUGGING
-                    setDebug(true);
-                }
-            }
-            /// TEST
-            else if(command == "test")
-            {
-                int val = m->getArgAsInt32(1);
-                if(val == 0)
-                {
-                    /// stop TESTING
-                    setTest(false);
-                }
-                else if (val ==1)
-                {
-                    /// start TESTING
-                    setTest(true);
-                }
-            }
             /// PING
-            else if(command == "ping")
+            if(command == "ping")
             {
                 ofxOscMessage m;
                 m.setAddress("/pong");
@@ -294,10 +219,7 @@ void ofApp::update()
                 
                 /// UPDATE ALL RENDERERS
                 ///---------------------------------
-                for(int i=0;i<renderers.size();i++)
-                {
-                    renderers[i]->updateOSC(mTcp);
-                }
+                screen.updateOSC(mTcp);
                 
                 
                 
@@ -412,8 +334,6 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
                 ofLog(OF_LOG_NOTICE) << " Close connection " << endl;
                 tcpClient.close();
             }
-            
-            
         }
         
         ///---------------------------------
@@ -461,33 +381,16 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
             
             else if((tokens[1]=="test"))
             {
-                int val = ofToInt(tokens[2]);
-                if(val == 0)
-                {
-                    /// stop TESTING
-                    setTest(false);
-                }
-                else if (val ==1)
-                {
-                    /// start TESTING
-                    setTest(true);
-                }
+                int valF = ofToInt(tokens[2]);
+                bool valB = (valF == 1) ? true : false;
+                myMessage->addBoolArg(valB);
             }
             else if((tokens[1]=="debug"))
             {
-                cout << "seems this is a debug message " << endl;
-                int val = ofToInt(tokens[2]);
-                if(val == 0)
-                {
-                    /// stop DEBUG
-                    setDebug(false);
-                }
-                else if (val ==1)
-                {
-                    /// start DEBUG
-                    setDebug(true);
-                    cout << "set Debug TRUE !! " << endl;
-                }
+                int valF = ofToInt(tokens[2]);
+                bool valB = (valF == 1) ? true : false;
+                isDebugging = !isDebugging;
+                screen.isDebugging = !screen.isDebugging;
             }
             
         }
@@ -592,8 +495,6 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
     }
     
     return(myMessage);
-    
-    
 }
 
 
@@ -768,8 +669,7 @@ void ofApp::draw(){
 
     // BACKGROUND
     ///////////////
-    if(renderers[0]->isDebugging) ofBackground(32);
-    else ofBackground(0);
+    ofBackground(0);
 
 //	if(!useFbo)
 //    {
@@ -792,10 +692,7 @@ void ofApp::draw(){
 //    else
 //    {
         // IF WE USE FBO -> APPLY HOMOGRAPHY WARPING -> DRAW RENDERERS NORMALLY
-    for(int i=0;i<renderers.size();i++)
-    {
-        renderers[i]->draw();
-    }
+    screen.draw();
     
     if(this->isDebugging)
     {
@@ -821,52 +718,20 @@ void ofApp::exit()
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key)
 {
-
-    if (key=='d')
-    {
-        toggleDebug();
-    }
-    else if (key=='t')
-    {
-        toggleTest();
-    }
-    else if (key=='p')
-    {
-        #ifdef TARGET_RASPBERRY_PI
-            pmWarpPiRendererOMXPlayer* vp = (pmWarpPiRendererOMXPlayer*) renderers[0];
-            vp->setPlayerPaused(false);
-        #else
-            pmWarpPiRendererVideoPlayer* vp = (pmWarpPiRendererVideoPlayer*) renderers[0];
-            vp->setPlayerPaused(false);
-        #endif
-        
-
-    }
-    else if (key=='h')
-    {
-	    pmWarpPiRendererDrawable* s = (pmWarpPiRendererDrawable*) renderers[0];
-	    s->doHomography=!s->doHomography;
-    }    
-    else if (key=='e')
-    {
-        pmWarpPiRendererDrawable* s = (pmWarpPiRendererDrawable*) renderers[0];
-        s->doEditQuadPoints=!s->doEditQuadPoints;
-    }
-    else if (key=='f')
+    if (key=='f')
     {
         showFPS=!showFPS;
+    }
+    else if (key == 'd')
+    {
+        isDebugging = !isDebugging;
+        screen.isDebugging = !screen.isDebugging;
     }
     else if (key=='o')
     {
         //useFbo = !useFbo;
-        pmWarpPiRendererDrawable* s = (pmWarpPiRendererDrawable*) renderers[0];
-        s->useFbo = !s->useFbo;
+        screen.useFbo = !screen.useFbo;
     }
-    else if ( key == 'd')
-    {
-        //toggleDebug();
-    }
-   
 }
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){}
@@ -928,66 +793,6 @@ void ofApp::showDebug()
     ofDrawBitmapString("TCP PORT : "  + ofToString(confTCPPort),debugPosition.x,whichHeight);
 }
 
-//--------------------------------------------------------------
-void ofApp::setDebug(bool b)
-{
-    this->isDebugging = b;
-    for(int i=0;i<renderers.size();i++)
-    {
-        renderers[i]->setIsDebugging(b);
-    }
-    
-}
-
-//--------------------------------------------------------------
-void ofApp::toggleDebug()
-{
-    this->isDebugging = !this->isDebugging;
-    for(int i=0;i<renderers.size();i++)
-    {
-        renderers[i]->setIsDebugging(this->isDebugging);
-    }
-}
-//--------------------------------------------------------------
-void ofApp::setTest(bool b)
-{
-    this->isTesting = b;
-    for(int i=0;i<renderers.size();i++)
-    {
-        renderers[i]->setIsTesting(b);
-    }
-}
-//--------------------------------------------------------------
-void ofApp::toggleTest()
-{
-    this->isTesting = ! this->isTesting;
-    for(int i=0;i<renderers.size();i++)
-    {
-        //pmWarpPiRendererVideoPlayer* vp = (pmWarpPiRendererVideoPlayer*) renderers[i];
-        //vp->isDebugging = isDebugging;
-        //renderers[i]->isTesting = this->isTesting;
-        renderers[i]->setIsTesting(this->isTesting);
-    }
-}
-
-//--------------------------------------------------------------
-void ofApp::swapToImage(float &fade)
-{
-    if(renderers[0]->getType() != renderImage){
-        ((pmWarpPiRendererVideoPlayer*)renderers[0])->stopVideoPlayer(fade);
-        swap(renderers[0], renderers[1]);
-    }
-}
-
-//--------------------------------------------------------------
-void ofApp::swapToVideo(float &fade)
-{
-    if(renderers[0]->getType() != renderVideo){
-        ((pmWarpPiRendererImagePlayer*)renderers[0])->stopImagePlayer(fade);
-        swap(renderers[0], renderers[1]);
-    }
-    
-}
 
 //--------------------------------------------------------------
 void ofApp::sendTCPAwake()

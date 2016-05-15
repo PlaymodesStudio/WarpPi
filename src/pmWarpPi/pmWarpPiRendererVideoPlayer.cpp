@@ -5,22 +5,20 @@
 pmWarpPiRendererVideoPlayer::pmWarpPiRendererVideoPlayer()
 {
     videoFileName = "";
-    videoPosition = ofVec2f(0,0);
-    videoSize = ofVec2f(0,0);
-    videoPlayerDebugPosition = ofVec2f(520,20);
+    elementDebugInfoPos = ofVec2f(520,20);
+
     
     type = renderVideo;
 }
 //-------------------------------------------------------------------------
-void pmWarpPiRendererVideoPlayer::setupVideoPlayer(string _name,ofVec2f _pos, ofVec2f _size, bool active)
+void pmWarpPiRendererVideoPlayer::setupVideoPlayer(string _name, bool active)
 {
+    pmWarpPiRendererDrawable::setupScreen();
+    
     createPlayer();
     /// VIDEO PLAYER
 
-    elementRect.set(_pos, _size.x, _size.y);
     videoFileName = _name;
-    videoPosition = _pos;
-    videoSize = _size;
     isTesting=false;
     activePlayer = active;
     
@@ -32,7 +30,7 @@ void pmWarpPiRendererVideoPlayer::setupVideoPlayer(string _name,ofVec2f _pos, of
         gui->setup(); // most of the time you don't need a name but don't forget to call setup
         gui->add(screenOpacity.set( "opacity", 1.0, 0.0, 1.0));
         gui->add(maxScreenOpacity.set( "max opacity", 1.0, 0.0, 1.0));
-        gui->setPosition(videoPlayerDebugPosition.x,videoPlayerDebugPosition.y + 75);
+        gui->setPosition(520, 20 + 75);
         guiIsSetup = true;
     }
 }
@@ -40,7 +38,6 @@ void pmWarpPiRendererVideoPlayer::setupVideoPlayer(string _name,ofVec2f _pos, of
 //-------------------------------------------------------------------------
 void pmWarpPiRendererVideoPlayer::updateForScreen()
 {
-    
     ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::update";
     
     /// TWEENZOR
@@ -197,16 +194,16 @@ void pmWarpPiRendererVideoPlayer::showDebug()
 {
         
     int lineHeight = 15;
-    int whichHeight = videoPlayerDebugPosition.y;
+    int whichHeight = elementDebugInfoPos.y;
     ofSetColor(255,128,0);
-    ofDrawBitmapString("VIDEO PLAYER",videoPlayerDebugPosition.x,whichHeight);
+    ofDrawBitmapString("VIDEO PLAYER",elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     ofSetColor(255);
-    ofDrawBitmapString(videoFileName,videoPlayerDebugPosition.x,whichHeight);
+    ofDrawBitmapString(videoFileName,elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString(ofToString(getPlayerWidth()) + " x " +ofToString(getPlayerHeight()),videoPlayerDebugPosition.x,whichHeight);
+    ofDrawBitmapString(ofToString(getPlayerWidth()) + " x " +ofToString(getPlayerHeight()),elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString(ofToString(getPlayerCurrentFrame()) + " / " +ofToString(getPlayerTotalNumFrames()),videoPlayerDebugPosition.x,whichHeight);
+    ofDrawBitmapString(ofToString(getPlayerCurrentFrame()) + " / " +ofToString(getPlayerTotalNumFrames()),elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     string loopType;
     
@@ -219,7 +216,7 @@ void pmWarpPiRendererVideoPlayer::showDebug()
         loopType = "loop";
     }
     
-    ofDrawBitmapString(loopType,videoPlayerDebugPosition.x,whichHeight);
+    ofDrawBitmapString(loopType,elementDebugInfoPos.x,whichHeight);
     
     
 }

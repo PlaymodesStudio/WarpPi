@@ -19,7 +19,7 @@ public:
     virtual void        updateForScreen();
 
     virtual void        drawElement(ofRectangle container);
-    virtual void        setupVideoPlayer(string _name,ofVec2f _pos, ofVec2f _size, bool active = true);
+    virtual void        setupVideoPlayer(string _name, bool active = true);
     virtual void        onComplete(float* arg);
     virtual void        onFadeOutComplete(float* arg);
     virtual void        showDebug();

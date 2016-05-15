@@ -5,9 +5,7 @@
 pmWarpPiRendererImagePlayer::pmWarpPiRendererImagePlayer()
 {
     folderName = "";
-    imagePosition = ofVec2f(0,0);
-    imageSize = ofVec2f(0,0);
-    imagePlayerDebugPosition = ofVec2f(770,20);
+    elementDebugInfoPos = ofVec2f(770,20);
     
     //videoPlayer = new ofVideoPlayer();
     
@@ -16,12 +14,12 @@ pmWarpPiRendererImagePlayer::pmWarpPiRendererImagePlayer()
     
 }
 //-------------------------------------------------------------------------
-void pmWarpPiRendererImagePlayer::setupImagePlayer(string _name,ofVec2f _pos, ofVec2f _size, bool active)
+void pmWarpPiRendererImagePlayer::setupImagePlayer(string _name, bool active)
 {
+    pmWarpPiRendererDrawable::setupScreen();
+    
     //SET PARAMS
     folderName = _name;
-    imagePosition = _pos;
-    imageSize = _size;
     isTesting=false;
     folderPlay=true;
     activePlayer = active;
@@ -43,11 +41,10 @@ void pmWarpPiRendererImagePlayer::setupImagePlayer(string _name,ofVec2f _pos, of
     fadeTime = 1;
     canSwap = true;
     
-    
     /// GUI
     gui->setup(); // most of the time you don't need a name but don't forget to call setup
     gui->add(screenOpacity.set( "opacity", 0.0, 0.0, 1.0));
-    gui->setPosition(imagePlayerDebugPosition.x,imagePlayerDebugPosition.y + 75);
+    gui->setPosition(770, 20 + 75);
     crossFadeAlpha = 1;
     
     
@@ -79,7 +76,6 @@ void pmWarpPiRendererImagePlayer::drawElement(ofRectangle container)
     
     
     // DRAW Image
-    
     //draw current image
     drawImage(0, crossFadeAlpha, container);
     //draw next image
@@ -272,19 +268,19 @@ void pmWarpPiRendererImagePlayer::showDebug()
 {
     
     int lineHeight = 15;
-    int whichHeight = imagePlayerDebugPosition.y;
+    int whichHeight = elementDebugInfoPos.y;
     ofSetColor(255,128,0);
-    ofDrawBitmapString("IMAGE PLAYER",imagePlayerDebugPosition.x,whichHeight);
+    ofDrawBitmapString("IMAGE PLAYER",elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     ofSetColor(255);
-    ofDrawBitmapString(folderName,imagePlayerDebugPosition.x,whichHeight);
+    ofDrawBitmapString(folderName,elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString(ofToString(images[0].getWidth()) + " x " +ofToString(images[0].getHeight()),imagePlayerDebugPosition.x,whichHeight);
+    ofDrawBitmapString(ofToString(images[0].getWidth()) + " x " +ofToString(images[0].getHeight()),elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     if(currentImage != -1 && folderPlay)
-        ofDrawBitmapString(imagesInFolderPaths[currentImage],imagePlayerDebugPosition.x,whichHeight);
+        ofDrawBitmapString(imagesInFolderPaths[currentImage],elementDebugInfoPos.x,whichHeight);
     else
-        ofDrawBitmapString(imagePath, imagePlayerDebugPosition.x,whichHeight);
+        ofDrawBitmapString(imagePath, elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     string loopType;
     

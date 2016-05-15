@@ -6,11 +6,8 @@
 // PM WARPI
 #include "pmWarpPi.h"
 #include "pmWarpPiRendererDmx.h"
-#include "pmWarpPiRendererImagePlayer.h"
-#include "pmWarpPiRendererVideoPlayer.h"
-#ifdef TARGET_RASPBERRY_PI
-    #include "pmWarpPiRendererOMXPlayer.h"
-#endif
+#include "pmWarpPiScreen.h"
+
 
 
 // OTHERS
@@ -73,16 +70,10 @@ public:
     bool                        doHomography;
     bool                        showFPS;
     
-    void                        toggleDebug();
-    void                        setDebug(bool b);
-    void                        toggleTest();
-    void                        setTest(bool b);
     
     /// RENDERERS
     ///////////////
-    vector<pmWarpPiRenderer*>    renderers;
-    void                        swapToImage(float &f);
-    void                        swapToVideo(float &f);
+    pmWarpPiScreen              screen;
     
     /// CONFIG
     ////////////
@@ -103,6 +94,5 @@ public:
     bool                        confUsesTCP;
     string                      confTCPSendIpAddress;
     int                         confTCPPort;
-    
     
 };

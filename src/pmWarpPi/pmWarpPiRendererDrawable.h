@@ -17,8 +17,7 @@ public:
     virtual void        deleteRenderer();
     virtual void        draw();
     virtual void        onComplete(float* arg){};
-    virtual void        saveConfigToXML();
-    virtual void        loadConfigFromXML();
+
     virtual void        showScreenDebug();
     virtual void        showDebug(){};
     virtual void        fadeIn(float fadeTime);
@@ -28,7 +27,7 @@ public:
 
     /// CLASS FUNCTIONS
     ////////////////////
-    virtual void        setupScreen(ofVec2f _pos,ofVec2f _size);
+    virtual void        setupScreen();
     virtual void        drawElement(ofRectangle container){};
 
     void keyPressed(ofKeyEventArgs &a);
@@ -47,9 +46,6 @@ public:
     
     ofEvent<float>      swapEvent;
     
-
-    void                testScreen();
-    void                resetQuad();
 //    void                showScreenDebug();
     
     /// CLASS PARAMS
@@ -58,6 +54,7 @@ public:
     ofRectangle         screenRect;
     ofRectangle         elementRect;
     ofRectangle         elementDebugRect;
+    ofPoint             elementDebugInfoPos;
     
     ofFbo*              screenFbo;
     ofVec2f             screenPosition;
@@ -70,19 +67,6 @@ public:
     ofParameter<float>  maxScreenOpacity;
     
     bool                activePlayer;
-    
-
-    /// HOMOGRAPHY
-    ///////////////
-    bool                doHomography;
-    bool                useFbo;
-    bool                doEditQuadPoints;
-    int                 currentQuadPoint;
-    ofPoint             originalCorners[4];
-    ofPoint             distortedCorners[4];
-    ofMatrix4x4*        homography;
-    void                nextQuadPoint();
-    void                previousQuadPoint();
 
     
 

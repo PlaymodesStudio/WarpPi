@@ -21,11 +21,10 @@ public:
     virtual void        updateForScreen();
 
     virtual void        drawElement(ofRectangle container);
-    virtual void        setupImagePlayer(string _name,ofVec2f _pos, ofVec2f _size, bool active = false);
+    virtual void        setupImagePlayer(string _name, bool active = false);
     virtual void        onComplete(float* arg);
     virtual void        onCrossFadeComplete(float* arg);
     virtual void        showDebug();
-//    void                showVideoPlayerDebug();
     
     void stopImagePlayer(float fadeTime);
     void startImagePlayer(float fadeTime);
@@ -45,28 +44,26 @@ public:
 
     /// CLASS PARAMS
     /////////////////
-    ofDirectory dir;
-    deque<ofImage> images;
-    vector<string> imagesInFolderPaths;
-    string  imagePath;
-    bool folderPlay; //if it's true plays a folder, else plays only one image;
+    ofDirectory     dir;
+    deque<ofImage>  images;
+    vector<string>  imagesInFolderPaths;
+    string          imagePath;
+    bool            folderPlay; //if it's true plays a folder, else plays only one image;
+    string          folderName;
     
-    int currentImage, nextImage;
-    bool hasMedia;
-    float crossFadeAlpha;
+    int             currentImage, nextImage;
+    bool            hasMedia;
+    float           crossFadeAlpha;
     
-    float beginImageTime; // store when we start time timer
-    float nextImageTime; // when do want to stop the timer
+    float           beginImageTime; // store when we start time timer
+    float           nextImageTime; // when do want to stop the timer
     
-    float fadeTime;
-    bool canSwap;
+    float           fadeTime;
+    bool            canSwap;
     
     
     
-    string              folderName;
-    ofVec2f             imagePosition;
-    ofVec2f             imageSize;
-    ofVec2f             imagePlayerDebugPosition;
+    
     
     
     
