@@ -228,6 +228,7 @@ void pmWarpPiRendererImagePlayer::onComplete(float* arg)
 void pmWarpPiRendererImagePlayer::onCrossFadeComplete(float *arg)
 {
     cout<<"tween completed"<<endl;
+    isFading = false;
     if(folderPlay && activePlayer){
         currentImage++;
         currentImage %= imagesInFolderPaths.size();
@@ -246,7 +247,6 @@ void pmWarpPiRendererImagePlayer::onCrossFadeComplete(float *arg)
         images.push_back(ofImage("images/"+imagePath));
         crossFadeAlpha=screenOpacity;
     }
-    isFading = false;
 }
 
 //-------------------------------------------------------------------------
@@ -292,6 +292,7 @@ void pmWarpPiRendererImagePlayer::stopImagePlayer(float _fadeTime)
     
     Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, _fadeTime, EASE_IN_OUT_EXPO);
     Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
+    isFading = true;
 }
 
 //-------------------------------------------------------------------------
