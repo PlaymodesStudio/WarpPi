@@ -159,9 +159,6 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
         if(command == "loadImage")
         {
             if(canSwap){
-                
-                
-                
                 //no folder play
                 folderPlay = false;
                 //get varliables

@@ -44,9 +44,6 @@ public:
     virtual void        setIsTesting(bool b){isTesting=b;};
     virtual void        setIsDebugging(bool b){isDebugging=b;};
     renderType          getType(){return type;};
-    virtual void        fadeIn(float fadeTime){};
-    virtual void        fadeOut(float fadeTime){};
-    virtual void        onFadeComplete(float* args){};
 //
 //    void mouseMoved(ofMouseEventArgs &a){};
 //    void mouseDragged(ofMouseEventArgs &a){};

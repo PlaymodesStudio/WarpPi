@@ -20,9 +20,6 @@ public:
 
     virtual void        showScreenDebug();
     virtual void        showDebug(){};
-    virtual void        fadeIn(float fadeTime);
-    virtual void        fadeOut(float fadeTime);
-    virtual void        onFadeComplete(float* args);
 
 
     /// CLASS FUNCTIONS

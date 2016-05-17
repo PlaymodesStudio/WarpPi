@@ -67,31 +67,6 @@ void pmWarpPiRendererDrawable::showScreenDebug()
 
 }
 
-
-//-------------------------------------------------------------------------
-void pmWarpPiRendererDrawable::fadeIn(float fadeTime)
-{
-    Tweenzor::add((float*)&screenOpacity.get(), screenOpacity, maxScreenOpacity, 0.0, fadeTime, EASE_IN_OUT_EXPO);
-    Tweenzor::addCompleteListener(Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererDrawable::onFadeComplete);
-}
-
-//-------------------------------------------------------------------------
-void pmWarpPiRendererDrawable::fadeOut(float fadeTime)
-{
-    Tweenzor::add((float*)&screenOpacity.get(), screenOpacity, 0.0,  0.0, fadeTime, EASE_IN_OUT_EXPO);
-    Tweenzor::addCompleteListener(Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererDrawable::onFadeComplete);
-}
-
-void pmWarpPiRendererDrawable::onFadeComplete(float *args)
-{
-    if(*args == 0.0){//screen has fade out
-        cout<<"fadeOut done"<<endl;
-    }
-    else{
-        cout<<"fadeIn complete"<<endl;
-    }
-}
-
 //-------------------------------------------------------------------------
 void pmWarpPiRendererDrawable::keyPressed(ofKeyEventArgs &a)
 {
