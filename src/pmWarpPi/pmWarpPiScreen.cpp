@@ -429,6 +429,12 @@ void pmWarpPiScreen::keyPressed(ofKeyEventArgs &a)
 {
     int key = a.key;
     
+    /// QUAD WARPING
+    ////////////////
+    int quadStep = 1;
+    if(ofGetKeyPressed(OF_KEY_SHIFT)) quadStep = 5;
+    
+    
     if(key=='q')
     {
         nextQuadPoint();
@@ -471,11 +477,6 @@ void pmWarpPiScreen::keyPressed(ofKeyEventArgs &a)
     {
         doEditQuadPoints = !doEditQuadPoints;
     }
-    
-    /// QUAD WARPING
-    ////////////////
-    int quadStep = 1;
-    if(ofGetKeyPressed(OF_KEY_SHIFT)) quadStep = 5;
     
     else if (key == OF_KEY_LEFT)
     {
