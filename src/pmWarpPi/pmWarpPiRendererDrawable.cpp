@@ -9,6 +9,7 @@ pmWarpPiRendererDrawable::pmWarpPiRendererDrawable()
     
     screenOpacity = 1.0;
     maxScreenOpacity = 1.0;
+    isFading = false;
     
     cout << "pmRendererScreen :: new reder screen";
 }

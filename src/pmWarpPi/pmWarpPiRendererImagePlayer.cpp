@@ -39,7 +39,6 @@ void pmWarpPiRendererImagePlayer::setupImagePlayer(string _name, bool active)
     beginImageTime = ofGetElapsedTimef();  // get the start time
     nextImageTime = 5; // in seconds
     fadeTime = 1;
-    canSwap = true;
     
     /// GUI
     gui->setup(); // most of the time you don't need a name but don't forget to call setup
@@ -47,10 +46,10 @@ void pmWarpPiRendererImagePlayer::setupImagePlayer(string _name, bool active)
     gui->setPosition(770, 20 + 75);
     crossFadeAlpha = 1;
     
-    
-//    Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, nextImageTime-fadeTime, fadeTime,EASE_IN_OUT_EXPO);
-//    Tweenzor::addCompleteListener(Tweenzor::getTween((float*)&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
-    
+    if(activePlayer){
+        Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, nextImageTime-fadeTime, fadeTime,EASE_IN_OUT_EXPO);
+        Tweenzor::addCompleteListener(Tweenzor::getTween((float*)&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
+    }
 }
 
 //-------------------------------------------------------------------------
@@ -142,8 +141,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
             
             Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, temp_fadeTime, EASE_IN_OUT_EXPO);
             Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
-            canSwap = false;
-
+            isFading = true;
         }
         
         /// STOP
@@ -158,7 +156,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
         /// LOAD IMAGE
         if(command == "loadImage")
         {
-            if(canSwap){
+            if(!isFading){
                 //no folder play
                 folderPlay = false;
                 //get varliables
@@ -179,7 +177,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
                 
                 Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, fadeTime, EASE_IN_OUT_EXPO);
                 Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
-                canSwap = false;
+                isFading = true;
             }
         }
         else if(command == "loadFolder")
@@ -208,7 +206,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
             
             Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, fadeTime,EASE_IN_OUT_EXPO);
             Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
-            canSwap = false;
+            isFading = true;
         }
     }
     pmWarpPiRendererDrawable::updateOSC(m);
@@ -248,7 +246,7 @@ void pmWarpPiRendererImagePlayer::onCrossFadeComplete(float *arg)
         images.push_back(ofImage("images/"+imagePath));
         crossFadeAlpha=screenOpacity;
     }
-    canSwap = true;
+    isFading = false;
 }
 
 //-------------------------------------------------------------------------
@@ -316,42 +314,4 @@ bool pmWarpPiRendererImagePlayer::loadImages()
         imagesInFolderPaths.push_back(dir.getPath(i));
     }
     return true;
-}
-
-//-------------------------------------------------------------------------
-void pmWarpPiRendererImagePlayer::keyPressed(ofKeyEventArgs &a)
-{
-    int key = a.key;
-    
-    if(key=='p')
-    {
-        //        videoPlayer->play();
-    }
-    
-    cout << "videoplayer key pressed " << key << endl;
-    
-}
-//-------------------------------------------------------------------------
-void pmWarpPiRendererImagePlayer::keyReleased(ofKeyEventArgs &a)
-{
-    
-}
-//-------------------------------------------------------------------------
-void pmWarpPiRendererImagePlayer::mouseMoved(ofMouseEventArgs &a)
-{
-}
-//-------------------------------------------------------------------------
-void pmWarpPiRendererImagePlayer::mouseDragged(ofMouseEventArgs &a)
-{
-    
-}
-//-------------------------------------------------------------------------
-void pmWarpPiRendererImagePlayer::mousePressed(ofMouseEventArgs &a)
-{
-    
-}
-//-------------------------------------------------------------------------
-void pmWarpPiRendererImagePlayer::mouseReleased(ofMouseEventArgs &a)
-{
-    
 }

@@ -47,7 +47,6 @@
 		D72541E81CC91C5700430572 /* pmWarpPiRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D72541DC1CC91C5700430572 /* pmWarpPiRenderer.cpp */; };
 		D72541E91CC91C5700430572 /* pmWarpPiRendererDmx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D72541DE1CC91C5700430572 /* pmWarpPiRendererDmx.cpp */; };
 		D72541EA1CC91C5700430572 /* pmWarpPiRendererImagePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D72541E01CC91C5700430572 /* pmWarpPiRendererImagePlayer.cpp */; };
-		D72541EB1CC91C5700430572 /* pmWarpPiRendererOMXPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D72541E21CC91C5700430572 /* pmWarpPiRendererOMXPlayer.cpp */; };
 		D72541EC1CC91C5700430572 /* pmWarpPiRendererDrawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D72541E41CC91C5700430572 /* pmWarpPiRendererDrawable.cpp */; };
 		D72541ED1CC91C5700430572 /* pmWarpPiRendererVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D72541E61CC91C5700430572 /* pmWarpPiRendererVideoPlayer.cpp */; };
 		D7F3D2EE1CC550BF00B8CA4C /* ofxTCPClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7F3D2E61CC550BF00B8CA4C /* ofxTCPClient.cpp */; };
@@ -177,7 +176,6 @@
 		D72541DF1CC91C5700430572 /* pmWarpPiRendererDmx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pmWarpPiRendererDmx.h; sourceTree = "<group>"; };
 		D72541E01CC91C5700430572 /* pmWarpPiRendererImagePlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pmWarpPiRendererImagePlayer.cpp; sourceTree = "<group>"; };
 		D72541E11CC91C5700430572 /* pmWarpPiRendererImagePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pmWarpPiRendererImagePlayer.h; sourceTree = "<group>"; };
-		D72541E21CC91C5700430572 /* pmWarpPiRendererOMXPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pmWarpPiRendererOMXPlayer.cpp; sourceTree = "<group>"; };
 		D72541E31CC91C5700430572 /* pmWarpPiRendererOMXPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pmWarpPiRendererOMXPlayer.h; sourceTree = "<group>"; };
 		D72541E41CC91C5700430572 /* pmWarpPiRendererDrawable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pmWarpPiRendererDrawable.cpp; sourceTree = "<group>"; };
 		D72541E51CC91C5700430572 /* pmWarpPiRendererDrawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pmWarpPiRendererDrawable.h; sourceTree = "<group>"; };
@@ -500,7 +498,6 @@
 				D72541DF1CC91C5700430572 /* pmWarpPiRendererDmx.h */,
 				D72541E01CC91C5700430572 /* pmWarpPiRendererImagePlayer.cpp */,
 				D72541E11CC91C5700430572 /* pmWarpPiRendererImagePlayer.h */,
-				D72541E21CC91C5700430572 /* pmWarpPiRendererOMXPlayer.cpp */,
 				D72541E31CC91C5700430572 /* pmWarpPiRendererOMXPlayer.h */,
 				D72541E41CC91C5700430572 /* pmWarpPiRendererDrawable.cpp */,
 				D72541E51CC91C5700430572 /* pmWarpPiRendererDrawable.h */,
@@ -747,7 +744,6 @@
 				9FCC2DAF1CD9F4260066FC01 /* network.c in Sources */,
 				8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */,
 				ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */,
-				D72541EB1CC91C5700430572 /* pmWarpPiRendererOMXPlayer.cpp in Sources */,
 				67FE4C7B15C2F0478C8126C2 /* NetworkingUtils.cpp in Sources */,
 				D7F3D2F01CC550BF00B8CA4C /* ofxTCPServer.cpp in Sources */,
 				D72541ED1CC91C5700430572 /* pmWarpPiRendererVideoPlayer.cpp in Sources */,

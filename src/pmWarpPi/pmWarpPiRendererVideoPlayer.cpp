@@ -186,7 +186,6 @@ void pmWarpPiRendererVideoPlayer::deleteRenderer()
     ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::delete";
     
     closePlayer();
-    
 }
 
 //-------------------------------------------------------------------------
@@ -217,8 +216,6 @@ void pmWarpPiRendererVideoPlayer::showDebug()
     }
     
     ofDrawBitmapString(loopType,elementDebugInfoPos.x,whichHeight);
-    
-    
 }
 
 

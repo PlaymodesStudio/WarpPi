@@ -16,6 +16,7 @@
 #ifdef TARGET_RASPBERRY_PI
     #include "pmWarpPiRendererOMXPlayer.h"
 #endif
+#include "ofxHomography.h"
 
 class pmWarpPiScreen
 {

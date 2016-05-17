@@ -3,8 +3,6 @@
 #define PM_WARPI_RENDERER_SCREEN
 
 #include "pmWarpPiRenderer.h"
-#include "ofMain.h"
-#include "ofxHomography.h"
 
 class pmWarpPiRendererDrawable : public pmWarpPiRenderer
 {
@@ -41,13 +39,12 @@ public:
     ofVec2f             screenPosition;
     ofVec2f             screenSize;
     
-    ofImage*            testingImage;
-    
     ofVec2f             screenDebugPosition;
     ofParameter<float>  screenOpacity;
     ofParameter<float>  maxScreenOpacity;
     
     bool                activePlayer;
+    bool                isFading;
 
     
 

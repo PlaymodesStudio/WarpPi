@@ -31,16 +31,6 @@ public:
     
     bool loadImages();
     void drawImage(int index, float alpha, ofRectangle container);
-    
-    void keyPressed(ofKeyEventArgs &a);
-    void keyReleased(ofKeyEventArgs &a);
-    void mouseMoved(ofMouseEventArgs & args);
-    void mouseDragged(ofMouseEventArgs & args);
-    void mousePressed(ofMouseEventArgs & args);
-    void mouseReleased(ofMouseEventArgs & args);
-    void mouseScrolled(ofMouseEventArgs & args){};
-    void mouseEntered(ofMouseEventArgs & args){};
-    void mouseExited(ofMouseEventArgs & args){};
 
     /// CLASS PARAMS
     /////////////////
@@ -59,13 +49,6 @@ public:
     float           nextImageTime; // when do want to stop the timer
     
     float           fadeTime;
-    bool            canSwap;
-    
-    
-    
-    
-    
-    
     
 };
 #endif
