@@ -17,7 +17,6 @@ ofAddListener(ofEvents.exit, this, &MyClass::_exit);
 pmWarpPiRenderer::pmWarpPiRenderer()
 {
     isDebugging = false;
-    ofRegisterMouseEvents(this);
     oscSender = new ofxOscSender();
     gui = new ofxPanel();
     guiIsSetup = false;

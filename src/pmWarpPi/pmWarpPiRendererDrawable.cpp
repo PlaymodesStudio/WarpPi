@@ -66,35 +66,3 @@ void pmWarpPiRendererDrawable::showScreenDebug()
     ofDrawBitmapString("screen position : " +ofToString(screenPosition),screenDebugPosition.x,whichHeight);
 
 }
-
-//-------------------------------------------------------------------------
-void pmWarpPiRendererDrawable::keyPressed(ofKeyEventArgs &a)
-{
-    
-}
-//-------------------------------------------------------------------------
-void pmWarpPiRendererDrawable::keyReleased(ofKeyEventArgs &a)
-{
-
-}
-//-------------------------------------------------------------------------
-void pmWarpPiRendererDrawable::mouseMoved(ofMouseEventArgs &a)
-{
-
-}
-//-------------------------------------------------------------------------
-void pmWarpPiRendererDrawable::mouseDragged(ofMouseEventArgs &a)
-{
-    
-}
-//-------------------------------------------------------------------------
-void pmWarpPiRendererDrawable::mousePressed(ofMouseEventArgs &a)
-{
-    
-}
-//-------------------------------------------------------------------------
-void pmWarpPiRendererDrawable::mouseReleased(ofMouseEventArgs &a)
-{
-    
-}
-

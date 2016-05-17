@@ -91,16 +91,6 @@ public:
         return videoPlayer->getLoopState();
     };
     
-    void keyPressed(ofKeyEventArgs &a);
-    void keyReleased(ofKeyEventArgs &a);
-    void mouseMoved(ofMouseEventArgs & args);
-    void mouseDragged(ofMouseEventArgs & args);
-    void mousePressed(ofMouseEventArgs & args);
-    void mouseReleased(ofMouseEventArgs & args);
-    void mouseScrolled(ofMouseEventArgs & args){};
-    void mouseEntered(ofMouseEventArgs & args){};
-    void mouseExited(ofMouseEventArgs & args){};
-    
 
 private:
     /// CLASS PARAMS
