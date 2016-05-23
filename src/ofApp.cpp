@@ -55,11 +55,7 @@ void ofApp::setup()
     {
         pmWarpPiRendererArtNet* _artnet = new pmWarpPiRendererArtNet();
         _artnet->setup(id);
-        _artnet->setupArtNet(confArtNetFileName);
-        _artnet->setMachineIP(pmLocalAddressGrabber::getMyProbableIpAddress());
-        _artnet->setTargetIP(confArtNetDestIp, 0);
-        _artnet->setTargetSubNet(confArtNetSubNet, 0);
-        _artnet->setTargetUniverse(0, 0);
+        _artnet->setupArtNet(confArtNetFileName, pmLocalAddressGrabber::getMyProbableIpAddress(), confArtNetDestIp, confArtNetSubNet, confArtNetUniverse);
         renderers.push_back((pmWarpPiRenderer*) _artnet);
     }
     //keyPressed('d');

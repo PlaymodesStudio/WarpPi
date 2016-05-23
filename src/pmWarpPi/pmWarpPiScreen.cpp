@@ -261,7 +261,6 @@ void pmWarpPiScreen::updateOSC(ofxOscMessage* m)
             cout << "Resetting Quad !!" << endl;
             resetQuad();
         }
-        
     }
     
     for(int i=0;i<screenRenderers.size();i++)

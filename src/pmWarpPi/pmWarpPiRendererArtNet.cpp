@@ -26,11 +26,17 @@ bool pmWarpPiRendererArtNet::setMachineIP(string machineIP)
     start();
 }
 
-void pmWarpPiRendererArtNet::setupArtNet(string _name, bool active)
+void pmWarpPiRendererArtNet::setupArtNet(string _name, string machineIP, string targetIP, int subnet, int universe, bool active)
 {
     pmWarpPiRendererVideoPlayer::setupVideoPlayer(_name, active);
     setUniverses(getPlayerHeight());
     bStarted = false;
+    setMachineIP(machineIP);
+    for(int i=0; i<nUniverses; i++){
+        setTargetIP(targetIP, i);
+        setTargetSubNet(subnet, i);
+        setTargetUniverse(universe+i, i);
+    }
 }
 
 void pmWarpPiRendererArtNet::updateForScreen()

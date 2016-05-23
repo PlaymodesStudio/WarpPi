@@ -24,7 +24,7 @@ public:
     /// CLASS FUNCTIONS
     ////////////////////
     virtual void        updateForScreen();
-    void                setupArtNet(string _name, bool active = true);
+    void                setupArtNet(string _name, string machineIP, string targetIP, int subnet, int universe, bool active = true);
     virtual void        showDebug(){};
 
     
