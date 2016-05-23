@@ -3,9 +3,10 @@
     <id> 11 </id>
     <name> firstOne </name>
     
-    <hasVideo>yes </hasVideo>
-    <hasImage> yes </hasImage>
+    <hasVideo> no </hasVideo>
+    <hasImage> no </hasImage>
     <hasDMX>no</hasDMX>
+    <hasArtNet> yes </hasArtNet>
     
     <oscReceivePort> 9001 </oscReceivePort>
     <oscReceivePortStringMode> 9002 </oscReceivePortStringMode>
@@ -20,8 +21,13 @@
     <dmxNumChannels> 4 </dmxNumChannels>
     <dmxFirstChannel> 11 </dmxFirstChannel>
     
+    <artnetDestIp> 192.168.1.100 </artnetDestIp>
+    <artnetFileName> videos/artnettestProres.mov </artnetFileName>
+    <artnetUniverse> 0 </artnetUniverse>
+    <artnetSubNet> 0 </artnetSubNet>
+    
     <useTCP>yes</useTCP>
-    <TCPIp>127.0.0.1</TCPIp>
+    <TCPIp>192.168.1.100</TCPIp>
     <TCPPort> 11999 </TCPPort>
     
 </config>

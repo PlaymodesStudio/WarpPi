@@ -6,6 +6,7 @@
 // PM WARPI
 #include "pmWarpPi.h"
 #include "pmWarpPiRendererDmx.h"
+#include "pmWarpPiRendererArtNet.h"
 #include "pmWarpPiScreen.h"
 
 
@@ -74,6 +75,7 @@ public:
     /// RENDERERS
     ///////////////
     pmWarpPiScreen              screen;
+    vector<pmWarpPiRenderer*>   renderers;
     
     /// CONFIG
     ////////////
@@ -86,11 +88,16 @@ public:
     bool                        confHasVideo;
     bool                        confHasImage;
     bool                        confHasDmx;
+    bool                        confHasArtNet;
     string                      confVideoFileName;
     string                      confName;
     int                         confDmxDevice;
     int                         confDmxNumChannels;
     int                         confDmxFirstChannel;
+    string                      confArtNetDestIp;
+    string                      confArtNetFileName;
+    int                         confArtNetUniverse;
+    int                         confArtNetSubNet;
     bool                        confUsesTCP;
     string                      confTCPSendIpAddress;
     int                         confTCPPort;

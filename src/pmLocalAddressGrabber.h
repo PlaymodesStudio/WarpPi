@@ -7,6 +7,11 @@
  *
  */
 
+
+
+#ifndef PM_WARPI_RENDERER_ADRES
+#define PM_WARPI_RENDERER_ADRES
+
 #include "ofMain.h"
 
 
@@ -14,7 +19,7 @@
 #include <net/if.h>
 #include <ifaddrs.h>
 
-class LocalAddressGrabber
+class pmLocalAddressGrabber
 {
 public:
     
@@ -115,3 +120,5 @@ public:
         return "can't get IP";
     }
 };
+
+#endif

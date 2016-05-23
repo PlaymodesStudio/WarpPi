@@ -8,47 +8,35 @@
 
 #include "pmWarpPiRendererArtNet.h"
 
-bool pmWarpPiRendererArtNet::setMachineIP(string machineIP){
-    
+pmWarpPiRendererArtNet::pmWarpPiRendererArtNet()
+{
+    nUniverses = -1;
+}
+
+bool pmWarpPiRendererArtNet::setMachineIP(string machineIP)
+{
     artnet.init(machineIP);
-    if(function == PM_ARTNET_PLAYER){
-        artnet.setSubNet(0);
-        artnet.setPortType(0, ARTNET_PORT_ENABLE_INPUT, ARTNET_DATA_DMX);
-        artnet.setPortAddress(0, ARTNET_PORT_INPUT, 0);
-        
-    }else if(function == PM_ARTNET_RECORDER){
-        artnet.setShortName("Artnet receive");
-        artnet.setLongName("Artnet Mac receiver");
-        artnet.setNodeType(ARTNET_TYPE_NODE);
-        artnet.setSubNet(0);
-        artnet.setPortType(0, ARTNET_PORT_ENABLE_OUTPUT, ARTNET_DATA_DMX);
-        artnet.setPortAddress(0, ARTNET_PORT_OUTPUT, 0);
-        ofAddListener(artnet.dmxData, this, &pmWarpPiRendererArtNet::receiveData);
-    }
+    artnet.setSubNet(0);
+    artnet.setPortType(0, ARTNET_PORT_ENABLE_INPUT, ARTNET_DATA_DMX);
+    artnet.setPortAddress(0, ARTNET_PORT_INPUT, 0);
+
     
     ofAddListener(artnet.pollReply, this, &pmWarpPiRendererArtNet::receivePollReply);
     artnet.sendPoll();
     start();
 }
 
-bool pmWarpPiRendererArtNet::setup(pmArtnetFunction _function)
+void pmWarpPiRendererArtNet::setupArtNet(string _name, bool active)
 {
-    function = _function;
+    pmWarpPiRendererVideoPlayer::setupVideoPlayer(_name, active);
+    setUniverses(getPlayerHeight());
     bStarted = false;
-    //    if(function == PM_ARTNET_PLAYER){
-    //        artnet.setSubNet(0);
-    //        artnet.setPortType(0, ARTNET_PORT_ENABLE_INPUT, ARTNET_DATA_DMX);
-    //        artnet.setPortAddress(0, ARTNET_PORT_INPUT, 0);
-    //
-    //    }else{
-    //        artnet.setShortName("Artnet receive");
-    //        artnet.setLongName("Artnet Mac receiver");
-    //        artnet.setNodeType(ARTNET_TYPE_NODE);
-    //        artnet.setSubNet(0);
-    //        artnet.setPortType(0, ARTNET_PORT_ENABLE_OUTPUT, ARTNET_DATA_DMX);
-    //        artnet.setPortAddress(0, ARTNET_PORT_OUTPUT, 0);
-    //        ofAddListener(artnet.dmxData, this, &pmWarpPiRendererArtNet::receiveData);
-    //    }
+}
+
+void pmWarpPiRendererArtNet::updateForScreen()
+{
+    pmWarpPiRendererVideoPlayer::updateForScreen();
+    sendDmx(getVideoPixels());
 }
 
 void pmWarpPiRendererArtNet::start(){

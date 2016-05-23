@@ -1,5 +1,5 @@
 #include "ofApp.h"
-#include "LocalAddressGrabber.h"
+#include "pmLocalAddressGrabber.h"
 #include <typeinfo>
 
 //--------------------------------------------------------------
@@ -48,7 +48,19 @@ void ofApp::setup()
         pmWarpPiRendererDmx* _dmx = new pmWarpPiRendererDmx();
         _dmx->setup(id);
         _dmx->setupDmx(confDmxDevice,confDmxNumChannels,confDmxFirstChannel);
-        //renderers.push_back((pmWarpPiRenderer*) _dmx);
+        renderers.push_back((pmWarpPiRenderer*) _dmx);
+    }
+    
+    if(confHasArtNet)
+    {
+        pmWarpPiRendererArtNet* _artnet = new pmWarpPiRendererArtNet();
+        _artnet->setup(id);
+        _artnet->setupArtNet(confArtNetFileName);
+        _artnet->setMachineIP(pmLocalAddressGrabber::getMyProbableIpAddress());
+        _artnet->setTargetIP(confArtNetDestIp, 0);
+        _artnet->setTargetSubNet(confArtNetSubNet, 0);
+        _artnet->setTargetUniverse(0, 0);
+        renderers.push_back((pmWarpPiRenderer*) _artnet);
     }
     //keyPressed('d');
     //ofSetLogLevel(OF_LOG_SILENT);
@@ -76,19 +88,26 @@ void ofApp::readConfig()
     doHomography = configXML.getValue("doHomography", "no") == "yes" ? true: false;
     
     /// WHAT IT HAS ?
-    confHasVideo = confHasDmx = false;
-    if(configXML.getValue("hasVideo","error") == "yes") confHasVideo=true;
-    else confHasVideo=false;
+    confHasVideo    = confHasDmx = false;
     
-    confHasImage = configXML.getValue("hasImage", "false") == "yes" ? true: false;
+    confHasVideo    = configXML.getValue("hasVideo" , "error")  == "yes" ? true : false;
+    
+    confHasImage    = configXML.getValue("hasImage" , "error")  == "yes" ? true : false;
 
-    if(configXML.getValue("hasDMX","error")=="yes") confHasDmx=true;
-    else confHasDmx=false;
+    confHasDmx      = configXML.getValue("hasDMX" , "error")    == "yes" ? true : false;
+    
+    confHasArtNet   = configXML.getValue("hasArtNet" , "false") == "yes" ? true : false;
     
     /// DMX
     confDmxDevice = configXML.getValue("dmxDevice",-1);
     confDmxNumChannels = configXML.getValue("dmxNumChannels",-1);
     confDmxFirstChannel = configXML.getValue("dmxFirstChannel",-1);
+    
+    /// ARTNET
+    confArtNetDestIp = configXML.getValue("artnetDestIp", "127.0.0.1");
+    confArtNetFileName = configXML.getValue("artnetFileName", "videos/artnetTest.mov");
+    confArtNetUniverse = configXML.getValue("artnetUniverse", 0);
+    confArtNetSubNet = configXML.getValue("artnetSubNet", 0);
     
     /// TCP
     if(configXML.getValue("useTCP","error")=="yes") confUsesTCP=true;
@@ -143,6 +162,10 @@ void ofApp::update()
         /// UPDATE ALL RENDERERS
         ///////////////////////////
         screen.updateOSC(m);
+        for(int i=0;i<renderers.size();i++)
+        {
+            renderers[i]->updateOSC(m);
+        }
         
         ///////////////////////////
         /// MESSAGES THAT AFFECT IN GENERAL
@@ -220,6 +243,10 @@ void ofApp::update()
                 /// UPDATE ALL RENDERERS
                 ///---------------------------------
                 screen.updateOSC(mTcp);
+                for(int i=0;i<renderers.size();i++)
+                {
+                    renderers[i]->updateOSC(mTcp);
+                }
                 
                 
                 
@@ -774,7 +801,7 @@ void ofApp::showDebug()
     whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString("NAME : " + name,debugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString("IP : " + LocalAddressGrabber::getMyProbableIpAddress() ,debugPosition.x,whichHeight);
+    ofDrawBitmapString("IP : " + pmLocalAddressGrabber::getMyProbableIpAddress() ,debugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString("OSC RECEIVE PORT: "  + ofToString(confOscReceivePort),debugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;

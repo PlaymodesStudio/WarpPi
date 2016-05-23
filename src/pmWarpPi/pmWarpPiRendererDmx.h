@@ -17,8 +17,7 @@ public:
     virtual void        updateOSC(ofxOscMessage* m);
     virtual void        draw();
     virtual void        deleteRenderer();
-    virtual void        updateForScreen(){};
-    virtual void        setIsTesting(bool b);
+     virtual void        setIsTesting(bool b);
     virtual void        setIsDebugging(bool b);
 
 

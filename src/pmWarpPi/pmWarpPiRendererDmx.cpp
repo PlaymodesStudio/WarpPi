@@ -127,21 +127,7 @@ void pmWarpPiRendererDmx::updateOSC(ofxOscMessage* m)
 //--------------------------------------------------------------
 void pmWarpPiRendererDmx::onComplete(float* arg)
 {
-    // this function is called on when the tween is complete //
-    //cout << "dmx :: onComplete : arg = " << *arg << endl;
-    
-//    if(arg == &screenOpacity.get())
-//    {
-//        cout << "this is a stop?" << endl;
-//        if(screenOpacity==0.0) videoPlayer.stop();
-//    }
 
-    //    if(arg == &_x2.get())
-    //    {
-    //        Tweenzor::add((float *)&_x1.get(), 0, ofGetWidth(), 0, 2,EASE_IN_OUT_EXPO);
-    //        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&_x1.get()), this, &testApp::onComplete);
-    //    }
-    
 }
 
 

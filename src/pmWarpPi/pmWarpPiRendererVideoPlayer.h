@@ -91,6 +91,10 @@ public:
         return videoPlayer->getLoopState();
     };
     
+    ofPixels& getVideoPixels(){
+        return videoPlayer->getPixels();
+    };
+    
 
 private:
     /// CLASS PARAMS

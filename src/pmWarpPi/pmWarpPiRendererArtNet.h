@@ -13,24 +13,27 @@
 #include "ofxArtNet.h"
 #include "pmWarpPiRendererVideoPlayer.h"
 
-enum pmArtnetFunction {
-    PM_ARTNET_RECORDER,
-    PM_ARTNET_PLAYER
-};
-
-class pmWarpPiRendererArtNet{
+class pmWarpPiRendererArtNet: public pmWarpPiRendererVideoPlayer{
     
 public:
-    pmWarpPiRendererArtNet(){};
-    ~pmWarpPiRendererArtNet(){};
+    pmWarpPiRendererArtNet();
+    
+    virtual void        updateOSC(ofxOscMessage* m){};
+    virtual void        deleteRenderer(){};
+    
+    /// CLASS FUNCTIONS
+    ////////////////////
+    virtual void        updateForScreen();
+    void                setupArtNet(string _name, bool active = true);
+    virtual void        showDebug(){};
+
     
     bool setMachineIP(string machineIP);
-    bool setup(pmArtnetFunction _function);
     void start();
     void setFromPixels(ofPixels &pixels);
     bool sendDmx();
     bool sendDmx(ofPixels &pixels);
-    void setTargetIP(string ip, int line){dmxDataPacket[line].setIp(ip);};
+    void setTargetIP(string ip, int line){if(nUniverses > 0) dmxDataPacket[line].setIp(ip);};
     void setTargetSubNet(int subnet, int line){dmxDataPacket[line].setSubNet(subnet);};
     void setTargetUniverse(int universe, int line){dmxDataPacket[line].setUniverse(universe);};
     vector<unsigned char> getData(int universe){return dmxDataPacket[universe].getData();};
@@ -45,7 +48,6 @@ public:
     
 private:
     bool bStarted;
-    pmArtnetFunction function;
     ofxArtNet artnet;
     int nUniverses;
     vector<ofxArtNetDmxData> dmxDataPacket;
