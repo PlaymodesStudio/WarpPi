@@ -45,6 +45,35 @@ void pmWarpPiRendererArtNet::updateForScreen()
     sendDmx(getVideoPixels());
 }
 
+void pmWarpPiRendererArtNet::updateOSC(ofxOscMessage *m)
+{
+    //translate artnetplay to videoplay
+    ofxOscMessage *m2;
+    m2->setAddress(m->getAddress());
+    string command = m->getArgAsString(0);
+    if(command == "playArtNet"){
+        m2->addStringArg("playVideo");
+        m2->addFloatArg(m->getArgAsFloat(1));
+    }
+    else if(command == "stopArtNet"){
+        m2->addStringArg("stopVideo");
+        m2->addFloatArg(m->getArgAsFloat(1));
+    }
+    else if(command == "pauseArtNet"){
+        m2->addStringArg("pauseVideo");
+    }
+    else if(command == "restartArtNet"){
+        m2->addStringArg("restartVideo");
+        m2->addFloatArg(m->getArgAsFloat(1));
+    }
+    else if(command == "loadArtNet"){
+        m2->addStringArg("loadVideo");
+        m2->addStringArg(m->getArgAsString(1));
+        m2->addFloatArg(m->getArgAsFloat(2));
+    }
+    pmWarpPiRendererVideoPlayer::updateOSC(m2);
+}
+
 void pmWarpPiRendererArtNet::start(){
     artnet.start();
     bStarted = true;

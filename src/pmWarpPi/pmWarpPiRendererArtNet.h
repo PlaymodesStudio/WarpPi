@@ -18,7 +18,7 @@ class pmWarpPiRendererArtNet: public pmWarpPiRendererVideoPlayer{
 public:
     pmWarpPiRendererArtNet();
     
-    virtual void        updateOSC(ofxOscMessage* m){};
+    virtual void        updateOSC(ofxOscMessage* m); //implementar i que overridii els de videoplyer i cridi els play, no els parseji directe.
     virtual void        deleteRenderer(){};
     
     /// CLASS FUNCTIONS
