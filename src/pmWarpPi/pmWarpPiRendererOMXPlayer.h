@@ -17,6 +17,8 @@ public:
         videoPosition = ofVec2f(0,0);
         videoSize = ofVec2f(0,0);
         videoPlayerDebugPosition = ofVec2f(520,20);
+        textureMode = true;
+        hasAudio = true;
     };
     
     //override methods
@@ -29,9 +31,9 @@ public:
         ofxOMXPlayerSettings settings;
         settings.videoPath = videoPath;
         settings.useHDMIForAudio	= false;		//default true
-        settings.enableTexture		= true;		//default true
+        settings.enableTexture		= textureMode;		//default true
         settings.enableLooping		= true;		//default true
-        settings.enableAudio		= true;		//default true, save resources by disabling
+        settings.enableAudio		= hasAudio;		//default true, save resources by disabling
         //settings.doFlip     Texture = true;		//default false
         
         if (!settings.enableTexture)
@@ -124,11 +126,20 @@ public:
         return OF_LOOP_NORMAL;
     };
     
+    void setTextured(bool textured){
+        textureMode = textured;
+    }
+    
+    void setAudio(bool audio){
+        hasAudio = audio;
+    }
+    
     
     
 private:
     
     ofxOMXPlayer*       omxPlayer;
+    bool    textureMode, hasAudio;
     
     
     

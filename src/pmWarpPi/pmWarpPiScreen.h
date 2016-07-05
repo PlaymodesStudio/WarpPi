@@ -27,7 +27,7 @@ public:
     ////////////////////
     pmWarpPiScreen();
     
-    void        setup(bool hasVideo, bool hasImage, bool _useFbo, bool _useHomograhy);
+    void        setup(bool hasVideo, bool hasImage, bool _useFbo, bool _useHomograhy, bool texureMode, bool hasAudio);
     void        update();
     void        updateOSC(ofxOscMessage* m);
     void        draw();

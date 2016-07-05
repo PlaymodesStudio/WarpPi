@@ -16,6 +16,8 @@
     <videoFileName> ./videos/fingers.mov </videoFileName>
     <useFbo> no </useFbo>
     <doHomography> yes </doHomography>
+    <textureMode> no </textureMode>
+    <hasAudio> no </hasAudio>
     
     <dmxDevice> 0 </dmxDevice>
     <dmxNumChannels> 4 </dmxNumChannels>

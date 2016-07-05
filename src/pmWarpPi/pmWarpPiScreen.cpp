@@ -32,7 +32,7 @@ pmWarpPiScreen::pmWarpPiScreen()
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiScreen::setup(bool hasVideo, bool hasImage, bool _useFbo, bool _useHomography)
+void pmWarpPiScreen::setup(bool hasVideo, bool hasImage, bool _useFbo, bool _useHomography, bool textureMode, bool hasAudio)
 {
     
     useFbo = _useFbo;
@@ -51,12 +51,13 @@ void pmWarpPiScreen::setup(bool hasVideo, bool hasImage, bool _useFbo, bool _use
     {
 #ifdef TARGET_RASPBERRY_PI
         pmWarpPiRendererOMXPlayer* _video = new pmWarpPiRendererOMXPlayer();
+        _video->setTextured(textureMode);
+        _video->setAudio(hasAudio);
 #else
         pmWarpPiRendererVideoPlayer* _video = new pmWarpPiRendererVideoPlayer();
 #endif
         _video->setup("firstOne");
         _video->setupVideoPlayer("videos/fingers.mov", true);
-        //_video->screenOpacity.set(0.0);
         ofAddListener(_video->swapEvent, this, &pmWarpPiScreen::swapToVideo);
         screenRenderers.push_back(_video);
     }
