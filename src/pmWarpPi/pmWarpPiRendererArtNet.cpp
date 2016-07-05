@@ -51,26 +51,42 @@ void pmWarpPiRendererArtNet::updateOSC(ofxOscMessage *m)
     ofxOscMessage *m2;
     m2->setAddress(m->getAddress());
     string command = m->getArgAsString(0);
-    if(command == "playArtNet"){
+    if(command == "playArtnet"){
         m2->addStringArg("playVideo");
         m2->addFloatArg(m->getArgAsFloat(1));
     }
-    else if(command == "stopArtNet"){
+    else if(command == "stopArtnet"){
         m2->addStringArg("stopVideo");
         m2->addFloatArg(m->getArgAsFloat(1));
     }
-    else if(command == "pauseArtNet"){
+    else if(command == "pauseArtnet"){
         m2->addStringArg("pauseVideo");
     }
-    else if(command == "restartArtNet"){
+    else if(command == "restartArtnet"){
         m2->addStringArg("restartVideo");
         m2->addFloatArg(m->getArgAsFloat(1));
     }
-    else if(command == "loadArtNet"){
+    else if(command == "loadArtnet"){
         m2->addStringArg("loadVideo");
         m2->addStringArg(m->getArgAsString(1));
         m2->addFloatArg(m->getArgAsFloat(2));
+        /// SET ONE DMX CHANNEL
+    }else if(command == "setArtnetCh"){
+        int whichCh         = m->getArgAsInt32(1)-1;
+        if((whichCh>=0) && (whichCh<512))
+        {
+            int dmxValue        = m->getArgAsInt32(2);
+            //float timeToValue   = m->getArgAsFloat(3);
+            
+            ofPixels tempPix;
+            tempPix.allocate(171, 1, 3);
+            for(int i = 0; i<whichCh; i++){
+                tempPix[i] = 0;
+            }
+            tempPix[whichCh] = dmxValue;
+        }
     }
+
     pmWarpPiRendererVideoPlayer::updateOSC(m2);
 }
 

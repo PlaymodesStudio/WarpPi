@@ -381,7 +381,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
                 int val = ofToInt(tokens[2]);
                 myMessage->addIntArg(val);
             }
-            else if ((tokens[1]=="playVideo")||(tokens[1]=="stopVideo")||(tokens[1]=="restartVideo")||(tokens[1]=="playImage")||(tokens[1]=="stopImage"))
+            else if ((tokens[1]=="playVideo")||(tokens[1]=="stopVideo")||(tokens[1]=="restartVideo")||(tokens[1]=="playImage")||(tokens[1]=="stopImage") || (tokens[1]=="playArtnet")||(tokens[1]=="stopArtnet")||(tokens[1]=="restartArtnet"))
             {
                 /// 2 ARGUMENTS 0/ command string 1/float
                 /// ----------------------------
@@ -444,7 +444,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
                 myMessage->addFloatArg(valF);
                 
             }
-            else if((tokens[1]=="loadVideo") || (tokens[1]=="loadImage") || (tokens[1]=="loadFolder"))
+            else if((tokens[1]=="loadVideo") || (tokens[1]=="loadImage") || (tokens[1]=="loadFolder") || (tokens[1]=="loadArtnet"))
             {
                 /// 3 ARGUMENTS 0/ command string /1 string 2/float
                 /// ----------------------------
@@ -474,7 +474,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
             /// ----------------------------
             myMessage->addStringArg(tokens[1]);
             
-            if((tokens[1]=="setDMXCh"))
+            if((tokens[1]=="setDMXCh") || (tokens[1]=="setArtnetCh"))
             {
                 /// 4 ARGUMENTS 0/ command string 1/int /2 int 3/float
                 /// ----------------------------
