@@ -51,7 +51,7 @@ void pmWarpPiRendererVideoPlayer::updateForScreen()
     }
     else
     {
-        this->setPlayerVolume(screenOpacity);
+        this->setPlayerVolume(audioVolume);
         this->updatePlayer();
     }
     
@@ -91,6 +91,11 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
         /// COMMAND
         string command = m->getArgAsString(0);
         
+        
+        /// Change Volume
+        if(command == "volume")
+            this->setPlayerVolume(m->getArgAsFloat(1));
+            
         /// PLAY
         if(command == "playVideo")
         {

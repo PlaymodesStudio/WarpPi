@@ -57,6 +57,7 @@ public:
     };
     
     void setPlayerVolume(float volume){
+        audioVolume = volume;
         omxPlayer->setVolume(volume);
     };
     

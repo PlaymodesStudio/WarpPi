@@ -39,6 +39,7 @@ public:
         playPlayer();
     };
     virtual void setPlayerVolume(float volume){
+        audioVolume = volume;
         videoPlayer->setVolume(volume);
     };
     virtual void updatePlayer(){
@@ -107,6 +108,7 @@ protected:
     ofVec2f             videoSize;
     ofVec2f             videoPlayerDebugPosition;
     float               fadeTime;
+    float               audioVolume;
     
     
     
