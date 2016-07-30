@@ -5,6 +5,7 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+    ofHideCursor();
     ofSetFrameRate(60);
     ofSetVerticalSync(true);
 
