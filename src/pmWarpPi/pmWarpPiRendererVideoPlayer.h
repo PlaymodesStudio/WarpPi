@@ -36,7 +36,6 @@ public:
     };
     virtual void loadMovie(){
         videoPlayer->load(videoFileName);
-        videoPlayer->setLoopState(OF_LOOP_NONE);
         playPlayer();
     };
     virtual void setPlayerVolume(float volume){
@@ -91,6 +90,12 @@ public:
     };
     virtual ofLoopType getPlayerLoopState(){
         return videoPlayer->getLoopState();
+    };
+    virtual void setPlayerLoop(bool loop){
+        if(loop)
+            videoPlayer->setLoopState(OF_LOOP_NORMAL);
+        else
+            videoPlayer->setLoopState(OF_LOOP_NONE);
     };
     
     ofPixels& getVideoPixels(){

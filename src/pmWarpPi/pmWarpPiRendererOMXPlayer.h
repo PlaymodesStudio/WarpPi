@@ -127,6 +127,10 @@ public:
         return OF_LOOP_NORMAL;
     };
     
+    virtual void setPlayerLoop(bool loop){
+    
+    };
+    
     void setTextured(bool textured){
         textureMode = textured;
     }

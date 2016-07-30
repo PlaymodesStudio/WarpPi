@@ -23,6 +23,7 @@ void pmWarpPiRendererVideoPlayer::setupVideoPlayer(string _name, bool active)
     activePlayer = active;
     
     loadMovie();
+    setPlayerLoop(false);
 
     /// GUI
     if(!guiIsSetup)
