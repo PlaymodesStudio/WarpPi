@@ -112,7 +112,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
     // get the id
     string addressWithoutSlash = address.substr(1,address.size()-1);
     
-    if((address=="/all")||(id==addressWithoutSlash))
+    if(true)// (address=="/all")||(id==addressWithoutSlash))
     {
         /// THIS MESSAGE IF FOR YOU !!
         

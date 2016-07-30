@@ -85,7 +85,7 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
     // get the id
     string addressWithoutSlash = address.substr(1,address.size()-1);
     
-    if((address=="/all")||(id==addressWithoutSlash))
+    if(true)// It will be for me it they send it (address=="/all")||(id==addressWithoutSlash))
     {
         /// THIS MESSAGE IF FOR YOU !!
         
