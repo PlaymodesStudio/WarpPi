@@ -32,7 +32,7 @@ public:
         settings.videoPath = videoPath;
         settings.useHDMIForAudio	= false;		//default true
         settings.enableTexture		= textureMode;		//default true
-        settings.enableLooping		= true;		//default true
+        settings.enableLooping		= false;		//default true
         settings.enableAudio		= hasAudio;		//default true, save resources by disabling
         //settings.doFlip     Texture = true;		//default false
         
@@ -128,7 +128,7 @@ public:
     };
     
     virtual void setPlayerLoop(bool loop){
-    
+        
     };
     
     void setTextured(bool textured){
