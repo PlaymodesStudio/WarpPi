@@ -32,8 +32,7 @@ pmWarpPiScreen::pmWarpPiScreen()
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiScreen::setup(bool hasVideo, bool hasImage, bool _useFbo, bool _useHomography, bool textureMode, bool hasAudio)
-{
+void pmWarpPiScreen::setup(bool hasVideo, bool hasImage, bool _useFbo, bool _useHomography, bool textureMode, bool hasAudio, string initVideoFile, string initImageFile){
     
     useFbo = _useFbo;
     doHomography = _useHomography;
@@ -57,7 +56,7 @@ void pmWarpPiScreen::setup(bool hasVideo, bool hasImage, bool _useFbo, bool _use
         pmWarpPiRendererVideoPlayer* _video = new pmWarpPiRendererVideoPlayer();
 #endif
         _video->setup("firstOne");
-        _video->setupVideoPlayer("videos/fingers.mov", true);
+        _video->setupVideoPlayer("videos/"+initVideoFile, true);
         ofAddListener(_video->swapEvent, this, &pmWarpPiScreen::swapToVideo);
         screenRenderers.push_back(_video);
     }
@@ -70,6 +69,15 @@ void pmWarpPiScreen::setup(bool hasVideo, bool hasImage, bool _useFbo, bool _use
         _image->setup("firstOne");
         _image->setupImagePlayer("test", false);
         ofAddListener(_image->swapEvent, this, &pmWarpPiScreen::swapToImage);
+        if(initImageFile != " "){
+            ofxOscMessage* m;
+            m->setAddress("all");
+            m->addStringArg("loadImage");
+            m->addStringArg(initImageFile);
+            m->addFloatArg(0);
+            _image->updateOSC(m);
+        }
+        
         screenRenderers.push_back(_image);
     }
     

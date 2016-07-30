@@ -39,7 +39,7 @@ void ofApp::setup()
         if(tcpAreWeConnected) sendTCPAwake();
     }
 
-    screen.setup(confHasVideo, confHasImage, useFbo, doHomography, confTextureMode, confHasAudio);
+    screen.setup(confHasVideo, confHasImage, useFbo, doHomography, confTextureMode, confHasAudio, confVideoFileName);
         
     // HAS DMX ?
     ///////////////

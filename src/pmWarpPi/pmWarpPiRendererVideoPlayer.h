@@ -36,6 +36,7 @@ public:
     };
     virtual void loadMovie(){
         videoPlayer->load(videoFileName);
+        videoPlayer->setLoopState(OF_LOOP_NONE);
         playPlayer();
     };
     virtual void setPlayerVolume(float volume){
@@ -108,7 +109,6 @@ protected:
     ofVec2f             videoSize;
     ofVec2f             videoPlayerDebugPosition;
     float               fadeTime;
-    float               audioVolume;
     
     
     

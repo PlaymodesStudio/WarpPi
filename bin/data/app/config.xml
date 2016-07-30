@@ -13,11 +13,11 @@
     <oscSendAddress> 127.0.0.1 </oscSendAddress>
     <oscSendPort> 9003 </oscSendPort>
     
-    <videoFileName> ./videos/fingers.mov </videoFileName>
+    <videoFileName> test1080.mov </videoFileName>
     <useFbo> no </useFbo>
     <doHomography> yes </doHomography>
-    <textureMode> no </textureMode>
-    <hasAudio> no </hasAudio>
+    <textureMode> yes </textureMode>
+    <hasAudio> yes </hasAudio>
     
     <dmxDevice> 0 </dmxDevice>
     <dmxNumChannels> 4 </dmxNumChannels>

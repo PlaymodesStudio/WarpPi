@@ -45,6 +45,7 @@ public:
     
     bool                activePlayer;
     bool                isFading;
+    float               audioVolume;
 
     
 
