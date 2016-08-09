@@ -18,6 +18,7 @@
     <doHomography> yes </doHomography>
     <textureMode> yes </textureMode>
     <hasAudio> yes </hasAudio>
+    <loop>  yes </loop>
     
     <dmxDevice> 0 </dmxDevice>
     <dmxNumChannels> 4 </dmxNumChannels>

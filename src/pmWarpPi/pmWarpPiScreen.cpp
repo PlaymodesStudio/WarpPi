@@ -32,7 +32,7 @@ pmWarpPiScreen::pmWarpPiScreen()
 }
 
 //-------------------------------------------------------------------------
-void pmWarpPiScreen::setup(bool hasVideo, bool hasImage, bool _useFbo, bool _useHomography, bool textureMode, bool hasAudio, string initVideoFile, string initImageFile){
+void pmWarpPiScreen::setup(bool hasVideo, bool hasImage, bool _useFbo, bool _useHomography, bool textureMode, bool hasAudio, bool loop, string initVideoFile, string initImageFile){
     
     useFbo = _useFbo;
     doHomography = _useHomography;
@@ -52,6 +52,7 @@ void pmWarpPiScreen::setup(bool hasVideo, bool hasImage, bool _useFbo, bool _use
         pmWarpPiRendererOMXPlayer* _video = new pmWarpPiRendererOMXPlayer();
         _video->setTextured(textureMode);
         _video->setAudio(hasAudio);
+        _video->setLoop(loop);
 #else
         pmWarpPiRendererVideoPlayer* _video = new pmWarpPiRendererVideoPlayer();
 #endif

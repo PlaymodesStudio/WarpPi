@@ -40,7 +40,7 @@ void ofApp::setup()
         if(tcpAreWeConnected) sendTCPAwake();
     }
 
-    screen.setup(confHasVideo, confHasImage, useFbo, doHomography, confTextureMode, confHasAudio, confVideoFileName);
+    screen.setup(confHasVideo, confHasImage, useFbo, doHomography, confTextureMode, confHasAudio, confLoop, confVideoFileName);
         
     // HAS DMX ?
     ///////////////
@@ -85,6 +85,7 @@ void ofApp::readConfig()
     doHomography = configXML.getValue("doHomography", "no") == "yes" ? true: false;
     confTextureMode  = configXML.getValue("textureMode", "yes") == "yes" ? true : false;
     confHasAudio = configXML.getValue("hasAudio", "yes") == "yes" ? true : false;
+    confLoop = configXML.getValue("loop", "no") == "yes" ? true : false;
     
     /// WHAT IT HAS ?
     confHasVideo    = confHasDmx = false;
