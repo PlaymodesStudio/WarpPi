@@ -85,7 +85,8 @@ void pmWarpPiRendererArtNet::updateOSC(ofxOscMessage *m)
             }
             tempPix[whichCh] = dmxValue;
         }
-    }
+    }else if(command == "loop")
+        m2 = m;
 
     pmWarpPiRendererVideoPlayer::updateOSC(m2);
 }

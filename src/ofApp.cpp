@@ -17,7 +17,7 @@ void ofApp::setup()
     isDebugging = false;
     isTesting = false;
     useFbo = true;
-    showFPS = true;
+    showFPS = false;
     //ofHideCursor();
     
     /// READ CONF
@@ -398,7 +398,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
                 float valF = ofToFloat(tokens[2]);
                 myMessage->addFloatArg(valF);
             }
-            else if((tokens[1]=="fbo") || (tokens[1]=="homography"))
+            else if((tokens[1]=="fbo") || (tokens[1]=="homography") || (tokens[1] == "loop"))
             {
                 float valF = ofToInt(tokens[2]);
                 bool valB = (valF == 1) ? true : false;
