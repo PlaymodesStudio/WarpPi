@@ -49,6 +49,7 @@ void pmWarpPiRendererArtNet::updateOSC(ofxOscMessage *m)
 {
     //translate artnetplay to videoplay
     ofxOscMessage *m2;
+    m2 = new ofxOscMessage();
     m2->setAddress(m->getAddress());
     string command = m->getArgAsString(0);
     if(command == "playArtnet"){
@@ -85,8 +86,10 @@ void pmWarpPiRendererArtNet::updateOSC(ofxOscMessage *m)
             }
             tempPix[whichCh] = dmxValue;
         }
-    }else if(command == "loop")
-        m2 = m;
+    }else if(command == "loopArtnet"){
+        m2->addStringArg("loop");
+        m2->addBoolArg(m->getArgAsBool(1));
+}
 
     pmWarpPiRendererVideoPlayer::updateOSC(m2);
 }
@@ -108,6 +111,12 @@ void pmWarpPiRendererArtNet::setFromPixels(ofPixels &pixels){
 
 bool pmWarpPiRendererArtNet::sendDmx(){
     for (auto dmxUniverse : dmxDataPacket){
+        vector<unsigned char> scaledData;
+        scaledData.resize(dmxUniverse.getData().size());
+        for(int i = 0; i < scaledData.size() ; i++)
+            scaledData[i] =(unsigned char)((float)dmxUniverse.getData()[i]*screenOpacity);
+        
+        dmxUniverse.setData(scaledData);
         artnet.sendDmx(dmxUniverse);
         cout<<dmxUniverse.getIp()<<endl;
     }

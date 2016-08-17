@@ -399,7 +399,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
                 float valF = ofToFloat(tokens[2]);
                 myMessage->addFloatArg(valF);
             }
-            else if((tokens[1]=="fbo") || (tokens[1]=="homography") || (tokens[1] == "loop"))
+            else if((tokens[1]=="fbo") || (tokens[1]=="homography") || (tokens[1] == "loop") || (tokens[1] == "loopArtnet"))
             {
                 float valF = ofToInt(tokens[2]);
                 bool valB = (valF == 1) ? true : false;
