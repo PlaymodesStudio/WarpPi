@@ -91,6 +91,7 @@ public:
     bool                        confHasArtNet;
     bool                        confTextureMode;
     bool                        confHasAudio;
+    bool                        confLoop;
     string                      confVideoFileName;
     string                      confName;
     int                         confDmxDevice;
