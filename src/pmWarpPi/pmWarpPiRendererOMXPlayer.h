@@ -143,8 +143,8 @@ public:
     };
     
     ofLoopType getPlayerLoopState(){
-//        if(omxPlayer->isLoopingEnabled()) return OF_LOOP_NORMAL;
-//        else return OF_LOOP_NONE;
+        if(loop) return OF_LOOP_NORMAL;
+        else return OF_LOOP_NONE;
         return OF_LOOP_NORMAL;
     };
     
@@ -160,7 +160,7 @@ public:
         hasAudio = audio;
     }
     
-    void setLoop(bool _loop){
+    void setPlayerLoop(bool _loop){
         loop = _loop;
     }
     
