@@ -53,7 +53,28 @@ public:
     
     void loadMovie(){
         string videoPath = ofToDataPath(videoFileName, true);
-        omxPlayer->loadMovie(videoPath);
+        ofxOMXPlayerSettings settings;
+        settings.videoPath = videoPath;
+        settings.useHDMIForAudio	= true;		//default true
+        settings.enableTexture		= textureMode;		//default true
+        settings.enableLooping		= loop;		//default true
+        settings.enableAudio		= hasAudio;		//default true, save resources by disabling
+        //settings.doFlip     Texture = true;		//default false
+        
+        if (!settings.enableTexture)
+        {
+            /*
+             We have the option to pass in a rectangle
+             to be used for a non-textured player to use (as opposed to the default full screen)
+             */
+            settings.displayRect.width = videoSize.x;
+            settings.displayRect.height = videoSize.y;
+            settings.displayRect.x = 0;
+            settings.displayRect.y = 0;
+        }
+        //so either pass in the settings
+        omxPlayer->setup(settings);
+//        omxPlayer->loadMovie(videoPath);
     };
     
     void setPlayerVolume(float volume){
