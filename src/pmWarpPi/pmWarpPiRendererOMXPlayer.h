@@ -161,7 +161,7 @@ public:
     }
     
     void setLoop(bool _loop){
-        loop = _loop
+        loop = _loop;
     }
     
     
