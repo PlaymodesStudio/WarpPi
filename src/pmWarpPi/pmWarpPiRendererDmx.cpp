@@ -64,11 +64,6 @@ void pmWarpPiRendererDmx::updateOSC(ofxOscMessage *m)
             int dmxValue        = m->getArgAsInt32(2);
             //float timeToValue   = m->getArgAsFloat(3);
             
-            ofPixels tempPix;
-            tempPix.allocate(171, 1, 3);
-            for(int i = 0; i<whichCh; i++){
-                tempPix[i] = 0;
-            }
             linepixels[whichCh] = dmxValue;
             sendDmx();
         }

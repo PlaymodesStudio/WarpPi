@@ -29,7 +29,8 @@ bool pmWarpPiRendererArtNet::setMachineIP(string machineIP)
 void pmWarpPiRendererArtNet::setupArtNet(string _name, string machineIP, string targetIP, int subnet, int universe, bool active)
 {
     pmWarpPiRendererVideoPlayer::setupVideoPlayer(_name, active);
-    setUniverses(getPlayerHeight());
+//    setUniverses(getPlayerHeight());
+    setUniverses(1);
     bStarted = false;
     setMachineIP(machineIP);
     for(int i=0; i<nUniverses; i++){
@@ -42,7 +43,8 @@ void pmWarpPiRendererArtNet::setupArtNet(string _name, string machineIP, string 
 void pmWarpPiRendererArtNet::updateForScreen()
 {
     pmWarpPiRendererVideoPlayer::updateForScreen();
-    sendDmx(getVideoPixels());
+    if(!isPlayerPaused())
+        sendDmx(getVideoPixels());
 }
 
 void pmWarpPiRendererArtNet::updateOSC(ofxOscMessage *m)
@@ -68,23 +70,24 @@ void pmWarpPiRendererArtNet::updateOSC(ofxOscMessage *m)
         m2->addFloatArg(m->getArgAsFloat(1));
     }
     else if(command == "loadArtnet"){
-        m2->addStringArg("loadVideo");
-        m2->addStringArg(m->getArgAsString(1));
-        m2->addFloatArg(m->getArgAsFloat(2));
+        ofxOscMessage *mTemp;
+        mTemp = new ofxOscMessage();
+        mTemp->setAddress(m->getAddress());
+        mTemp->addStringArg("loadVideo");
+        mTemp->addStringArg(m->getArgAsString(1));
+        mTemp->addFloatArg(m->getArgAsFloat(2));
+        pmWarpPiRendererVideoPlayer::updateOSC(mTemp);
+//        setUniverses(getPlayerHeight());
         /// SET ONE DMX CHANNEL
-    }else if(command == "setArtnetCh"){
+    }else if(command == "setDmxCh"){
         int whichCh         = m->getArgAsInt32(1)-1;
         if((whichCh>=0) && (whichCh<512))
         {
             int dmxValue        = m->getArgAsInt32(2);
             //float timeToValue   = m->getArgAsFloat(3);
-            
-            ofPixels tempPix;
-            tempPix.allocate(171, 1, 3);
-            for(int i = 0; i<whichCh; i++){
-                tempPix[i] = 0;
-            }
-            tempPix[whichCh] = dmxValue;
+    
+            linepixels[whichCh] = dmxValue;
+            sendDmx();
         }
     }else if(command == "loopArtnet"){
         m2->addStringArg("loop");
@@ -100,13 +103,13 @@ void pmWarpPiRendererArtNet::start(){
 }
 
 void pmWarpPiRendererArtNet::setFromPixels(ofPixels &pixels){
-    for (int i = 0; i < pixels.getHeight(); i++){
-        for ( int j = 0; j < pixels.getLine(i).getStride()-1; j++){
-            linepixels[j] = (pixels.getLine(i).asPixels()[j]);
+//    for (int i = 0; i < pixels.getHeight(); i++){
+        for ( int j = 0; j < pixels.getLine(0).getStride()-1; j++){
+            linepixels[j] = (pixels.getLine(0).asPixels()[j]);
         }
-        dmxDataPacket[i].setData(linepixels);
+        dmxDataPacket[0].setData(linepixels);
         //dmxDataPacket[i].setPort(i);
-    }
+//    }
 }
 
 bool pmWarpPiRendererArtNet::sendDmx(){
@@ -118,7 +121,7 @@ bool pmWarpPiRendererArtNet::sendDmx(){
         
         dmxUniverse.setData(scaledData);
         artnet.sendDmx(dmxUniverse);
-        cout<<dmxUniverse.getIp()<<endl;
+        //cout<<dmxUniverse.getIp()<<endl;
     }
 }
 
