@@ -304,7 +304,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
     int numTokens = tokens.size();
     
     // JUST TAKE CARE OF THE TCP MESSAGE IF IT's FOR THIS PI id
-    if( ( (id==tokens[0]) || ("all"==tokens[0]) ) )
+    if(true)// ( (id==tokens[0]) || ("all"==tokens[0]) ) )
     {
         if(numTokens==1)
         {
