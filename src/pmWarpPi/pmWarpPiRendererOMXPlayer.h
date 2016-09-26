@@ -15,7 +15,7 @@ public:
     pmWarpPiRendererOMXPlayer(){
         videoFileName = "";
         videoPosition = ofVec2f(0,0);
-        videoSize = ofVec2f(0,0);
+        videoSize = ofVec2f(screen.width,screen.height);
         videoPlayerDebugPosition = ofVec2f(520,20);
         textureMode = true;
         hasAudio = true;
@@ -36,7 +36,7 @@ public:
         settings.enableAudio		= hasAudio;		//default true, save resources by disabling
         //settings.doFlip     Texture = true;		//default false
         
-        if (!settings.enableTexture)
+        if (settings.enableTexture)
         {
             /*
              We have the option to pass in a rectangle
@@ -61,7 +61,7 @@ public:
         settings.enableAudio		= hasAudio;		//default true, save resources by disabling
         //settings.doFlip     Texture = true;		//default false
         
-        if (!settings.enableTexture)
+        if (settings.enableTexture)
         {
             /*
              We have the option to pass in a rectangle
