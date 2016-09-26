@@ -290,6 +290,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
     ofxOscMessage* myMessage;
     myMessage = new ofxOscMessage();
     
+    cout<< "--- Received TCP String -> -> -> " << tcpString << " -----" << endl;
     // split the string received ... into tokens <string> vector
     using namespace std;
     string sentence = tcpString;
@@ -320,7 +321,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
             // 1 token means just a command like : pause, saveQuad, resetQuad, nextQuadPoint, preQuadPoint, ping, shutdown, reboot, debug
             // so just pass though the command string
             ofLog(OF_LOG_NOTICE) << " 1 Argument  " << tokens[0] << " : " << tokens[1] << endl;
-            cout << " 1 Argument  " << tokens[0] << " : " << tokens[1] << endl;
+            //cout << " 1 Argument  " << tokens[0] << " : " << tokens[1] << endl;
             /// (0) is the command
             /// ----------------------------
             myMessage->addStringArg(tokens[1]);
@@ -370,7 +371,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
         else if(numTokens==3)
         {
             ofLog(OF_LOG_NOTICE) << " 2 Argument  " << tokens[0] << " : " << tokens[1] << " : " << tokens[2] << endl;
-            cout << " 2 Argument  " << tokens[0] << " : " << tokens[1] << " : " << tokens[2] << endl;
+            //cout << " 2 Argument  " << tokens[0] << " : " << tokens[1] << " : " << tokens[2] << endl;
             
             /// (0) is the command string
             /// ----------------------------

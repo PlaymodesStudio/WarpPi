@@ -162,6 +162,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
                 //get varliables
                 auto temp_imagePath = m->getArgAsString(1);
                 fadeTime = m->getArgAsFloat(2);
+                cout<< "Loading image: " << temp_imagePath << endl;
                 
                 if(!activePlayer){
                     activePlayer = true;
@@ -187,6 +188,8 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
             folderName = m->getArgAsString(1);
             fadeTime = m->getArgAsFloat(2);
             nextImageTime = m->getArgAsFloat(3);
+            
+            cout << "Loading folder: " << folderName << endl;
             
             if(!activePlayer){
                 activePlayer = true;
@@ -216,18 +219,18 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
 void pmWarpPiRendererImagePlayer::onComplete(float* arg)
 {
     // this function is called on when the tween is complete //
-    cout << "screen :: onComplete : arg = " << *arg << endl;
+    //cout << "screen :: onComplete : arg = " << *arg << endl;
     
     if(arg == &screenOpacity.get())
     {
-        cout << "this is a stop?" << endl;
+        //cout << "this is a stop?" << endl;
     }
 }
 
 //--------------------------------------------------------------
 void pmWarpPiRendererImagePlayer::onCrossFadeComplete(float *arg)
 {
-    cout<<"tween completed"<<endl;
+    //cout<<"tween completed"<<endl;
     isFading = false;
     if(folderPlay && activePlayer){
         currentImage++;

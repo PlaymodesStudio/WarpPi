@@ -118,7 +118,7 @@ bool pmWarpPiRendererArtNet::sendDmx(){
         
         dmxUniverse.setData(scaledData);
         artnet.sendDmx(dmxUniverse);
-        cout<<dmxUniverse.getIp()<<endl;
+        //cout<<dmxUniverse.getIp()<<endl;
     }
 }
 

@@ -97,9 +97,11 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
         if(command == "volume")
             this->setPlayerVolume(m->getArgAsFloat(1));
         
-        else if(command == "loop")
+        else if(command == "loop"){
             this->setPlayerLoop(m->getArgAsBool(1));
-            
+            cout<< "Set loop State: " << m->getArgAsBool(1) << endl;
+        }
+        
         /// PLAY
         else if(command == "playVideo")
         {
@@ -148,7 +150,8 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
             if (!isFading){
                 auto new_videoFileName = "./videos/" +  m->getArgAsString(1);
                 ofFile videoCheck(new_videoFileName);
-                if(videoFileName != new_videoFileName && videoCheck.exists()){
+                if(videoCheck.exists()){
+                    cout<<"Loading Video: " << new_videoFileName << endl;
                     fadeTime = m->getArgAsFloat(2);
                     
                     if(!activePlayer){
@@ -164,6 +167,9 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
                     Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onFadeOutComplete);
                     isFading = true;
                 }
+                else{
+                    cout<< "No Videofile: " << new_videoFileName << endl;
+                }
             }
         }
     }
@@ -175,11 +181,11 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
 void pmWarpPiRendererVideoPlayer::onComplete(float* arg)
 {
     // this function is called on when the tween is complete //
-    cout << "screen :: onComplete : arg = " << *arg << endl;
+    //cout << "screen :: onComplete : arg = " << *arg << endl;
     
     if(arg == &screenOpacity.get())
     {
-        cout << "this is a stop?" << endl;
+        //cout << "this is a stop?" << endl;
         if(screenOpacity==0.0) stopPlayer();
     }
     
@@ -190,7 +196,7 @@ void pmWarpPiRendererVideoPlayer::onComplete(float* arg)
 void pmWarpPiRendererVideoPlayer::onFadeOutComplete(float* arg)
 {
     // this function is called on when the tween is complete //
-    cout << "screen :: FadeOut Completed : arg = " << *arg << endl;
+    //cout << "screen :: FadeOut Completed : arg = " << *arg << endl;
     loadMovie();
     Tweenzor::add((float *)&screenOpacity.get(), 0.0, maxScreenOpacity, 0.0, fadeTime, EASE_IN_OUT_EXPO);
     Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
