@@ -1,45 +1,46 @@
-#pragma once
-#ifndef PM_WARPI_RENDERER_DMX
-#define PM_WARPI_RENDERER_DMX
+//
+//  pmWarpPiRendererDmx.h
+//  WarpPi
+//
+//  Created by Eduard Frigola on 04/05/16.
+//
+//
 
-#include "pmWarpPiRenderer.h"
-#include "ofMain.h"
+#ifndef pmWarpPiRendererDmx_h
+#define pmWarpPiRendererDmx_h
+
+#include "pmWarpPi.h"
+#include "pmWarpPiRendererVideoPlayer.h"
 #include "ofxDmx.h"
 
-class pmWarpPiRendererDmx : public pmWarpPiRenderer
-{
+
+class pmWarpPiRendererDmx: public pmWarpPiRendererVideoPlayer{
     
 public:
- 
     pmWarpPiRendererDmx();
     
-    virtual void        update(ofEventArgs & a);
-    virtual void        updateOSC(ofxOscMessage* m);
-    virtual void        draw();
-    virtual void        deleteRenderer();
-     virtual void        setIsTesting(bool b);
-    virtual void        setIsDebugging(bool b);
-
-
+    virtual void        updateOSC(ofxOscMessage* m); //implementar i que overridii els de videoplyer i cridi els play, no els parseji directe.
+    virtual void        deleteRenderer(){};
+    
     /// CLASS FUNCTIONS
     ////////////////////
-    void                setupDmx(int _numDevice,int _numChannels,int _firstChannel);
-    virtual void        onComplete(float* arg);
-    void                testDmx();
-    void                showDmxDebug();
-    void                setChannel(int _ch,int _v);
-    void                setAllChannelsTo(int v);
+    virtual void        updateForScreen();
+    void                setupDmx(string _name, int _numDevice = 0, bool _active = true);
+    virtual void        showDebug(){};
+
+    void start();
+    void setFromPixels(ofPixels &pixels);
+    bool sendDmx();
+    bool sendDmx(ofPixels &pixels);
+    bool isStarted(){return bStarted;};
     
-    /// CLASS PARAMS
-    /////////////////
-    ofVec2f                         dmxDebugPosition;
+private:
+    bool bStarted;
     ofxDmx*                         dmx;
-    int                             numChannels;
-    int                             firstChannel;
-    int                             numDevice;
-    vector < ofParameter <float> >  channels;
-    float                           testValue;
-//    ofParameter <float>   channels;
+    int numDevice;
+    vector<unsigned char> linepixels;
     
 };
-#endif
+
+
+#endif /* pmWarpPiRendererDmx_h */

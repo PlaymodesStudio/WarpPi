@@ -48,7 +48,7 @@ void ofApp::setup()
     {
         pmWarpPiRendererDmx* _dmx = new pmWarpPiRendererDmx();
         _dmx->setup(id);
-        _dmx->setupDmx(confDmxDevice,confDmxNumChannels,confDmxFirstChannel);
+        _dmx->setupDmx(confArtNetFileName, confDmxDevice);
         renderers.push_back((pmWarpPiRenderer*) _dmx);
     }
     
@@ -305,7 +305,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
     int numTokens = tokens.size();
     
     // JUST TAKE CARE OF THE TCP MESSAGE IF IT's FOR THIS PI id
-    if( ( (id==tokens[0]) || ("all"==tokens[0]) ) )
+    if(true)// ( (id==tokens[0]) || ("all"==tokens[0]) ) )
     {
         if(numTokens==1)
         {
@@ -479,7 +479,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
             /// ----------------------------
             myMessage->addStringArg(tokens[1]);
             
-            if((tokens[1]=="setDMXCh") || (tokens[1]=="setArtnetCh"))
+            if((tokens[1]=="setDmxCh") || (tokens[1]=="setArtnetCh"))
             {
                 /// 4 ARGUMENTS 0/ command string 1/int /2 int 3/float
                 /// ----------------------------
@@ -665,7 +665,7 @@ ofxOscMessage* ofApp::processOSC(ofxOscMessage* m)
             /// ----------------------------
             myMessage->addStringArg(tokens[0]);
          
-            if((tokens[0]=="setDMXCh"))
+            if((tokens[0]=="setDmxCh"))
             {
                 /// 4 ARGUMENTS 0/ command string 1/int /2 int 3/float
                 /// ----------------------------

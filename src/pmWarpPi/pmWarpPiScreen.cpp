@@ -52,7 +52,7 @@ void pmWarpPiScreen::setup(bool hasVideo, bool hasImage, bool _useFbo, bool _use
         pmWarpPiRendererOMXPlayer* _video = new pmWarpPiRendererOMXPlayer();
         _video->setTextured(textureMode);
         _video->setAudio(hasAudio);
-        _video->setLoop(loop);
+        _video->setPlayerLoop(loop);
 #else
         pmWarpPiRendererVideoPlayer* _video = new pmWarpPiRendererVideoPlayer();
 #endif
