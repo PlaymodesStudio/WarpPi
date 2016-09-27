@@ -132,13 +132,13 @@ void pmWarpPiScreen::draw()
     }
     else{
         if(isDebugging){
-            for(int i=0;i<screenRenderers.size();i++)
+            for(int i=screenRenderers.size()-1; i >= 0; i--)
             {
                 screenRenderers[i]->drawElement(elementDebugRect);
             }
         }
         else{
-            for(int i=0;i<screenRenderers.size();i++)
+            for(int i=screenRenderers.size()-1; i >= 0; i--)
             {
                 screenRenderers[i]->drawElement(elementRect);
             }
@@ -295,6 +295,10 @@ void pmWarpPiScreen::showDebug()
     ofDrawBitmapString("POSITION: " +ofToString(screenPosition),screenDebugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString("HOMOGRAPHY: " + ofToString(doHomography),screenDebugPosition.x,whichHeight);
+    whichHeight=whichHeight + lineHeight;
+    ofDrawBitmapString("ACTIVE REND: ",screenDebugPosition.x,whichHeight);
+    
+
     
 }
 
