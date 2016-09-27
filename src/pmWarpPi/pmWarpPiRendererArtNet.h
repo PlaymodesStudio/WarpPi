@@ -25,7 +25,7 @@ public:
     ////////////////////
     virtual void        updateForScreen();
     void                setupArtNet(string _name, string machineIP, string targetIP, int subnet, int universe, bool active = true);
-    virtual void        showDebug(){};
+    virtual void        showDebug();
 
     
     bool setMachineIP(string machineIP);

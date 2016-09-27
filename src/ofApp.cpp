@@ -289,6 +289,7 @@ ofxOscMessage* ofApp::processTCP(string tcpString)
 {
     ofxOscMessage* myMessage;
     myMessage = new ofxOscMessage();
+    lastOscMessage = tcpString;
     
     cout<< "--- Received TCP String -> -> -> " << tcpString << " -----" << endl;
     // split the string received ... into tokens <string> vector
@@ -725,6 +726,8 @@ void ofApp::draw(){
     if(this->isDebugging)
     {
         showDebug();
+        for(auto renderer : renderers)
+            renderer->showDebug();
     }
     if(showFPS)
     {
@@ -810,7 +813,7 @@ void ofApp::showDebug()
     whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString("OSC SEND TO PORT : "  + ofToString(confOscSendPort),debugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString("LAST OSC MSG : "  + lastOscMessage,debugPosition.x,whichHeight);
+    ofDrawBitmapString("LAST TCP MSG : "  + lastOscMessage,debugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     ofDrawBitmapString("USE TCP : "  + ofToString(confUsesTCP),debugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;

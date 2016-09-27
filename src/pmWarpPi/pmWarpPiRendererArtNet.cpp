@@ -29,6 +29,7 @@ bool pmWarpPiRendererArtNet::setMachineIP(string machineIP)
 void pmWarpPiRendererArtNet::setupArtNet(string _name, string machineIP, string targetIP, int subnet, int universe, bool active)
 {
     pmWarpPiRendererVideoPlayer::setupVideoPlayer(_name, active);
+    elementDebugInfoPos = ofVec2f(920,20);
 //    setUniverses(getPlayerHeight());
     setUniverses(1);
     bStarted = false;
@@ -149,4 +150,31 @@ void pmWarpPiRendererArtNet::receivePollReply(ofxArtNetNodeEntry &node){
     int univi = node.getUniverseOutput(0);
     univi = univi>>14;
     cout<<"NODE FOUND: "<<node.getIp()<< "  -  Subnet "<<node.getSubnet()<<"  Universe "<<node.getShortName()<<endl;
+}
+
+void pmWarpPiRendererArtNet::showDebug(){
+    int lineHeight = 15;
+    int whichHeight = elementDebugInfoPos.y;
+    ofSetColor(255,128,0);
+    ofDrawBitmapString("ARTNET PLAYER",elementDebugInfoPos.x,whichHeight);
+    whichHeight=whichHeight + lineHeight;
+    ofSetColor(255);
+    ofDrawBitmapString("PATH: " + videoFileName,elementDebugInfoPos.x,whichHeight);
+    whichHeight=whichHeight + lineHeight;
+    ofDrawBitmapString("FRAME: " + ofToString(getPlayerCurrentFrame()) + " / " +ofToString(getPlayerTotalNumFrames()),elementDebugInfoPos.x,whichHeight);
+    whichHeight=whichHeight + lineHeight;
+    string loopType;
+    
+    if(getPlayerLoopState()==OF_LOOP_NONE)
+        loopType = "no";
+    else if (getPlayerLoopState()== OF_LOOP_NORMAL);
+        loopType = "yes";
+    
+    ofDrawBitmapString("LOOP: " + loopType, elementDebugInfoPos.x, whichHeight);
+    whichHeight=whichHeight + lineHeight;
+//    ofDrawBitmapString("DEST IP: " + dmxDataPacket[1].getIp(), elementDebugInfoPos.x, whichHeight);
+//    whichHeight=whichHeight + lineHeight;
+//    ofDrawBitmapString("NUM UNIV: " + ofToString(nUniverses), elementDebugInfoPos.x, whichHeight);
+//    whichHeight=whichHeight + lineHeight;
+    ofDrawBitmapString("OPACITY: " + ofToString(screenOpacity.get()), elementDebugInfoPos.x, whichHeight);
 }

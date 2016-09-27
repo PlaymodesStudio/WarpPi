@@ -290,9 +290,11 @@ void pmWarpPiScreen::showDebug()
     ofDrawBitmapString("SCREEN",screenDebugPosition.x,whichHeight);
     ofSetColor(255);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString("screen size : " +ofToString(screenSize),screenDebugPosition.x,whichHeight);
+    ofDrawBitmapString("SIZE : " +ofToString(screenSize),screenDebugPosition.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString("screen position : " +ofToString(screenPosition),screenDebugPosition.x,whichHeight);
+    ofDrawBitmapString("POSITION: " +ofToString(screenPosition),screenDebugPosition.x,whichHeight);
+    whichHeight=whichHeight + lineHeight;
+    ofDrawBitmapString("HOMOGRAPHY: " + ofToString(doHomography),screenDebugPosition.x,whichHeight);
     
 }
 
