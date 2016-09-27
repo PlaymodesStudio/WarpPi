@@ -5,7 +5,7 @@
 pmWarpPiRendererImagePlayer::pmWarpPiRendererImagePlayer()
 {
     folderName = "";
-    elementDebugInfoPos = ofVec2f(770,20);
+    elementDebugInfoPos = ofVec2f(640,20);
     
     //videoPlayer = new ofVideoPlayer();
     
@@ -264,25 +264,22 @@ void pmWarpPiRendererImagePlayer::deleteRenderer()
 //-------------------------------------------------------------------------
 void pmWarpPiRendererImagePlayer::showDebug()
 {
-    
     int lineHeight = 15;
     int whichHeight = elementDebugInfoPos.y;
     ofSetColor(255,128,0);
     ofDrawBitmapString("IMAGE PLAYER",elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     ofSetColor(255);
-    ofDrawBitmapString(folderName,elementDebugInfoPos.x,whichHeight);
+    ofDrawBitmapString("FOLDER: " + folderName,elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString(ofToString(images[0].getWidth()) + " x " +ofToString(images[0].getHeight()),elementDebugInfoPos.x,whichHeight);
+    ofDrawBitmapString("SIZE: " + ofToString(images[0].getWidth()) + " x " +ofToString(images[0].getHeight()),elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     if(currentImage != -1 && folderPlay)
-        ofDrawBitmapString(imagesInFolderPaths[currentImage],elementDebugInfoPos.x,whichHeight);
+        ofDrawBitmapString("PATH: " + imagesInFolderPaths[currentImage],elementDebugInfoPos.x,whichHeight);
     else
-        ofDrawBitmapString(imagePath, elementDebugInfoPos.x,whichHeight);
+        ofDrawBitmapString("PATH: " + imagePath, elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    string loopType;
-    
-    
+    ofDrawBitmapString("OPACITY: " + ofToString(screenOpacity), elementDebugInfoPos.x, whichHeight);
 }
 
 //-------------------------------------------------------------------------
@@ -296,6 +293,10 @@ void pmWarpPiRendererImagePlayer::stopImagePlayer(float _fadeTime)
     Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, _fadeTime, EASE_IN_OUT_EXPO);
     Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
     isFading = true;
+    
+    
+    Tweenzor::add((float *)&screenOpacity.get(), screenOpacity, 0.0, 0.0, _fadeTime ,EASE_IN_OUT_EXPO);
+    Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererImagePlayer::onComplete);
 }
 
 //-------------------------------------------------------------------------

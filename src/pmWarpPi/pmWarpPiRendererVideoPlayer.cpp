@@ -5,7 +5,7 @@
 pmWarpPiRendererVideoPlayer::pmWarpPiRendererVideoPlayer()
 {
     videoFileName = "";
-    elementDebugInfoPos = ofVec2f(520,20);
+    elementDebugInfoPos = ofVec2f(420,20);
 
     
     type = renderVideo;
@@ -152,19 +152,22 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
                 if(videoCheck.exists()){
                     cout<<"Loading Video: " << new_videoFileName << endl;
                     fadeTime = m->getArgAsFloat(2);
+                    videoFileName = new_videoFileName;
                     
                     if(!activePlayer){
                         activePlayer = true;
                         ofNotifyEvent(swapEvent, fadeTime, this);
+                        loadMovie();
+                        Tweenzor::add((float *)&screenOpacity.get(), 0.0, maxScreenOpacity, 0.0, fadeTime, EASE_IN_OUT_EXPO);
+                        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
                     }
-                    //            videoFileName = ofToDataPath("./videos", true);
-                    videoFileName = new_videoFileName;
+                    else{
+                        Tweenzor::add((float *)&screenOpacity.get(), maxScreenOpacity, 0.0, 0.0, fadeTime, EASE_IN_OUT_EXPO);
+                        Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onFadeOutComplete);
+                        isFading = true;
+                    }
                     
                     ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: OSC :: load : " << videoFileName << " : fadeTime : " << fadeTime;
-                    
-                    Tweenzor::add((float *)&screenOpacity.get(), maxScreenOpacity, 0.0, 0.0, fadeTime, EASE_IN_OUT_EXPO);
-                    Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onFadeOutComplete);
-                    isFading = true;
                 }
                 else{
                     cout<< "No Videofile: " << new_videoFileName << endl;
@@ -220,24 +223,26 @@ void pmWarpPiRendererVideoPlayer::showDebug()
     ofDrawBitmapString("VIDEO PLAYER",elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     ofSetColor(255);
-    ofDrawBitmapString(videoFileName,elementDebugInfoPos.x,whichHeight);
+    ofDrawBitmapString("PATH: " + videoFileName,elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString(ofToString(getPlayerWidth()) + " x " +ofToString(getPlayerHeight()),elementDebugInfoPos.x,whichHeight);
+    ofDrawBitmapString("SIZE: " + ofToString(getPlayerWidth()) + " x " +ofToString(getPlayerHeight()),elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
-    ofDrawBitmapString(ofToString(getPlayerCurrentFrame()) + " / " +ofToString(getPlayerTotalNumFrames()),elementDebugInfoPos.x,whichHeight);
+    ofDrawBitmapString("FRAME: " + ofToString(getPlayerCurrentFrame()) + " / " +ofToString(getPlayerTotalNumFrames()),elementDebugInfoPos.x,whichHeight);
     whichHeight=whichHeight + lineHeight;
     string loopType;
     
     if(getPlayerLoopState()==OF_LOOP_NONE)
     {
-        loopType = "no loop";
+        loopType = "no";
     }
     else if (getPlayerLoopState()== OF_LOOP_NORMAL);
     {
-        loopType = "loop";
+        loopType = "yes";
     }
     
-    ofDrawBitmapString(loopType,elementDebugInfoPos.x,whichHeight);
+    ofDrawBitmapString("LOOP: " + loopType,elementDebugInfoPos.x,whichHeight);
+    whichHeight=whichHeight + lineHeight;
+    ofDrawBitmapString("OPACITY: " + ofToString(screenOpacity.get()), elementDebugInfoPos.x, whichHeight);
 }
 
 
