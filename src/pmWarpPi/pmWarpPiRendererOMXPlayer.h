@@ -24,7 +24,7 @@ public:
     //override methods
     void createPlayer(){
         omxPlayer = new ofxOMXPlayer();
-        ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: New OmxPlayer";
+        ofLog(OF_LOG_NOTICE) << "New OmxPlayer";
         
         string videoPath = ofToDataPath(videoFileName, true);
         //Somewhat like ofFboSettings we may have a lot of options so this is the current model

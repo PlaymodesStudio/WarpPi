@@ -38,7 +38,7 @@ void pmWarpPiRendererVideoPlayer::setupVideoPlayer(string _name, bool active)
 //-------------------------------------------------------------------------
 void pmWarpPiRendererVideoPlayer::updateForScreen()
 {
-    ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::update";
+//    ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::update";
     
     /// TWEENZOR
     Tweenzor::update( ofGetElapsedTimeMillis() );
@@ -60,7 +60,7 @@ void pmWarpPiRendererVideoPlayer::updateForScreen()
 //-------------------------------------------------------------------------
 void pmWarpPiRendererVideoPlayer::drawElement(ofRectangle container)
 {
-    ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::draw";
+//    ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::draw";
     
     // SCREEN BACKGROUND
 //    ofSetColor(0,0,0,255*screenOpacity);
@@ -76,7 +76,7 @@ void pmWarpPiRendererVideoPlayer::drawElement(ofRectangle container)
 //-------------------------------------------------------------------------
 void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
 {
-    ofLog(OF_LOG_NOTICE) << "VideoPlayer :: updateOSC :: " << m->getAddress();
+    ofLog(OF_LOG_NOTICE) << "VideoPlayer-OSC" << endl;
     
     
     string address = m->getAddress();
@@ -99,6 +99,7 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
         else if(command == "loop"){
             this->setPlayerLoop(m->getArgAsBool(1));
             cout<< "Set loop State: " << m->getArgAsBool(1) << endl;
+            ofLog(OF_LOG_NOTICE) << "Set Loop State: " << loop;
         }
         
         /// PLAY
@@ -167,15 +168,15 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
                         isFading = true;
                     }
                     
-                    ofLog(OF_LOG_NOTICE) << "pmOmxPlayer :: OSC :: load : " << videoFileName << " : fadeTime : " << fadeTime;
+                    ofLog(OF_LOG_NOTICE) << "VideoPlayer-LoadVideo: " << videoFileName << " - fadeTime: " << fadeTime;
                 }
                 else{
+                    ofLog(OF_LOG_ERROR) << "VideoPlayer - No VideoFile";
                     cout<< "No Videofile: " << new_videoFileName << endl;
                 }
             }
         }
     }
-    
     pmWarpPiRendererDrawable::updateOSC(m);
 }
 

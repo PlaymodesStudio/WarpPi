@@ -56,7 +56,7 @@ void pmWarpPiRendererImagePlayer::setupImagePlayer(string _name, bool active)
 void pmWarpPiRendererImagePlayer::updateForScreen()
 {
     
-    ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::update";
+//    ofLog(OF_LOG_NOTICE) << "RendImagePlayer::update";
     
     /// TWEENZOR
     Tweenzor::update( ofGetElapsedTimeMillis() );
@@ -66,7 +66,7 @@ void pmWarpPiRendererImagePlayer::updateForScreen()
 //-------------------------------------------------------------------------
 void pmWarpPiRendererImagePlayer::drawElement(ofRectangle container)
 {
-    ofLog(OF_LOG_NOTICE) << "RendImagePlayer::draw";
+//    ofLog(OF_LOG_NOTICE) << "RendImagePlayer::draw";
     
     // SCREEN BACKGROUND
     ofSetColor(0,0,0,255);
@@ -104,7 +104,7 @@ void pmWarpPiRendererImagePlayer::drawImage(int index, float alpha, ofRectangle 
 //-------------------------------------------------------------------------
 void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
 {
-    ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::updateOSC";
+    ofLog(OF_LOG_NOTICE) << "ImagePlayer-OSC" << endl;
     
     
     string address = m->getAddress();
@@ -132,12 +132,6 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
                 startImagePlayer(fadeTime);
             }
             
-            
-//            images.pop_back();
-//            images.push_back(ofImage("images/"+imagePath));
-            
-//            bool toSend = true;
-            //ofNotifyEvent(swapEvent, toSend, this);
             
             Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, temp_fadeTime, EASE_IN_OUT_EXPO);
             Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
@@ -175,6 +169,7 @@ void pmWarpPiRendererImagePlayer::updateOSC(ofxOscMessage* m)
                 if(images[1].getWidth() != 0)
                     imagePath = temp_imagePath;
                 
+                ofLog(OF_LOG_NOTICE) << "ImagePlayer - LoadImage: " << temp_imagePath;
                 
                 Tweenzor::add(&crossFadeAlpha, screenOpacity, 0.0, 0.0, fadeTime, EASE_IN_OUT_EXPO);
                 Tweenzor::addCompleteListener(Tweenzor::getTween(&crossFadeAlpha), this, &pmWarpPiRendererImagePlayer::onCrossFadeComplete);
@@ -255,7 +250,7 @@ void pmWarpPiRendererImagePlayer::onCrossFadeComplete(float *arg)
 //-------------------------------------------------------------------------
 void pmWarpPiRendererImagePlayer::deleteRenderer()
 {
-    ofLog(OF_LOG_NOTICE) << "RendVideoPlayer::delete";
+    ofLog(OF_LOG_NOTICE) << "RendImagePlayer::delete" << endl;
     
     images.clear();
     

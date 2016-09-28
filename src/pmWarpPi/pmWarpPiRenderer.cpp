@@ -32,28 +32,28 @@ void pmWarpPiRenderer::setup(string _id)
     id = _id;
     /// DEBUGGING
     isDebugging = false;
-    ofLog(OF_LOG_NOTICE) << "Rend :: setup :: osc sender " << oscSenderAddress << " :: Port " << oscSenderPort;
+//    ofLog(OF_LOG_NOTICE) << "Rend :: setup :: osc sender " << oscSenderAddress << " :: Port " << oscSenderPort;
 }
 
 
 //-------------------------------------------------------------------------
 void pmWarpPiRenderer::update(ofEventArgs & a)
 {
-    ofLog(OF_LOG_NOTICE) << "Rend::update";
+//    ofLog(OF_LOG_NOTICE) << "Rend::update";
 
 }
 
 //-------------------------------------------------------------------------
 void pmWarpPiRenderer::updateOSC(ofxOscMessage* m)
 {
-    ofLog(OF_LOG_NOTICE) << "Rend::update OSC";
+//    ofLog(OF_LOG_NOTICE) << "Rend::update OSC";
     
 }
 
 //-------------------------------------------------------------------------
 void pmWarpPiRenderer::deleteRenderer()
 {
-    ofLog(OF_LOG_NOTICE) << "Rend::deleteRenderer";
+//    ofLog(OF_LOG_NOTICE) << "Rend::deleteRenderer";
 
 }
 

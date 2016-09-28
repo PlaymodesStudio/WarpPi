@@ -189,7 +189,7 @@ void pmWarpPiScreen::draw()
 //-------------------------------------------------------------------------
 void pmWarpPiScreen::updateOSC(ofxOscMessage* m)
 {
-    ofLog(OF_LOG_NOTICE) << "RendScreen::updateOSC";
+//    ofLog(OF_LOG_NOTICE) << "RendScreen::updateOSC";
     string address = m->getAddress();
     
     // get the id
@@ -417,7 +417,7 @@ void pmWarpPiScreen::loadConfigFromXML()
     
     *homography = ofxHomography::findHomography(originalCorners, distortedCorners);
     
-    ofLog(OF_LOG_NOTICE, "Saving screen info to XML : ./presets/screenConfig.xml");
+    ofLog(OF_LOG_NOTICE, "Loading screen info to XML : ./presets/screenConfig.xml");
     configXML.saveFile("./presets/screenConfig.xml");
 }
 

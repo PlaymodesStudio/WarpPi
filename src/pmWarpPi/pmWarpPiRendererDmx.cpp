@@ -18,6 +18,7 @@ pmWarpPiRendererDmx::pmWarpPiRendererDmx()
 void pmWarpPiRendererDmx::setupDmx(string _name, int _numDevice, bool active)
 {
     pmWarpPiRendererVideoPlayer::setupVideoPlayer(_name, active);
+    elementDebugInfoPos = ofVec2f(920,20);
     bStarted = false;
     numDevice = _numDevice;
     start();
