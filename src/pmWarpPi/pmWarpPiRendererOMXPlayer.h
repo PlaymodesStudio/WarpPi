@@ -15,7 +15,7 @@ public:
     pmWarpPiRendererOMXPlayer(){
         videoFileName = "";
         videoPosition = ofVec2f(0,0);
-        videoSize = ofVec2f(screen.width,screen.height);
+        videoSize = ofVec2f(1920,1080);
         videoPlayerDebugPosition = ofVec2f(520,20);
         textureMode = true;
         hasAudio = true;
