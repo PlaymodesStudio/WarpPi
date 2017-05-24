@@ -40,7 +40,7 @@ public:
         playPlayer();
     };
     virtual void setPlayerVolume(float volume){
-        audioVolume = volume;
+        //audioVolume = volume;
         videoPlayer->setVolume(volume);
     };
     virtual void updatePlayer(){

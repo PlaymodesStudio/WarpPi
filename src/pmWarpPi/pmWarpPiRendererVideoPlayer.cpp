@@ -95,9 +95,9 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
         
         
         /// Change Volume
-        if(command == "volume")
-            this->setPlayerVolume(m->getArgAsFloat(1));
-        
+        if(command == "volume"){
+            audioVolume = m->getArgAsFloat(1);
+        }
         else if(command == "loop"){
             this->setPlayerLoop(m->getArgAsBool(1));
             cout<< "Set loop State: " << m->getArgAsBool(1) << endl;
