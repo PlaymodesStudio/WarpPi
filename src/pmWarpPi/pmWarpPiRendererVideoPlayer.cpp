@@ -51,10 +51,12 @@ void pmWarpPiRendererVideoPlayer::updateForScreen()
     }
     else
     {
-        this->setPlayerVolume(audioVolume);
-        this->updatePlayer();
+        if(isFading)
+            this->setPlayerVolume(screenOpacity * audioVolume);
+        else
+            this->setPlayerVolume(audioVolume);
     }
-    
+    this->updatePlayer();
 }
 
 //-------------------------------------------------------------------------
@@ -115,7 +117,7 @@ void pmWarpPiRendererVideoPlayer::updateOSC(ofxOscMessage* m)
                 
                 setPlayerPaused(false);
                 Tweenzor::add((float *)&screenOpacity.get(), 0.0, maxScreenOpacity, 0.0, fade, EASE_IN_OUT_EXPO);
-                Tweenzor::addCompleteListener( Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
+                Tweenzor::addCompleteListener(Tweenzor::getTween((float*)&screenOpacity.get()), this, &pmWarpPiRendererVideoPlayer::onComplete);
                 isFading = true;
             }
         }
