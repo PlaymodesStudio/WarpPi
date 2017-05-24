@@ -77,8 +77,8 @@ void pmWarpPiRendererDmx::updateOSC(ofxOscMessage *m)
 }
 
 void pmWarpPiRendererDmx::start(){
-    dmx->connect("/dev/cu.usbserial-ENS2NSW5"); // use the name
-//    dmx->connect(numDevice); // or use a number
+//    dmx->connect("/dev/cu.usbserial-ENS2NSW5"); // use the name
+    dmx->connect(numDevice); // or use a number
     bStarted = true;
 }
 
@@ -92,13 +92,40 @@ bool pmWarpPiRendererDmx::sendDmx(){
     for(int i=0;i<linepixels.size();i++)
     {
         dmx->setLevel(i+1,linepixels[i]*screenOpacity);
-        cout<<ofToInt(ofToString(linepixels[i]))<< " - ";
+        //cout<<ofToInt(ofToString(linepixels[i]))<< " - ";
     }
-    cout<<endl;
+    //cout<<endl;
     dmx->update();
 }
 
 bool pmWarpPiRendererDmx::sendDmx(ofPixels &pixels){
     setFromPixels(pixels);
     sendDmx();
+}
+
+void pmWarpPiRendererDmx::showDebug(){
+    int lineHeight = 15;
+    int whichHeight = elementDebugInfoPos.y;
+    ofSetColor(255,128,0);
+    ofDrawBitmapString("DMX PLAYER",elementDebugInfoPos.x,whichHeight);
+    whichHeight=whichHeight + lineHeight;
+    ofSetColor(255);
+    ofDrawBitmapString("PATH: " + videoFileName,elementDebugInfoPos.x,whichHeight);
+    whichHeight=whichHeight + lineHeight;
+    ofDrawBitmapString("FRAME: " + ofToString(getPlayerCurrentFrame()) + " / " +ofToString(getPlayerTotalNumFrames()),elementDebugInfoPos.x,whichHeight);
+    whichHeight=whichHeight + lineHeight;
+    string loopType;
+    
+    if(getPlayerLoopState() == OF_LOOP_NONE)
+        loopType = "no";
+    else if (getPlayerLoopState() == OF_LOOP_NORMAL);
+    loopType = "yes";
+    
+    ofDrawBitmapString("LOOP: " + loopType, elementDebugInfoPos.x, whichHeight);
+    whichHeight=whichHeight + lineHeight;
+    //    ofDrawBitmapString("DEST IP: " + dmxDataPacket[1].getIp(), elementDebugInfoPos.x, whichHeight);
+    //    whichHeight=whichHeight + lineHeight;
+    //    ofDrawBitmapString("NUM UNIV: " + ofToString(nUniverses), elementDebugInfoPos.x, whichHeight);
+    //    whichHeight=whichHeight + lineHeight;
+    ofDrawBitmapString("OPACITY: " + ofToString(screenOpacity.get()), elementDebugInfoPos.x, whichHeight);
 }

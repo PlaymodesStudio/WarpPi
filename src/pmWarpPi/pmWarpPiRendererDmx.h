@@ -26,7 +26,7 @@ public:
     ////////////////////
     virtual void        updateForScreen();
     void                setupDmx(string _name, int _numDevice = 0, bool _active = true);
-    virtual void        showDebug(){};
+    virtual void        showDebug();
 
     void start();
     void setFromPixels(ofPixels &pixels);
